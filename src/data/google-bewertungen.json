@@ -1,0 +1,13 @@
+{
+  "quelle": "Google Bewertungen laut reviewhero.io/yumini-67bb, abgerufen am 20.10.2026. Nur Standort Bochum, die neuesten dort angezeigten Bewertungen stammen aus Mai und Juni 2023. Nicht gegen die Google Unternehmensprofile geprüft. Zum Livegang durch die Places API aller fünf Standorte ersetzen (docs/plan.md, Abschnitt 11).",
+  "bewertungen": [
+    { "standort": "bochum", "name": "Jutta F.", "sterne": 5, "datum": "2023-05-28", "text": "Wir waren jetzt schon 3 mal im Yumini. Wir essen immer \"all you can eat\". Die Bestellungen werden über ein tablet ausgesucht. Es kommen stets kleine Portionen, so dass am Ende alle von Allem probieren können und alle sind pappsatt :-) Aber eine Kugel Eis oder ein Stück gebackene Banane gehen immer noch rein. Meine Empfehlung: auf jeden Fall sollte man da mal gegessen haben." },
+    { "standort": "bochum", "name": "Anna T.", "sterne": 5, "datum": "2023-06-03", "text": "Immer super frisch und lecker" },
+    { "standort": "bochum", "name": "Ricarda R.", "sterne": 5, "datum": "2023-05-26", "text": "Waren das erste mal in dieser Filiale gewesen und hatten auch vorher reserviert. Es war wie immer lecker und man musste in der Regel nicht lange warten. Vielen Dank für das leckere Essen wir kommen gerne wieder." },
+    { "standort": "bochum", "name": "Yvonne S.", "sterne": 5, "datum": "2023-05-23", "text": "Leckeres Essen und schnelle Bedienung" },
+    { "standort": "dortmund", "fehlt": true },
+    { "standort": "gelsenkirchen", "fehlt": true },
+    { "standort": "luedenscheid", "fehlt": true },
+    { "standort": "siegen", "fehlt": true }
+  ]
+}

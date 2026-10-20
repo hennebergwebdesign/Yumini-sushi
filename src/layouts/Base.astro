@@ -12,8 +12,9 @@ interface Props {
   pfad?: string;
   ld?: object[];
   mobilLeiste?: boolean;
+  autoReveal?: boolean;
 }
-const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true } = Astro.props;
+const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true } = Astro.props;
 const url = new URL(pfad, SITE).href;
 ---
 <!doctype html>
@@ -21,6 +22,7 @@ const url = new URL(pfad, SITE).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#030504" />
@@ -45,5 +47,36 @@ const url = new URL(pfad, SITE).href;
     <main id="main"><slot /></main>
     <Footer />
     {mobilLeiste && <MobilLeiste />}
+    {autoReveal && <script>
+      // Einblenden beim Scrollen: markiert die Bausteine der Seiten und blendet sie ein, sobald sie ins Bild kommen.
+      const auswahl = [
+        'main section .head > *', 'main section .kopf > *', 'main section .copy > *', 'main section .intro > *',
+        'main section .inner > *', 'main section > .row > *', 'main section .stamp', 'main section .txt > *',
+        '.steps > li', '.tiles > li', '.favs > li', '.cards > li', '.mosaik > li', '.bilder > li', '.locs > li', '.grid-in > *',
+        '.list > li', '.list > details', '.act', '.notes > *', '.tablist', '.device', '.turn', '.visual', '.map', '.mock', '.marquee',
+        '.preise-grid > *', '.facts > li', '.treffer > *', '.zusatz > *',
+      ].join(',');
+      const alle = Array.from(document.querySelectorAll<HTMLElement>(auswahl)).filter((el) => !el.closest('.no-reveal') && !el.closest('.marquee .track'));
+      for (const el of alle) {
+        const geschwister = el.parentElement ? Array.from(el.parentElement.children).filter((c) => c.matches(auswahl)) : [];
+        const i = Math.max(0, geschwister.indexOf(el));
+        el.dataset.reveal = el.matches('.turn, .device, .visual, .map, .mock') ? 'zoom' : '';
+        el.style.setProperty('--d', `${Math.min(i, 7) * 0.08}s`);
+      }
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((eintraege) => {
+          for (const e of eintraege) {
+            const el = e.target as HTMLElement;
+            if (e.isIntersecting || e.boundingClientRect.top < 0) {
+              el.classList.add('is-in');
+              io.unobserve(el);
+            }
+          }
+        }, { rootMargin: '0px 0px -7% 0px', threshold: 0.08 });
+        alle.forEach((el) => io.observe(el));
+      } else {
+        alle.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>}
   </body>
 </html>

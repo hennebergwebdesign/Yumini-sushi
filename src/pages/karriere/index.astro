@@ -50,6 +50,7 @@ const eintritt = [
   description="Jobs bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen: Sushi, Küche, Grill, Service, Theke und Aushilfe. In 2 Minuten bewerben, ohne Lebenslauf."
   pfad="/karriere/"
   mobilLeiste={false}
+  autoReveal={false}
 >
   <div class="fortschritt" aria-hidden="true"></div>
   <section class="hero bgs" style={bg.hero} aria-labelledby="k-title">
@@ -219,7 +220,7 @@ const eintritt = [
     </div>
   </section>
 
-  <section id="bewerben" class="funnel-sec bgs" style={bg.bewerben} aria-labelledby="f-title">
+  <section id="bewerben" class="funnel-sec fullh bgs" style={bg.bewerben} aria-labelledby="f-title">
     <div class="wrap">
       <div class="shead rv">
         <p class="eyebrow">Bewerbung</p>
@@ -446,7 +447,8 @@ const eintritt = [
   .shead { display: grid; gap: 0.8rem; justify-items: start; margin-block-end: 2.25rem; }
 
   /* Stellen */
-  .jobs { display: grid; gap: 1rem; }
+  .jobs { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+  .job { min-inline-size: 0; }
   .job { border-radius: var(--r4); overflow: clip; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease); }
   .job:hover, .job[open] { border-color: rgb(255 143 134 / 0.55); background: rgb(255 255 255 / 0.1); }
   .job summary { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0 0.9rem; padding: 0.75rem 0.75rem 0; align-items: stretch; font-size: 1rem; font-weight: 400; }
@@ -470,7 +472,7 @@ const eintritt = [
   .mehr i { inline-size: 1.75rem; block-size: 1.75rem; transition: background-color 0.25s var(--ease), color 0.25s var(--ease); }
   .job:hover .mehr i { background: var(--coral-soft); color: var(--black); }
   .jb { display: grid; gap: 1.5rem; padding: 1.5rem 1.25rem 1.75rem; border-block-start: 1px solid rgb(255 255 255 / 0.14); }
-  .cols { display: grid; gap: 1.5rem; }
+  .cols { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); }
   .cols h4 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral-soft); margin-block-end: 0.5rem; }
   .cols li { position: relative; padding-inline-start: 1.1rem; margin-block-end: 0.4rem; color: var(--text-muted); }
   .cols li::before { content: ''; position: absolute; inset: 0.65em auto auto 0; inline-size: 0.4rem; block-size: 0.4rem; border-radius: 50%; background: var(--brand-red); }
@@ -557,7 +559,10 @@ const eintritt = [
   @media (min-width: 62rem) { .fgrid { grid-template-columns: 20rem 1fr; gap: 6rem; } .fgrid .shead { position: sticky; inset-block-start: 7rem; align-self: start; } }
 
   /* Bewerbung, ganz unten */
-  .funnel-sec { padding-block: var(--space-section); }
+  .funnel-sec .wrap { display: grid; justify-items: center; }
+  .funnel-sec .shead { justify-items: center; text-align: center; max-inline-size: 60rem; }
+  .funnel-sec .shead .lead { margin-inline: auto; }
+  .funnel { margin-inline: auto; }
   .funnel { position: relative; inline-size: min(100%, 52rem); padding: clamp(1.25rem, 3.5vw, 2.5rem); border-radius: var(--r4); background: rgb(255 255 255 / 0.07); border: 1px solid rgb(255 255 255 / 0.16); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 24px 48px -28px rgb(0 0 0 / 0.7); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); }
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .funnel { background: rgb(17 22 26 / 0.92); } }
   .prog { block-size: 4px; border-radius: 2px; background: rgb(255 255 255 / 0.1); margin-block-end: 0.75rem; overflow: clip; }
@@ -566,7 +571,7 @@ const eintritt = [
   fieldset { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
   legend { padding: 0; margin-block-end: 1.25rem; font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: clamp(1.25rem, 2.8vw, 1.75rem); line-height: 1.05; }
   .funnel:not(.js) fieldset { margin-block-end: 2.5rem; }
-  .opts { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+  .opts { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); }
   .opt { position: relative; display: block; cursor: pointer; }
   .opt input { position: absolute; opacity: 0; inset: 0; }
   .opt span { display: grid; gap: 0.15rem; min-block-size: 4.2rem; padding: 0.9rem 1.1rem; border: 1px solid rgb(255 255 255 / 0.16); border-radius: var(--r3); background: rgb(255 255 255 / 0.05); transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease), transform 0.2s var(--ease); }

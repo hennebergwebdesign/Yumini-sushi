@@ -35,7 +35,7 @@ const anlaesse = [
     </div>
   </section>
 
-  <section id="anfrage" class="anfrage" aria-labelledby="q-title">
+  <section id="anfrage" class="anfrage fullh" aria-labelledby="q-title">
     <div class="wrap">
       <h2 id="q-title" class="h2">Feier anfragen.</h2>
       <p class="lead muted">Die Anfrage geht an den gewählten Standort.</p>
@@ -70,7 +70,7 @@ const anlaesse = [
 </script>
 
 <style>
-  .hero { position: relative; isolation: isolate; min-block-size: 70svh; display: grid; align-items: center; padding-block: 9rem 4rem; background: var(--black) var(--bg) center / cover no-repeat; }
+  .hero { position: relative; isolation: isolate; min-block-size: 100vh; min-block-size: 100svh; display: grid; align-items: center; padding-block: var(--kopf) clamp(2rem, 6svh, 4rem); background: var(--black) var(--bg) center / cover no-repeat; }
   .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.82); }
   .copy { display: grid; gap: 1.25rem; justify-items: start; }
   .big { font-size: clamp(2.6rem, 6.5vw, 5rem); }
@@ -80,8 +80,9 @@ const anlaesse = [
   .hint { margin-block-start: 1.5rem; }
   .paper .fehlt { color: var(--ink-muted); white-space: normal; }
   .ok .fehlt { white-space: normal; }
-  .anfrage { padding-block: var(--space-section); background: #0a0d0c; }
-  .anfrage .wrap { display: grid; gap: 1rem; justify-items: start; }
+  .anfrage { background: #0a0d0c; text-align: center; }
+  .anfrage .wrap { display: grid; gap: 1rem; justify-items: center; }
+  .anfrage form { text-align: start; margin-inline: auto; }
   form { display: grid; gap: 1rem; inline-size: min(100%, 44rem); margin-block-start: 1rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--r4); background: #11161a; }
   label { display: grid; gap: 0.35rem; font-size: 0.9375rem; }
   small { color: var(--text-muted); }

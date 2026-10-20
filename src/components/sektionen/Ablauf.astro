@@ -6,7 +6,7 @@ import { fotos, gerichte } from '../../lib/bilder';
 // Zahlen aus den Regeln der Bestandsseite: pro Bestellrunde 6 Speisen mittags, 5 abends, je Person.
 const dishes = ['sake', 'maguro', 'ebi', 'tempura-california', 'yaki-tori', 'tekka-maki'] as const;
 ---
-<section id="ablauf" class="ablauf" aria-labelledby="ablauf-title">
+<section id="ablauf" class="ablauf fullh" aria-labelledby="ablauf-title">
   <div class="wrap">
     <div class="head">
       <div>
@@ -63,9 +63,9 @@ const dishes = ['sake', 'maguro', 'ebi', 'tempura-california', 'yaki-tori', 'tek
 </section>
 
 <style>
-  .ablauf { position: relative; padding-block: var(--space-section); background: #0a0d0c; overflow: clip; }
-  .head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-block-end: clamp(2.5rem, 5vw, 4rem); }
-  .head > div:first-child { display: grid; gap: 0.75rem; max-inline-size: 40rem; }
+  .ablauf { position: relative; background: #0a0d0c; overflow: clip; }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-block-end: clamp(1.5rem, 4.5svh, 3.5rem); }
+  .head > div:first-child { display: grid; gap: 0.75rem; max-inline-size: 60rem; }
   .stamp { inline-size: clamp(5.5rem, 12vw, 9rem); flex: none; animation: turn 40s linear infinite; }
   @keyframes turn { to { rotate: 360deg; } }
 
@@ -75,20 +75,20 @@ const dishes = ['sake', 'maguro', 'ebi', 'tempura-california', 'yaki-tori', 'tek
     display: grid;
     gap: 0.6rem;
     align-content: start;
-    padding: 1.5rem;
+    padding: clamp(1.1rem, 2.2svh, 1.5rem);
     border: 1px solid var(--border);
     border-radius: var(--r3);
     background: #11161a;
     transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
   }
   .step:hover { border-color: var(--coral-soft); transform: translateY(-4px); }
-  .vis { min-inline-size: 0; inline-size: 100%; display: grid; place-items: center; aspect-ratio: 16 / 10; margin-block-end: 0.75rem; border-radius: var(--r2); background: #1a2123; overflow: clip; }
+  .vis { min-inline-size: 0; inline-size: 100%; display: grid; place-items: center; aspect-ratio: 16 / 10; max-block-size: 27svh; margin-block-end: 0.75rem; border-radius: var(--r2); background: #1a2123; overflow: clip; }
   .n {
-    position: absolute; inset-block-start: calc(1.5rem + 0.75rem); inset-inline-start: 2.2rem;
+    position: absolute; inset-block-start: calc(clamp(1.1rem, 2.2svh, 1.5rem) + 0.75rem); inset-inline-start: calc(clamp(1.1rem, 2.2svh, 1.5rem) + 0.75rem);
     display: grid; place-items: center; inline-size: 2.6rem; block-size: 2.6rem; border-radius: 50%;
     background: var(--brand-red); font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 1.1rem;
   }
-  .step h3 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 0; line-height: 1.1; }
+  .step h3 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: var(--fs-h3); letter-spacing: 0; line-height: 1.1; }
 
   .ticket { display: grid; gap: 0.2rem; padding: 1rem 1.4rem; border-radius: var(--r2); background: var(--paper); color: var(--ink); rotate: -4deg; box-shadow: 0 14px 24px -12px #000; border-inline-start: 6px solid var(--brand-red); }
   .t1 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.1rem; }

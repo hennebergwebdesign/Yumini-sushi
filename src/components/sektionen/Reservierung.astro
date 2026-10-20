@@ -5,7 +5,7 @@ import { fotos } from '../../lib/bilder';
 
 const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
 ---
-<section id="reservieren" class="res" aria-labelledby="res-title" style={`--bg:url(${bg.src})`}>
+<section id="reservieren" class="res fullh" aria-labelledby="res-title" style={`--bg:url(${bg.src})`}>
   <div class="wrap">
     <div class="head">
       <p class="eyebrow">Online reservieren</p>
@@ -27,7 +27,6 @@ const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'web
 <style>
   .res {
     position: relative;
-    padding-block: clamp(3.5rem, 7vw, 6rem);
     background: var(--black) var(--bg) center / cover no-repeat;
     isolation: isolate;
   }
@@ -43,8 +42,9 @@ const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'web
     gap: 0.75rem;
     justify-items: center;
     text-align: center;
-    margin-block-end: clamp(2rem, 4vw, 3rem);
+    margin-block-end: clamp(1rem, 3svh, 2.25rem);
   }
+  .head .h2 { font-size: min(var(--fs-h2), 5.4svh); }
   .device {
     display: grid;
     justify-items: center;
@@ -52,10 +52,14 @@ const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'web
   .tablet {
     position: relative;
     inline-size: min(100%, 64rem);
+    animation: schweben 9s ease-in-out infinite;
     padding: clamp(0.7rem, 1.6vw, 1.3rem);
     border-radius: clamp(1.25rem, 3vw, 2.25rem);
     background: #1a201e;
     box-shadow: 0 0 0 2px #2f3834, 0 40px 80px -30px #000;
+  }
+  @keyframes schweben {
+    50% { translate: 0 -0.4rem; }
   }
   .cam {
     position: absolute;
@@ -87,6 +91,7 @@ const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'web
       padding: 0;
       background: none;
       box-shadow: none;
+      animation: none;
     }
     .cam,
     .btn {

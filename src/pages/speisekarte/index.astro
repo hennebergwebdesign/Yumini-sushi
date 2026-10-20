@@ -50,11 +50,11 @@ const mitZahl = standorte.map((s) => ({ s, n: karte(s.id).length, d: karte(s.id)
 </Base>
 
 <style>
-  .kopf { padding-block: 9rem 3rem; background: var(--black); }
+  .kopf { padding-block: calc(var(--kopf) + 2rem) 3rem; background: var(--black); }
   .kopf h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); margin-block: 0.6rem 1.2rem; }
   .orte { padding-block: 1rem 3rem; background: var(--black); }
-  .liste { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
-  .liste a { position: relative; display: grid; grid-template-columns: 5rem 1fr auto; gap: 1rem; align-items: center; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--r3); text-decoration: none; background: #0a0d0c; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease); }
+  .liste { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); }
+  .liste a { position: relative; display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--r3); text-decoration: none; background: #0a0d0c; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease); }
   .liste a:hover { border-color: var(--coral-soft); background: #11161a; transform: translateY(-3px); }
   .liste :global(img) { inline-size: 100%; block-size: auto; filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.5)); }
   .t { display: grid; gap: 0.15rem; }

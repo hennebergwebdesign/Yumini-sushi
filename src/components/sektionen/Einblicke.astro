@@ -5,7 +5,7 @@ import { fotos, kategorien, raeume } from '../../lib/bilder';
 // Gäste und Team gibt es nie als Stockfoto (docs/plan.md, Abschnitt 12).
 const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp' });
 ---
-<section class="einblicke" aria-labelledby="einblicke-title">
+<section class="einblicke fullh" aria-labelledby="einblicke-title">
   <div class="wrap">
     <p class="eyebrow">Einblicke</p>
     <h2 id="einblicke-title" class="mega" style={`--fill:url(${fill.src})`}>Yumini</h2>
@@ -22,14 +22,14 @@ const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp
 </section>
 
 <style>
-  .einblicke { padding-block: var(--space-section); background: var(--black); overflow: clip; }
+  .einblicke { background: var(--black); overflow: clip; }
   .eyebrow { margin-block-end: 0.5rem; }
   .mega {
     font-family: var(--display);
     font-weight: 900;
     font-stretch: 125%;
     text-transform: uppercase;
-    font-size: clamp(3.4rem, 16.4vw, 15rem);
+    font-size: min(16.4vw, 27svh, 15rem);
     line-height: 0.86;
     letter-spacing: -0.02em;
     color: var(--coral-soft);
@@ -38,8 +38,8 @@ const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp
   @supports (-webkit-background-clip: text) or (background-clip: text) {
     .mega { color: transparent; background: var(--fill) center 64% / 140% no-repeat; -webkit-background-clip: text; background-clip: text; -webkit-text-stroke: 1px rgb(255 255 255 / 0.28); }
   }
-  .lead { margin-block: 0.75rem 2.5rem; }
-  .mosaik { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(9rem, 28vw, 15rem); }
+  .lead { margin-block: 0.5rem clamp(1rem, 3svh, 2.5rem); max-inline-size: none; }
+  .mosaik { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(8rem, 24svh, 16rem); }
   .tile { position: relative; overflow: clip; border-radius: var(--r3); background: #11161a; }
   .tile :global(img) { inline-size: 100%; block-size: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
   .tile:hover :global(img) { transform: scale(1.05); }

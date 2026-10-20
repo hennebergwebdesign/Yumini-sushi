@@ -67,13 +67,14 @@ const orbit = [
     min-block-size: 100svh;
     display: grid;
     align-items: center;
-    padding-block: 7.5rem 3rem;
+    padding-block: var(--kopf) clamp(1.5rem, 4svh, 3rem);
     overflow: clip;
     background: var(--black);
   }
   .grid {
     display: grid;
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 4svh, 3rem);
     align-items: center;
   }
   .copy {
@@ -88,7 +89,7 @@ const orbit = [
     gap: 0.9rem;
   }
   .kicker {
-    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-size: var(--fs-lead);
     font-weight: 300;
     letter-spacing: 0;
   }
@@ -97,10 +98,10 @@ const orbit = [
     font-weight: 500;
   }
   .big {
-    font-size: clamp(2.6rem, 5.4vw, 4.9rem);
+    font-size: clamp(2.4rem, min(1rem + 4.6vw, 11svh), 5rem);
   }
   .lead {
-    max-inline-size: 30rem;
+    max-inline-size: 32rem;
   }
   .actions {
     display: flex;
@@ -158,9 +159,11 @@ const orbit = [
   /* Drehteller: das Brett dreht sich langsam, kleine Schalen kreisen darum, jede bleibt aufrecht */
   .turn {
     position: relative;
-    inline-size: min(88vw, 34rem);
+    inline-size: min(62vw, 34rem, 40svh);
     aspect-ratio: 1;
     margin-inline: auto;
+    margin-block: clamp(1.5rem, 5vw, 2.5rem);
+    order: -1;
   }
   .ring {
     position: absolute;
@@ -212,18 +215,22 @@ const orbit = [
   @keyframes turn { to { rotate: 360deg; } }
   @keyframes untwist { to { rotate: calc(var(--i) * -72deg + 360deg); } }
 
-  @media (min-width: 62rem) {
+  @media (min-width: 62rem), (orientation: landscape) and (max-height: 34rem) and (min-width: 36rem) {
     .grid {
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     }
     .turn {
-      inline-size: min(40vw, 38rem);
+      order: 0;
+      margin-block: 0;
+      inline-size: min(40vw, 38rem, 62svh);
     }
   }
+  @media (orientation: landscape) and (max-height: 34rem) {
+    .hero { padding-block: 4.5rem 1rem; }
+    .lead { display: none; }
+    .big { font-size: clamp(1.8rem, 11svh, 3rem); }
+  }
   @media (max-width: 52rem) {
-    .hero {
-      padding-block: 7rem 3rem;
-    }
     .trust {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -231,15 +238,25 @@ const orbit = [
     }
     .widget {
       flex-direction: column;
-      gap: 0.3rem;
-      padding: 0.6rem 0.3rem;
+      gap: 0.2rem;
+      padding: 0.45rem 0.3rem;
       border-radius: var(--r3);
       text-align: center;
     }
+    .logo { inline-size: 1.6rem; block-size: 1.6rem; }
+    .logo img { inline-size: 0.95rem; block-size: 0.95rem; }
     .meta { justify-items: center; }
     .val { justify-items: center; }
+    .copy { gap: 1rem; }
+    .actions { flex-wrap: nowrap; }
     .actions :global(.btn) {
-      flex: 1 1 100%;
+      flex: 1 1 0;
+      min-inline-size: 0;
+      padding-inline: 0.5rem;
+      white-space: normal;
+      text-align: center;
+      font-size: 0.9375rem;
+      min-block-size: 3.25rem;
     }
   }
 </style>

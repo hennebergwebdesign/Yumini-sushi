@@ -1,74 +1,158 @@
 ---
 import Button from '../ui/Button.astro';
+import Sterne from '../ui/Sterne.astro';
 import { standorte } from '../../lib/standorte';
-// Keine Zitate erfunden. Die Stimmen kommen später serverseitig aus Google Places, je Standort mit Stand.
+import { bewertungen, komma } from '../../lib/bewertungen';
+import daten from '../../data/google-bewertungen.json';
+
+// Positive Google Bewertungen aller Standorte, kombiniert in einem durchlaufenden Band.
+// Es stehen nur echte Stimmen im Band (data/google-bewertungen.json). Standorte ohne Stimme zeigen einen sichtbaren Platzhalter.
+const google = bewertungen.find((b) => b.id === 'google')!;
+const name = (id: string) => standorte.find((s) => s.id === id)?.name ?? id;
+const monat = (iso: string) => new Date(iso).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+const stimmen = daten.bewertungen as { standort: string; name?: string; sterne?: number; datum?: string; text?: string; fehlt?: boolean }[];
 ---
-<section id="bewertungen" class="section dunkel" aria-labelledby="bew-title">
+<section id="bewertungen" class="bew" aria-labelledby="bew-title">
   <div class="wrap">
     <div class="head">
-      <div>
-        <p class="eyebrow">Bewertungen</p>
+      <div class="titel">
+        <p class="eyebrow">Google Bewertungen</p>
         <h2 id="bew-title" class="h2">Stimmen unserer Gäste.</h2>
       </div>
-      <Button href="/#vertrauen" variant="outline">Alle Bewertungen</Button>
+      <a class="gesamt" href="#bewertungen" aria-label={`Google: ${komma(google.wert!)} von 5 Sternen aus ${google.anzahl!.toLocaleString('de-DE')} Bewertungen`}>
+        <span class="g"><img src={google.logo} alt="" width="28" height="28" /></span>
+        <b>{komma(google.wert!)}</b>
+        <span class="mehr"><Sterne wert={google.wert} groesse="1.05rem" /><small>{google.anzahl!.toLocaleString('de-DE')} Bewertungen, vorläufig</small></span>
+      </a>
     </div>
+  </div>
 
-    <ul class="cards">
-      {standorte.slice(0, 3).map((s) => (
-        <li class="card">
-          <p class="stars" aria-hidden="true">★★★★★</p>
-          <p class="quote"><span class="fehlt">[[FEHLT: Stimme von Google]]</span></p>
-          <p class="who muted">Gast, {s.name}, Quelle und Datum <span class="fehlt">[[FEHLT]]</span></p>
-        </li>
+  <div class="marquee" role="region" aria-label="Positive Google Bewertungen aller Standorte">
+    <div class="track">
+      {[0, 1].map((kopie) => (
+        <ul class="gruppe" aria-hidden={kopie === 1 ? 'true' : undefined}>
+          {stimmen.map((b) => (
+            <li class={`karte${b.fehlt ? ' leer' : ''}`}>
+              {b.fehlt ? (
+                <>
+                  <Sterne wert={null} groesse="1rem" />
+                  <p class="zitat"><span class="fehlt">[[FEHLT: positive Google Stimme, {name(b.standort)}]]</span></p>
+                  <p class="wer"><b>{name(b.standort)}</b><span>Quelle und Datum folgen</span></p>
+                </>
+              ) : (
+                <>
+                  <Sterne wert={b.sterne ?? 5} groesse="1rem" />
+                  <p class="zitat">„{b.text}“</p>
+                  <p class="wer"><b>{b.name}</b><span>Google, Yumini {name(b.standort)}, {monat(b.datum!)}</span></p>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
       ))}
-    </ul>
+    </div>
+  </div>
+
+  <div class="wrap fuss">
+    <p class="muted klein">Auswahl positiver Google Bewertungen. Bisher liegen nur Stimmen aus Bochum vor (Stand 2023), die übrigen Standorte folgen mit der Anbindung an Google.</p>
+    <Button href="/#reservieren" variant="outline">Tisch reservieren</Button>
   </div>
 </section>
 
 <style>
-  .dunkel {
+  .bew {
     background: #11161a;
+    padding-block: var(--space-section);
+    overflow: clip;
   }
   .head {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.5rem 3rem;
     align-items: end;
     justify-content: space-between;
-    margin-block-end: 2.5rem;
+    margin-block-end: clamp(1.75rem, 4vw, 3rem);
   }
-  .head .h2 {
-    margin-block-start: 0.75rem;
-  }
-  .cards {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  }
-  .card {
-    display: grid;
-    gap: 1rem;
-    align-content: space-between;
-    min-block-size: 13rem;
-    padding: 1.5rem;
+  .titel { display: grid; gap: 0.75rem; }
+  .gesamt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.6rem 1.25rem 0.6rem 0.6rem;
     border: 1px solid var(--border);
-    border-radius: var(--r3);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.04);
+    text-decoration: none;
+    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+  }
+  .gesamt:hover { border-color: var(--coral-soft); background: rgb(255 255 255 / 0.08); }
+  .g { display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; border-radius: 50%; background: #fff; flex: none; }
+  .g img { inline-size: 1.6rem; block-size: 1.6rem; }
+  .gesamt b { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem); line-height: 1; }
+  .mehr { display: grid; gap: 0.2rem; }
+  .mehr small { font-size: var(--fs-xs); color: var(--text-muted); }
+
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .track {
+    display: flex;
+    inline-size: max-content;
+    animation: lauf 70s linear infinite;
+  }
+  .marquee:hover .track,
+  .marquee:focus-within .track { animation-play-state: paused; }
+  .gruppe {
+    display: flex;
+    flex: none;
+    gap: 1rem;
+    padding-inline-end: 1rem;
+  }
+  @keyframes lauf { to { translate: -50% 0; } }
+
+  .karte {
+    display: grid;
+    align-content: start;
+    gap: 0.9rem;
+    inline-size: clamp(17rem, 28vw, 24rem);
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    border: 1px solid var(--border);
+    border-radius: var(--r4);
     background: #1a2123;
-    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+    transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
   }
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: var(--coral-soft);
-  }
-  .stars {
-    color: var(--coral-soft);
-    letter-spacing: 0.12em;
-  }
-  .quote {
-    font-size: 1.25rem;
+  .karte:hover { border-color: var(--coral-soft); background: #1f292c; }
+  .zitat {
+    font-size: var(--fs-base);
     font-weight: 300;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .who {
-    font-size: 0.875rem;
+  .leer .zitat { min-block-size: 3.2em; }
+  .wer { display: grid; gap: 0.1rem; margin-block-start: auto; font-size: var(--fs-sm); }
+  .wer b { font-weight: 500; }
+  .wer span { color: var(--text-muted); font-size: var(--fs-xs); }
+
+  .fuss {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .klein { font-size: var(--fs-sm); max-inline-size: 44rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation: none; }
+    .marquee { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+    .gruppe[aria-hidden='true'] { display: none; }
   }
 </style>

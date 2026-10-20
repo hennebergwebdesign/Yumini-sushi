@@ -11,7 +11,7 @@ const anlaesse = [
   { t: 'Gruppen ab 16 Personen', x: 'Die Anfrage geht direkt an den gewählten Standort, der sich bei Ihnen meldet.' },
 ];
 ---
-<section id="feiern" class="feiern" aria-labelledby="feiern-title" style={`--bg:url(${bg.src})`}>
+<section id="feiern" class="feiern fullh" aria-labelledby="feiern-title" style={`--bg:url(${bg.src})`}>
   <div class="wrap grid">
     <div class="visual" aria-hidden="true">
       <span class="disc"></span>
@@ -37,15 +37,15 @@ const anlaesse = [
 </section>
 
 <style>
-  .feiern { position: relative; isolation: isolate; padding-block: var(--space-section); background: var(--black) var(--bg) center / cover no-repeat; }
+  .feiern { position: relative; isolation: isolate; background: var(--black) var(--bg) center / cover no-repeat; }
   .feiern::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.86); }
-  .grid { display: grid; gap: 3.5rem; align-items: center; }
+  .grid { display: grid; gap: clamp(2rem, 5svh, 3.5rem); align-items: center; }
   .copy { display: grid; gap: 1.75rem; justify-items: start; }
   .list { display: grid; inline-size: 100%; }
-  .list li { padding-block: 1.1rem; border-block-start: 1px solid var(--border); transition: padding-inline-start 0.3s var(--ease); }
+  .list li { padding-block: clamp(0.8rem, 2svh, 1.1rem); border-block-start: 1px solid var(--border); transition: padding-inline-start 0.3s var(--ease); }
   .list li:last-child { border-block-end: 1px solid var(--border); }
   .list li:hover { padding-inline-start: 0.75rem; }
-  .list h3 { font-size: 1.25rem; margin-block-end: 0.2rem; }
+  .list h3 { font-size: var(--fs-h3); margin-block-end: 0.2rem; }
   .list p { color: var(--text-muted); }
   .visual { position: relative; aspect-ratio: 1; max-inline-size: 30rem; inline-size: 100%; margin-inline: auto; }
   .disc { position: absolute; inset: 6%; border-radius: 50%; border: 2px solid var(--brand-red); background: rgb(3 5 4 / 0.7); }
@@ -53,5 +53,5 @@ const anlaesse = [
   .visual :global(.a) { inline-size: 46%; inset-block-start: 20%; inset-inline-start: 12%; rotate: -10deg; }
   .visual :global(.b) { inline-size: 44%; inset-block-start: 52%; inset-inline-start: 38%; rotate: 6deg; }
   .visual :global(.c) { inline-size: 42%; inset-block-start: 14%; inset-inline-start: 48%; rotate: 12deg; }
-  @media (min-width: 62rem) { .grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
+  @media (min-width: 62rem) { .grid { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); gap: clamp(3rem, 6vw, 7rem); } .visual { max-inline-size: min(30rem, 52svh); } .list p { max-inline-size: none; } }
 </style>

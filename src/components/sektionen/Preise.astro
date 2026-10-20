@@ -5,7 +5,7 @@ import PreisPanel from '../PreisPanel.astro';
 import Button from '../ui/Button.astro';
 import { fotos } from '../../lib/bilder';
 ---
-<section id="preise" class="section paper preise" aria-labelledby="preise-title">
+<section id="preise" class="fullh paper preise" aria-labelledby="preise-title">
   <Image class="deko" src={fotos.skizze} alt="" aria-hidden="true" widths={[512]} sizes="32rem" />
   <div class="wrap">
     <div class="head">
@@ -36,7 +36,7 @@ import { fotos } from '../../lib/bilder';
   .preise { position: relative; overflow: clip; }
   .preise :global(.deko) { position: absolute; inset-block-start: 1rem; inset-inline-end: -4rem; inline-size: min(28rem, 60vw); block-size: auto; opacity: 0.5; pointer-events: none; }
   .wrap { position: relative; }
-  .head { display: grid; gap: 0.75rem; margin-block-end: 2rem; }
+  .head { display: grid; gap: 0.75rem; margin-block-end: clamp(1rem, 3.5svh, 2rem); }
   .tablist { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-end: 1.25rem; }
   .tablist label {
     display: grid; place-items: center; min-block-size: 2.75rem; padding-inline: 1.25rem;
