@@ -218,6 +218,11 @@ pfad += 'Z';
   .stage:has(.card[data-id='siegen']:hover) .dot[data-id='siegen'] .halo {
     opacity: 0.45;
   }
+  .dot.on .halo { opacity: 0.45; animation: puls 1.8s ease-in-out infinite; }
+  .lbl.on { fill: var(--text); }
+  .card.on { border-color: var(--coral-soft); background: var(--surface-2); }
+  @keyframes puls { 50% { scale: 1.35; } }
+  .halo { transform-box: fill-box; transform-origin: center; }
   .stage:has(.card[data-id='bochum']:hover) .lbl[data-id='bochum'],
   .stage:has(.card[data-id='dortmund']:hover) .lbl[data-id='dortmund'],
   .stage:has(.card[data-id='gelsenkirchen']:hover) .lbl[data-id='gelsenkirchen'],
@@ -246,3 +251,16 @@ pfad += 'Z';
     }
   }
 </style>
+
+<script>
+  // Scroll Effekt: die Karte in der Bildschirmmitte lässt ihren Punkt auf der Karte pulsieren (nur bei zweispaltigem Layout)
+  const stage = document.querySelector<HTMLElement>('#standorte .stage');
+  if (stage && 'IntersectionObserver' in window && matchMedia('(min-width: 64rem)').matches) {
+    const setze = (id: string, an: boolean) =>
+      stage.querySelectorAll(`[data-id="${id}"]`).forEach((el) => el.classList.toggle('on', an));
+    const io = new IntersectionObserver((eintraege) => {
+      for (const e of eintraege) setze((e.target as HTMLElement).dataset.id!, e.isIntersecting);
+    }, { rootMargin: '-42% 0px -42% 0px' });
+    stage.querySelectorAll('.card').forEach((c) => io.observe(c));
+  }
+</script>

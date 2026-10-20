@@ -60,8 +60,17 @@ const nav = [
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 1rem var(--gutter) 0;
+    gap: 1rem;
+    padding: clamp(0.6rem, 1.6svh, 1rem) var(--gutter) 0;
     pointer-events: none;
+    animation: kopf-ein 0.9s var(--ease) 0.1s backwards;
+  }
+  @keyframes kopf-ein {
+    from { opacity: 0; translate: 0 -1.25rem; }
+  }
+  .bar .brand :global(img) {
+    block-size: clamp(2.75rem, 3.2vw + 1.4rem, 4rem);
+    inline-size: auto;
   }
   .brand {
     pointer-events: auto;
@@ -97,7 +106,7 @@ const nav = [
     transition: color 0.2s, background-color 0.2s, transform 0.3s var(--ease);
   }
   .home:hover { color: var(--text); background: rgb(255 255 255 / 0.09); transform: translateY(-1px); }
-  .chev { margin-inline-start: 0.35rem; vertical-align: 0.05em; transition: rotate 0.25s var(--ease); }
+  .chev { display: inline-block; margin-inline-start: 0.35rem; vertical-align: 0.05em; transition: rotate 0.25s var(--ease); }
   .has-sub { position: relative; }
   .has-sub:hover .chev, .has-sub:focus-within .chev { rotate: 180deg; }
   .sub {
@@ -130,7 +139,8 @@ const nav = [
     display: block;
     padding: 0.5rem 0.85rem;
     border-radius: 999px;
-    font-size: 0.9rem;
+    font-size: clamp(0.84rem, 0.6rem + 0.35vw, 0.9375rem);
+    white-space: nowrap;
     text-decoration: none;
     color: var(--text-muted);
     transition: color 0.2s, background-color 0.2s;
@@ -147,7 +157,7 @@ const nav = [
     margin-inline-start: 0.4rem;
     border-radius: 999px;
     border: 1px solid var(--border);
-    font-size: 0.9rem;
+    font-size: clamp(0.84rem, 0.6rem + 0.35vw, 0.9375rem);
     font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
@@ -185,7 +195,10 @@ const nav = [
     position: absolute;
     inset-block-start: calc(100% + 0.5rem);
     inset-inline-end: 0;
-    inline-size: min(20rem, 86vw);
+    inline-size: min(20rem, calc(100vw - 2 * var(--gutter)));
+    max-block-size: calc(100svh - 6rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 0.75rem;
     border: 1px solid var(--border);
     border-radius: var(--r4);
@@ -205,7 +218,7 @@ const nav = [
     font-weight: 500;
   }
 
-  @media (max-width: 62rem) {
+  @media (max-width: 68rem) {
     .bar {
       grid-template-columns: 1fr auto;
     }
@@ -220,9 +233,6 @@ const nav = [
     .pill {
       padding: 0.3rem;
       justify-self: end;
-    }
-    .brand :global(img) {
-      block-size: 3rem;
     }
   }
 </style>

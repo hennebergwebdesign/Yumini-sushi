@@ -474,6 +474,9 @@ const { ort = 'bochum' } = Astro.props;
     padding-block-end: 0.2rem;
   }
   .grid :global(.day) {
+    --cell: clamp(2rem, 4.6svh, 2.9rem);
+    justify-self: center;
+    inline-size: min(100%, var(--cell));
     aspect-ratio: 1;
     border: 1px solid transparent;
     border-radius: 50%;
@@ -726,5 +729,22 @@ const { ort = 'bochum' } = Astro.props;
   }
   .tool {
     container-type: inline-size;
+  }
+  /* Niedrige Bildschirme (Laptops 720 bis 800 px): Abstände und Nebenzeilen verkleinern, damit das Tablet in die Höhe passt */
+  @media (min-width: 52rem) and (max-height: 72rem) {
+    .status { display: none; }
+    .bar { display: none; }
+    .app { padding-block: 0.9rem 1rem; gap: 0.6rem; }
+    .appbar { padding-block-end: 0.55rem; }
+    .appbar :global(.logo) { block-size: 2.25rem; inline-size: auto; }
+    .col { gap: 0.7rem; }
+    .body { gap: 0.9rem 1.75rem; }
+    h4 { margin-block-end: 0.35rem; }
+    .cal { padding: 0.5rem; }
+    .step button { inline-size: 2.6rem; block-size: 2.6rem; }
+    .step output { font-size: 1.6rem; }
+    .quick { margin-block-start: 0.35rem; }
+    .sum { padding: 0.55rem 0.8rem; }
+    .go { min-block-size: 2.9rem; }
   }
 </style>

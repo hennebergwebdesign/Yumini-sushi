@@ -37,10 +37,20 @@
   --r4: 16px;
 
   /* Raum */
-  --space-section: clamp(4.5rem, 9vw, 8rem);
+  --space-section: clamp(4rem, 9vw, 8rem);
   --space-tight: clamp(2rem, 4vw, 3.5rem);
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --max: 76rem;
+  --kopf: clamp(5rem, 9svh, 6.5rem);   /* Platz für die feste Kopfzeile oberhalb von Inhalten */
+
+  /* Schriftgrößen, alle in rem und fließend. Die Wurzelgröße wächst auf großen Bildschirmen (global.css). */
+  --fs-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+  --fs-sm: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+  --fs-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --fs-lead: clamp(1.0625rem, 0.98rem + 0.45vw, 1.3125rem);
+  --fs-h3: clamp(1.125rem, 1.02rem + 0.5vw, 1.5rem);
+  --fs-h2: clamp(1.75rem, 1.1rem + 2.9vw, 3.5rem);
+  --fs-mega: clamp(3rem, 1rem + 12.5vw, 12rem);
 
   /* Bewegung */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
