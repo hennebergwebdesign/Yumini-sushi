@@ -8,8 +8,7 @@ import PreisPanel from '../components/PreisPanel.astro';
 import { standorte, ab, routeUrl, type Standort } from '../lib/standorte';
 import { gerichte, fotos, type GerichtId } from '../lib/bilder';
 import { nummer } from '../lib/speisekarte';
-import { restaurantLd, faqLd } from '../lib/seo';
-import { SITE } from '../lib/config';
+import { restaurantLd, faqLd, breadcrumbLd } from '../lib/seo';
 
 export function getStaticPaths() {
   return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
@@ -46,21 +45,14 @@ const fragen = [
   },
 ];
 
-const titel = `Yumini ${s.name}: All you can eat Sushi & Grill ab ${ab(s)}`;
-const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}. ${mittag ? `${mittag}, ` : ''}Abend ${s.dinner.zeit}, ab ${ab(s)}. Tisch online reservieren.`;
+const titel = `Sushi All you can eat in ${s.name} | Yumini ab ${ab(s)}`;
+const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: ${mittag ? `${mittag}, ` : ''}Abend ${s.dinner.zeit}, ab ${ab(s)}. Tisch online reservieren.`;
 ---
 <Base
   title={titel}
   description={beschreibung}
   pfad={`/${s.id}/`}
-  ld={[restaurantLd(s), faqLd(fragen), {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Yumini', item: `${SITE}/` },
-      { '@type': 'ListItem', position: 2, name: s.name, item: `${SITE}/${s.id}/` },
-    ],
-  }]}
+  ld={[restaurantLd(s), faqLd(fragen), breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: `Yumini ${s.name}`, pfad: `/${s.id}/` }])]}
 >
   <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="ort-title">
     <div class="wrap grid">
@@ -80,8 +72,8 @@ const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}
           {s.ruhetag && <span>{s.ruhetag}</span>}
         </p>
       </div>
-      <div class="pic" aria-hidden="true">
-        <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[300, 600]} sizes="(max-width: 52rem) 50vw, 24rem" loading="eager" />
+      <div class="pic">
+        <Image src={gerichte[s.gericht as GerichtId]} alt={`Sushi und Grill bei Yumini ${s.name}`} title={`All you can eat in ${s.name}`} widths={[300, 600]} sizes="(max-width: 52rem) 50vw, 24rem" loading="eager" />
       </div>
     </div>
   </section>
@@ -121,7 +113,7 @@ const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}
           const nr = nummer(s.id, f.name);
           return (
             <li class="fav">
-              <Image src={gerichte[f.id]} alt={`${f.name}, ${f.text}`} widths={[240, 480]} sizes="12rem" />
+              <Image src={gerichte[f.id]} alt={`${f.name}, ${f.text}, Favorit bei Yumini ${s.name}`} title={f.name} widths={[240, 480]} sizes="12rem" />
               <h3>{f.name}</h3>
               <p class="muted">{f.text}</p>
               <p class="meta">{nr ? <span class="nr">Nr. {nr}</span> : null}{f.abends && <span class="tag">Dinner Only</span>}</p>

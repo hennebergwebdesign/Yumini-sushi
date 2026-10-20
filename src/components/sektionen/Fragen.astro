@@ -1,34 +1,12 @@
 ---
-// Nur belegte Antworten stehen im Text. Alles andere bleibt sichtbar offen.
-const fragen = [
-  {
-    q: 'Sind Getränke im Preis enthalten?',
-    a: 'Nein. All you can eat gilt für Speisen. Getränke bestellen Sie zusätzlich.',
-  },
-  {
-    q: 'Wie lange darf ich am Tisch bleiben?',
-    a: 'In Bochum, Gelsenkirchen, Lüdenscheid und Siegen haben Sie 2 Stunden Zeit, in Dortmund 2,5 Stunden. Pro Bestellrunde und Person bestellen Sie bis zu 6 Speisen mittags und 5 Speisen abends.',
-  },
-  {
-    q: 'Was kosten Kinder?',
-    a: 'Bis 3 Jahre (in Bochum und Dortmund bis 4 Jahre) essen Kinder frei. Danach zahlen sie in Bochum und Dortmund bis 12 Jahre einen Kinderpreis, in Gelsenkirchen, Lüdenscheid und Siegen bis 11 Jahre den halben Preis. Die genauen Preise stehen bei Ihrem Standort.',
-  },
-  {
-    q: 'Was gilt bei „Dinner Only“?',
-    a: 'Gerichte mit der Kennzeichnung „Dinner Only“ gibt es nur abends. Sie sind in der Speisekarte so markiert.',
-  },
-  {
-    q: 'Was passiert, wenn ich Speisen übrig lasse?',
-    a: 'Bitte bestellen Sie nur so viel, wie Sie essen können. Für Reste berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird für wohltätige Zwecke gespendet.',
-  },
-];
+import { fragen } from '../../lib/faq';
 ---
 <section id="fragen" class="section paper" aria-labelledby="fragen-title">
   <div class="wrap grid">
     <div class="intro">
       <p class="eyebrow">Fragen</p>
       <h2 id="fragen-title" class="h2">Gut zu wissen.</h2>
-      <p class="muted lead">Etwas anderes? Rufen Sie Ihren Standort an, die Nummern stehen im Fuß der Seite.</p>
+      <p class="muted lead">Etwas anderes? Rufen Sie Ihren Standort an, die Nummern stehen im Fuß der Seite. Oder <a href="/#reservieren">reservieren Sie gleich Ihren Tisch</a>.</p>
     </div>
 
     <div class="list">
@@ -39,7 +17,7 @@ const fragen = [
             <i aria-hidden="true"></i>
           </summary>
           <div class="ans">
-            {f.a ? <p class="muted">{f.a}</p> : <p><span class="fehlt">[[FEHLT: Antwort vom Inhaber]]</span></p>}
+            {f.a ? <p class="muted">{f.a}</p> : <p></p>}
           </div>
         </details>
       ))}

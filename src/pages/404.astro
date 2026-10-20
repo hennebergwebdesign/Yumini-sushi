@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import { standorte } from '../lib/standorte';
+---
+<Base title="Seite nicht gefunden | Yumini Sushi & Grill" description="Diese Seite gibt es nicht. Zur Startseite von Yumini oder gleich einen Tisch reservieren." pfad="/404/" noindex mobilLeiste={false}>
+  <section class="nf" aria-labelledby="nf-title">
+    <div class="wrap">
+      <p class="eyebrow">Fehler 404</p>
+      <h1 id="nf-title" class="display">Diese Seite<br />gibt es nicht.</h1>
+      <p class="lead muted">Vielleicht hilft einer dieser Wege weiter.</p>
+      <div class="act">
+        <Button href="/" variant="primary" size="lg">Zur Startseite</Button>
+        <Button href="/#reservieren" variant="outline" size="lg">Tisch reservieren</Button>
+        <Button href="/speisekarte/" variant="outline" size="lg">Speisekarte</Button>
+      </div>
+      <ul class="orte">
+        {standorte.map((s) => <li><a href={`/${s.id}/`}>Yumini {s.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-block-size: 100svh; display: grid; align-items: center; padding-block: 8rem 4rem; }
+  .wrap { display: grid; gap: 1.25rem; justify-items: start; }
+  .act, .orte { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+  .orte a { color: var(--text-muted); }
+</style>

@@ -27,7 +27,7 @@ const bereiche = [
     <ul class="kacheln" aria-label="Bereiche mit offenen Stellen">
       {bereiche.map((b) => (
         <li class="kachel">
-          <Image src={b.bild} alt="" widths={[320, 640]} sizes="(max-width: 52rem) 45vw, 16rem" />
+          <Image src={b.bild} alt={`${b.t} bei Yumini`} title={`Job ${b.t}`} widths={[320, 640]} sizes="(max-width: 52rem) 45vw, 16rem" />
           <span>{b.t}</span>
         </li>
       ))}

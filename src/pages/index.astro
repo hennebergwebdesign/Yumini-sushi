@@ -14,13 +14,14 @@ import KarriereBand from '../components/sektionen/KarriereBand.astro';
 import Fragen from '../components/sektionen/Fragen.astro';
 import Abschluss from '../components/sektionen/Abschluss.astro';
 import { standorte } from '../lib/standorte';
-import { restaurantLd, organisationLd, faqLd } from '../lib/seo';
+import { restaurantLd, organisationLd, faqLd, websiteLd } from '../lib/seo';
+import { fragen } from '../lib/faq';
 ---
 <Base
-  title="Yumini Japanese Sushi & Grill | All you can eat in NRW"
-  description="All you can eat Sushi und Grill mit über 100 Speisen in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Tisch online reservieren."
+  title="Sushi All you can eat in NRW | Yumini Sushi & Grill"
+  description="All you can eat Sushi & Grill in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen: über 100 Speisen per Tablet. Jetzt Tisch online reservieren."
   pfad="/"
-  ld={[organisationLd, ...standorte.map(restaurantLd)]}
+  ld={[websiteLd, organisationLd, ...standorte.map(restaurantLd), faqLd(fragen)]}
 >
   <Hero />
   <Reservierung />

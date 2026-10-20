@@ -22,7 +22,7 @@ const kacheln = [
       {kacheln.map((k) => (
         <li class="tile">
           <a href="/speisekarte/">
-            <Image src={k.bild} alt="" widths={[360, 720]} sizes="(max-width: 52rem) 90vw, 30vw" />
+            <Image src={k.bild} alt={`${k.titel} bei Yumini: ${k.text}`} title={k.titel} widths={[360, 720]} sizes="(max-width: 52rem) 90vw, 30vw" />
             <span class="cap"><b>{k.titel}</b><small>{k.text}</small></span>
           </a>
         </li>

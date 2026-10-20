@@ -29,6 +29,16 @@ import { standorte } from '../lib/standorte';
       </ul>
     </div>
 
+    <nav class="seiten" aria-label="Seiten und Speisekarten">
+      <ul>
+        <li><a href="/#reservieren">Tisch reservieren</a></li>
+        <li><a href="/speisekarte/">Sushi Speisekarte</a></li>
+        {standorte.map((s) => <li><a href={`/speisekarte/${s.id}/`}>Speisekarte {s.name}</a></li>)}
+        <li><a href="/#preise">All you can eat Preise</a></li>
+        <li><a href="/feiern/">Feiern und Gruppen</a></li>
+      </ul>
+    </nav>
+
     <div class="bottom">
       <p class="muted small">© 2026 Yumini Japanese Sushi &amp; Grill</p>
       <nav aria-label="Rechtliches">
@@ -100,12 +110,28 @@ import { standorte } from '../lib/standorte';
   .locs a:hover {
     text-decoration: underline;
   }
+  .seiten {
+    margin-block-start: 2.5rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--border);
+  }
+  .seiten ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .seiten a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9375rem;
+  }
+  .seiten a:hover { color: var(--text); text-decoration: underline; }
   .bottom {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 2rem;
     justify-content: space-between;
-    margin-block-start: 3.5rem;
+    margin-block-start: 1.5rem;
     padding-block-start: 1.5rem;
     border-block-start: 1px solid var(--border);
   }

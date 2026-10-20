@@ -1,6 +1,5 @@
 ---
 import { standorte } from '../lib/standorte';
-import Logo from './ui/Logo.astro';
 
 // Interaktive Vorschau: Kalender, Personen, Uhrzeiten und Bestätigung funktionieren im Browser.
 // Verfügbarkeit ist simuliert, es wird nichts gespeichert und keine Mail versendet (Bauphase 5).
@@ -17,12 +16,6 @@ const { ort = 'bochum' } = Astro.props;
   </div>
 
   <div class="app">
-    <header class="appbar">
-      <Logo hoehe={34} />
-      <h3>Tisch reservieren</h3>
-      <span class="hint">Vorschau mit Beispieldaten</span>
-    </header>
-
     <form class="body" novalidate onsubmit="return false">
       <div class="col">
         <section class="block" aria-labelledby="t-ort">
@@ -334,33 +327,10 @@ const { ort = 'bochum' } = Astro.props;
   .app {
     min-inline-size: 0;
     position: relative;
-    padding: 0.5rem 1.4rem 1.2rem;
+    padding: 1.4rem 1.6rem 1.5rem;
     display: grid;
     gap: 1rem;
     align-content: start;
-  }
-  .appbar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding-block-end: 0.9rem;
-    border-block-end: 1px solid var(--t-line);
-  }
-  .appbar h3 {
-    font-family: var(--display);
-    font-weight: 800;
-    font-stretch: 125%;
-    text-transform: uppercase;
-    font-size: 1.05rem;
-    margin-inline-start: auto;
-  }
-  .hint {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    border: 1px solid var(--t-line);
-    border-radius: 999px;
-    padding: 0.15rem 0.6rem;
-    white-space: nowrap;
   }
   .bar {
     justify-self: center;
@@ -378,7 +348,7 @@ const { ort = 'bochum' } = Astro.props;
   .col {
     min-inline-size: 0;
     display: grid;
-    gap: 1.1rem;
+    gap: 1.35rem;
     align-content: start;
   }
   h4 {
@@ -717,14 +687,12 @@ const { ort = 'bochum' } = Astro.props;
   }
 
   @container (max-width: 34rem) {
-    .hint { display: none; }
-    .appbar h3 { display: none; }
     .fields { grid-template-columns: 1fr; }
   }
   @container (min-width: 46rem) {
     .body {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 1.75rem;
+      gap: 1.75rem 2.25rem;
     }
   }
   .tool {
@@ -734,11 +702,9 @@ const { ort = 'bochum' } = Astro.props;
   @media (min-width: 52rem) and (max-height: 72rem) {
     .status { display: none; }
     .bar { display: none; }
-    .app { padding-block: 0.9rem 1rem; gap: 0.6rem; }
-    .appbar { padding-block-end: 0.55rem; }
-    .appbar :global(.logo) { block-size: 2.25rem; inline-size: auto; }
-    .col { gap: 0.7rem; }
-    .body { gap: 0.9rem 1.75rem; }
+    .app { padding-block: 1.1rem 1.1rem; gap: 0.6rem; }
+    .col { gap: 0.9rem; }
+    .body { gap: 0.9rem 2rem; }
     h4 { margin-block-end: 0.35rem; }
     .cal { padding: 0.5rem; }
     .step button { inline-size: 2.6rem; block-size: 2.6rem; }

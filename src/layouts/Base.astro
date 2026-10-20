@@ -13,8 +13,10 @@ interface Props {
   ld?: object[];
   mobilLeiste?: boolean;
   autoReveal?: boolean;
+  noindex?: boolean;
+  bildAlt?: string;
 }
-const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true } = Astro.props;
+const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true, noindex = false, bildAlt = 'Sushi Auswahl bei Yumini Japanese Sushi & Grill' } = Astro.props;
 const url = new URL(pfad, SITE).href;
 ---
 <!doctype html>
@@ -26,7 +28,7 @@ const url = new URL(pfad, SITE).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#030504" />
-    {INDEXIEREN ? <meta name="robots" content="index, follow, max-image-preview:large" /> : <meta name="robots" content="noindex, nofollow" />}
+    {INDEXIEREN && !noindex ? <meta name="robots" content="index, follow, max-image-preview:large" /> : <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -37,7 +39,15 @@ const url = new URL(pfad, SITE).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={`${SITE}/images/og.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={bildAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE}/images/og.jpg`} />
+    <meta name="twitter:image:alt" content={bildAlt} />
+    <meta name="format-detection" content="telephone=yes" />
     {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
   </head>
   <body>

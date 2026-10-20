@@ -41,6 +41,11 @@ export function restaurantLd(s: Standort) {
     openingHoursSpecification: spec,
     sameAs: s.facebook ? [s.facebook] : undefined,
     parentOrganization: { '@id': `${SITE}/#organisation` },
+    potentialAction: {
+      '@type': 'ReserveAction',
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE}/${s.id}/#reservieren`, inLanguage: 'de', actionPlatform: ['http://schema.org/DesktopWebPlatform', 'http://schema.org/MobileWebPlatform'] },
+      result: { '@type': 'FoodEstablishmentReservation', name: `Tisch bei Yumini ${s.name} reservieren` },
+    },
   };
 }
 
@@ -51,6 +56,8 @@ export const organisationLd = {
   name: 'Yumini Japanese Sushi & Grill',
   url: `${SITE}/`,
   logo: `${SITE}/images/logo.svg`,
+  image: `${SITE}/images/og.jpg`,
+  slogan: 'All you can eat Sushi & Grill',
   department: standorte.map((s) => ({ '@id': `${SITE}/${s.id}/#restaurant` })),
 };
 
@@ -58,4 +65,20 @@ export const faqLd = (fragen: { q: string; a: string }[]) => ({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: fragen.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+});
+
+export const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE}/#website`,
+  url: `${SITE}/`,
+  name: 'Yumini Japanese Sushi & Grill',
+  inLanguage: 'de-DE',
+  publisher: { '@id': `${SITE}/#organisation` },
+};
+
+export const breadcrumbLd = (krumen: { name: string; pfad: string }[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: krumen.map((k, i) => ({ '@type': 'ListItem', position: i + 1, name: k.name, item: `${SITE}${k.pfad}` })),
 });

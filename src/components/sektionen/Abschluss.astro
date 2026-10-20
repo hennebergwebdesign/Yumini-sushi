@@ -13,7 +13,7 @@ const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp
     <p class="lead">Wählen Sie Ihren Standort und reservieren Sie in unter einer Minute.</p>
     <ul class="locs">
       {standorte.map((s) => (
-        <li><Button href={`/${s.id}/#reservieren`} variant="outline">{s.name}</Button></li>
+        <li><Button href={`/${s.id}/#reservieren`} variant="outline">Yumini {s.name}</Button></li>
       ))}
     </ul>
     <Button href="/#reservieren" variant="primary" size="lg">Tisch reservieren</Button>
