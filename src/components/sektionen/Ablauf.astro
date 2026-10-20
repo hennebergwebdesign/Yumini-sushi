@@ -1,176 +1,118 @@
 ---
-import { standorte } from '../../lib/standorte';
-import Button from '../ui/Button.astro';
+import { Image } from 'astro:assets';
+import Stempel from '../ui/Stempel.astro';
+import { fotos, gerichte } from '../../lib/bilder';
 
-const schritte = [
-  { n: '1', titel: 'Platz nehmen', text: 'Sie reservieren oder kommen spontan vorbei. Wir führen Sie an Ihren Tisch.' },
-  { n: '2', titel: 'Am Tablet bestellen', text: 'Pro Bestellrunde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Die nächste Runde bestellen Sie, sobald Sie bereit sind.' },
-  { n: '3', titel: 'Zwei Stunden genießen', text: 'Sushi, Grill, warme Gerichte, Suppen und Salate, so oft Sie möchten. Getränke sind nicht inklusive.' },
-];
+// Zahlen aus den Regeln der Bestandsseite: pro Bestellrunde 6 Speisen mittags, 5 abends, je Person.
+const dishes = ['sake', 'maguro', 'ebi', 'tempura-california', 'yaki-tori', 'tekka-maki'] as const;
 ---
-<section id="ablauf" class="section paper" aria-labelledby="ablauf-title">
+<section id="ablauf" class="ablauf" aria-labelledby="ablauf-title">
   <div class="wrap">
-    <div class="layout">
-      <div class="ringcol">
-        <div class="ring" aria-hidden="true">
-          <svg viewBox="0 0 220 220">
-            <circle class="track" cx="110" cy="110" r="90" />
-            <circle class="fill" cx="110" cy="110" r="90" pathLength="100" />
-          </svg>
-          <div class="mid"><b>2</b><span>Stunden</span></div>
-        </div>
-      </div>
-
-      <div class="body">
+    <div class="head">
+      <div>
         <p class="eyebrow">So funktioniert All you can eat</p>
         <h2 id="ablauf-title" class="h2">Platz nehmen, bestellen, genießen.</h2>
-        <ol class="steps">
-          {schritte.map((s) => (
-            <li>
-              <span class="n" aria-hidden="true">{s.n}</span>
-              <div>
-                <h3>{s.titel}</h3>
-                <p class="muted">{s.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <p class="small muted">In Dortmund haben Sie 2,5 Stunden Zeit.</p>
       </div>
+      <div class="stamp" aria-hidden="true"><Stempel zeichen="2" /></div>
     </div>
 
-    <div id="preise" class="prices">
-      <div class="phead">
-        <p class="eyebrow">Zeiten und Preise</p>
-        <h2 class="h3">Was kostet es bei Ihnen vor Ort?</h2>
-      </div>
-
-      <div class="tabs">
-        <div class="tablist" role="group" aria-label="Standort wählen">
-          {standorte.map((s, i) => (
-            <>
-              <input class="vh" type="radio" name="preise-standort" id={`pt-${s.id}`} checked={i === 0} />
-              <label for={`pt-${s.id}`}>{s.name}</label>
-            </>
-          ))}
-        </div>
-
-        {standorte.map((s) => (
-          <div class="panel" data-id={s.id}>
-            <div class="meals">
-              {s.lunch && (
-                <article class="meal">
-                  <h3>Mittag</h3>
-                  <p class="time">{s.lunch.zeit}</p>
-                  <p class="muted small">{s.lunch.kueche}</p>
-                  <dl>
-                    {s.lunch.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}
-                  </dl>
-                  {s.lunch.hinweis && <p class="muted small">{s.lunch.hinweis}</p>}
-                </article>
-              )}
-              <article class="meal dark">
-                <h3>Abend</h3>
-                <p class="time">{s.dinner.zeit}</p>
-                <p class="small">{s.dinner.kueche}</p>
-                <dl>
-                  {s.dinner.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}
-                </dl>
-              </article>
-              <article class="meal">
-                <h3>Kinder</h3>
-                <p class="kids">{s.kinder}</p>
-                <p class="muted small">Zeit am Tisch: {s.dauer}.</p>
-                {s.ruhetag && <p class="small"><strong>{s.ruhetag}.</strong></p>}
-                {s.feiertag && <p class="muted small">{s.feiertag}</p>}
-              </article>
-            </div>
+    <ol class="steps">
+      <li class="step">
+        <div class="vis v1" aria-hidden="true">
+          <div class="ticket">
+            <span class="t1">Tisch für 4</span>
+            <span class="t2">Fr, 19:00 Uhr</span>
+            <span class="t3"><i></i>Bochum</span>
           </div>
-        ))}
-      </div>
+        </div>
+        <span class="n" aria-hidden="true">1</span>
+        <h3>Platz nehmen</h3>
+        <p class="muted">Sie reservieren online oder kommen spontan vorbei. Wir führen Sie an Ihren Tisch.</p>
+      </li>
 
-      <div class="notes">
-        <p class="small muted"><strong>Speisen übrig gelassen?</strong> Für nicht aufgegessene Speisen berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird gespendet. Getränke sind nicht im Preis enthalten.</p>
-        <Button href="/speisekarte/" variant="outline">Speisekarte ansehen</Button>
-      </div>
-    </div>
+      <li class="step">
+        <div class="vis v2" aria-hidden="true">
+          <div class="tab">
+            <span class="tabbar"><b>Runde 1</b><em>5 von 5</em></span>
+            <ul class="tabgrid">
+              {dishes.map((d) => (<li><Image src={gerichte[d]} alt="" widths={[120, 240]} sizes="6rem" /></li>))}
+            </ul>
+          </div>
+        </div>
+        <span class="n" aria-hidden="true">2</span>
+        <h3>Am Tablet bestellen</h3>
+        <p class="muted">Pro Runde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Die nächste Runde bestellen Sie, sobald Sie bereit sind.</p>
+      </li>
+
+      <li class="step">
+        <div class="vis v3" aria-hidden="true">
+          <div class="clock">
+            <svg viewBox="0 0 220 220">
+              <circle class="track" cx="110" cy="110" r="100" />
+              <circle class="fill" cx="110" cy="110" r="100" pathLength="100" />
+            </svg>
+            <Image src={fotos.schieferRund} alt="" widths={[240, 480]} sizes="12rem" />
+          </div>
+        </div>
+        <span class="n" aria-hidden="true">3</span>
+        <h3>Zwei Stunden genießen</h3>
+        <p class="muted">Sushi, Grill, warme Gerichte, Suppen und Salate, so oft Sie möchten. In Dortmund haben Sie 2,5 Stunden. Getränke sind nicht inklusive.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
 <style>
-  .layout { display: grid; gap: 3rem; }
-  .ringcol { display: grid; place-items: start center; }
-  .ring { position: relative; inline-size: min(70vw, 20rem); aspect-ratio: 1; }
-  .ring svg { inline-size: 100%; block-size: 100%; rotate: -90deg; }
-  .track { fill: none; stroke: var(--border-ink); stroke-width: 10; }
-  .fill {
-    fill: none;
-    stroke: var(--brand-red);
-    stroke-width: 10;
-    stroke-linecap: round;
-    stroke-dasharray: 100;
-    stroke-dashoffset: 25;
+  .ablauf { position: relative; padding-block: var(--space-section); background: #0a0d0c; overflow: clip; }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-block-end: clamp(2.5rem, 5vw, 4rem); }
+  .head > div:first-child { display: grid; gap: 0.75rem; max-inline-size: 40rem; }
+  .stamp { inline-size: clamp(5.5rem, 12vw, 9rem); flex: none; animation: turn 40s linear infinite; }
+  @keyframes turn { to { rotate: 360deg; } }
+
+  .steps { display: grid; gap: 1.5rem; counter-reset: s; }
+  .step {
+    position: relative;
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r3);
+    background: #11161a;
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
   }
+  .step:hover { border-color: var(--coral-soft); transform: translateY(-4px); }
+  .vis { min-inline-size: 0; inline-size: 100%; display: grid; place-items: center; aspect-ratio: 16 / 10; margin-block-end: 0.75rem; border-radius: var(--r2); background: #1a2123; overflow: clip; }
+  .n {
+    position: absolute; inset-block-start: calc(1.5rem + 0.75rem); inset-inline-start: 2.2rem;
+    display: grid; place-items: center; inline-size: 2.6rem; block-size: 2.6rem; border-radius: 50%;
+    background: var(--brand-red); font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 1.1rem;
+  }
+  .step h3 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 0; line-height: 1.1; }
+
+  .ticket { display: grid; gap: 0.2rem; padding: 1rem 1.4rem; border-radius: var(--r2); background: var(--paper); color: var(--ink); rotate: -4deg; box-shadow: 0 14px 24px -12px #000; border-inline-start: 6px solid var(--brand-red); }
+  .t1 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.1rem; }
+  .t2 { font-size: 1rem; }
+  .t3 { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--ink-muted); }
+  .t3 i { inline-size: 0.6rem; block-size: 0.6rem; border-radius: 50%; background: var(--brand-red); }
+
+  .tab { inline-size: 74%; padding: 0.55rem; border-radius: 0.7rem; background: #05080a; border: 3px solid #2b3430; }
+  .tabbar { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 0 0.2rem 0.4rem; }
+  .tabbar em { font-style: normal; color: var(--coral-soft); }
+  .tabgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; }
+  .tabgrid li { display: grid; place-items: center; aspect-ratio: 1; border-radius: 0.4rem; background: #151c1e; }
+  .tabgrid :global(img) { inline-size: 80%; block-size: auto; }
+
+  .clock { position: relative; inline-size: 58%; aspect-ratio: 1; display: grid; place-items: center; }
+  .clock svg { position: absolute; inset: -4%; inline-size: 108%; block-size: 108%; rotate: -90deg; }
+  .clock :global(img) { inline-size: 80%; block-size: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; }
+  .track { fill: none; stroke: rgb(255 255 255 / 0.14); stroke-width: 6; }
+  .fill { fill: none; stroke: var(--brand-red); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 25; }
   @supports (animation-timeline: view()) {
-    .fill {
-      stroke-dashoffset: 100;
-      animation: fillring linear both;
-      animation-range: entry 20% cover 55%;
-    }
+    .fill { stroke-dashoffset: 100; animation: fillring linear both; animation-range: entry 30% cover 60%; }
     .fill:where(*) { animation-timeline: view(); }
   }
   @keyframes fillring { to { stroke-dashoffset: 0; } }
-  .mid { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-  .mid b { font-size: clamp(4rem, 12vw, 6rem); font-weight: 500; line-height: 0.9; }
-  .mid span { font-weight: 300; font-size: 1.25rem; }
-  .body { display: grid; gap: 1.5rem; align-content: start; }
-  .steps { display: grid; gap: 1.75rem; margin-block-start: 1rem; }
-  .steps li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; }
-  .n {
-    display: grid; place-items: center; inline-size: 3rem; block-size: 3rem; border-radius: 50%;
-    border: 1.5px solid var(--brand-red); font-weight: 500; color: var(--brand-red);
-  }
-  .steps h3 { font-size: 1.375rem; margin-block-end: 0.25rem; }
-  .small { font-size: 0.9375rem; }
 
-  .prices { margin-block-start: clamp(3.5rem, 7vw, 6rem); display: grid; gap: 1.75rem; }
-  .phead { display: grid; gap: 0.6rem; }
-  .h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
-  .tablist { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-end: 1.25rem; }
-  .tablist label {
-    display: grid; place-items: center; min-block-size: 2.75rem; padding-inline: 1.25rem;
-    border: 1px solid var(--border-ink); border-radius: 999px; background: #fff; cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-  }
-  .tablist label:hover { border-color: var(--ink); }
-  .tablist input:checked + label { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .tablist input:focus-visible + label { outline: 3px solid var(--brand-red); outline-offset: 2px; }
-  .panel { display: none; }
-  .tabs:has(#pt-bochum:checked) .panel[data-id='bochum'],
-  .tabs:has(#pt-dortmund:checked) .panel[data-id='dortmund'],
-  .tabs:has(#pt-gelsenkirchen:checked) .panel[data-id='gelsenkirchen'],
-  .tabs:has(#pt-luedenscheid:checked) .panel[data-id='luedenscheid'],
-  .tabs:has(#pt-siegen:checked) .panel[data-id='siegen'] { display: block; }
-  .meals { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
-  .meal {
-    display: grid; gap: 0.5rem; align-content: start; padding: 1.5rem;
-    border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff;
-    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
-  }
-  .meal:hover { transform: translateY(-4px); border-color: var(--brand-red); box-shadow: 0 14px 30px -18px rgb(17 21 19 / 0.4); }
-  .meal.dark { background: var(--black); color: var(--text); border-color: var(--black); }
-  .meal.dark:hover { border-color: var(--coral-soft); }
-  .meal h3 { font-size: 1.125rem; }
-  .time { font-size: 1.375rem; font-weight: 500; }
-  .meal dl { display: grid; gap: 0.5rem; margin-block-start: 0.5rem; }
-  .meal dl div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding-block-start: 0.5rem; border-block-start: 1px solid var(--border-ink); }
-  .meal.dark dl div { border-color: var(--border); }
-  .meal dt { font-size: 0.9375rem; }
-  .meal dd { font-size: 1.75rem; font-weight: 500; white-space: nowrap; }
-  .kids { font-size: 1.0625rem; }
-  .notes { display: grid; gap: 0.75rem; justify-items: start; max-inline-size: 46rem; }
-
-  @media (min-width: 62rem) {
-    .layout { grid-template-columns: 22rem 1fr; gap: 5rem; align-items: center; }
-  }
+  @media (min-width: 62rem) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>

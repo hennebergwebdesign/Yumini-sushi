@@ -11,7 +11,7 @@ const kacheln = [
   { id: 'dessert', titel: 'Dessert', text: 'Eis, Obst, kleine Süßspeisen', bild: kategorien.dessert },
 ];
 ---
-<section id="auswahl" class="section paper" aria-labelledby="auswahl-title">
+<section id="auswahl" class="section dunkel" aria-labelledby="auswahl-title">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow">Unsere Auswahl</p>
@@ -23,7 +23,6 @@ const kacheln = [
         <li class="tile">
           <a href="/speisekarte/">
             <Image src={k.bild} alt="" widths={[360, 720]} sizes="(max-width: 52rem) 90vw, 30vw" />
-            <span class="shade" aria-hidden="true"></span>
             <span class="cap"><b>{k.titel}</b><small>{k.text}</small></span>
           </a>
         </li>
@@ -41,6 +40,7 @@ const kacheln = [
 </section>
 
 <style>
+  .dunkel { background: var(--black); }
   .head { display: grid; gap: 0.75rem; margin-block-end: 2.5rem; }
   .tiles { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tile { position: relative; overflow: clip; border-radius: var(--r3); background: var(--black); }
@@ -50,8 +50,7 @@ const kacheln = [
     transition: transform 0.7s var(--ease);
   }
   .tile:hover :global(img) { transform: scale(1.07); }
-  .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgb(3 5 4 / 0.9), rgb(3 5 4 / 0.15) 60%, transparent); }
-  .cap { position: relative; display: grid; gap: 0.15rem; padding: 1rem 1.1rem 1.2rem; }
+  .cap { position: relative; display: grid; gap: 0.15rem; padding: 0.8rem 1.1rem 0.95rem; background: rgb(3 5 4 / 0.86); }
   .cap b { font-size: clamp(1.0625rem, 2vw, 1.375rem); font-weight: 500; line-height: 1.15; }
   .cap small { font-size: 0.875rem; color: rgb(255 255 255 / 0.78); }
   .menu { background: var(--black); border: 1px solid var(--black); transition: background-color 0.3s; }

@@ -1,0 +1,52 @@
+---
+import type { Standort } from '../lib/standorte';
+interface Props { s: Standort }
+const { s } = Astro.props;
+---
+<div class="meals">
+  {s.lunch && (
+    <article class="meal">
+      <h3>Mittag</h3>
+      <p class="time">{s.lunch.zeit}</p>
+      <p class="muted small">{s.lunch.kueche}</p>
+      <dl>{s.lunch.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}</dl>
+      {s.lunch.hinweis && <p class="muted small">{s.lunch.hinweis}</p>}
+    </article>
+  )}
+  <article class="meal dark">
+    <h3>Abend</h3>
+    <p class="time">{s.dinner.zeit}</p>
+    <p class="small soft">{s.dinner.kueche}</p>
+    <dl>{s.dinner.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}</dl>
+  </article>
+  <article class="meal">
+    <h3>Kinder</h3>
+    <p class="kids">{s.kinder}</p>
+    <p class="muted small">Zeit am Tisch: {s.dauer}.</p>
+    {s.ruhetag && <p class="small"><strong>{s.ruhetag}.</strong></p>}
+    {s.feiertag && <p class="muted small">{s.feiertag}</p>}
+  </article>
+</div>
+
+<style>
+  .meals { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .meal {
+    display: grid; gap: 0.5rem; align-content: start; padding: 1.5rem;
+    border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff; color: var(--ink);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .meal:hover { transform: translateY(-4px); border-color: var(--brand-red); box-shadow: 0 14px 30px -18px rgb(17 21 19 / 0.4); }
+  .meal.dark { background: var(--black); color: var(--text); border-color: var(--black); }
+  .meal.dark:hover { border-color: var(--coral-soft); }
+  .soft { color: var(--text-muted); }
+  .meal h3 { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1rem; letter-spacing: 0; }
+  .time { font-size: 1.5rem; font-weight: 500; }
+  .small { font-size: 0.9375rem; }
+  .muted { color: var(--ink-muted); }
+  .meal dl { display: grid; gap: 0.5rem; margin-block-start: 0.5rem; }
+  .meal dl div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding-block-start: 0.5rem; border-block-start: 1px solid var(--border-ink); }
+  .meal.dark dl div { border-color: var(--border); }
+  .meal dt { font-size: 0.9375rem; }
+  .meal dd { font-size: 1.75rem; font-weight: 500; white-space: nowrap; }
+  .kids { font-size: 1.0625rem; }
+</style>

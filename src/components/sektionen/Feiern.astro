@@ -1,21 +1,22 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Button from '../ui/Button.astro';
-import { gerichte } from '../../lib/bilder';
+import { fotos, gerichte } from '../../lib/bilder';
+
+const bg = await getImage({ src: fotos.sushiPlatte, width: 1800, format: 'webp' });
 const anlaesse = [
   { t: 'Geburtstag', x: '' },
   { t: 'Firmenfeier', x: '' },
-  { t: 'Gruppen ab 16 Personen', x: 'Anfrage geht direkt an den gewählten Standort' },
+  { t: 'Gruppen ab 16 Personen', x: 'Die Anfrage geht direkt an den gewählten Standort.' },
 ];
 ---
-<section id="feiern" class="section dunkel" aria-labelledby="feiern-title">
+<section id="feiern" class="feiern" aria-labelledby="feiern-title" style={`--bg:url(${bg.src})`}>
   <div class="wrap grid">
     <div class="visual" aria-hidden="true">
-      <div class="disc"></div>
+      <span class="disc"></span>
       <Image class="a" src={gerichte['sake-aburi']} alt="" widths={[200, 400]} sizes="12rem" />
       <Image class="b" src={gerichte['tekka-maki']} alt="" widths={[200, 400]} sizes="14rem" />
       <Image class="c" src={gerichte['ebi-tempura']} alt="" widths={[200, 400]} sizes="12rem" />
-      <span class="fehlt cap">Foto Feier [[FEHLT]]</span>
     </div>
 
     <div class="copy">
@@ -25,7 +26,7 @@ const anlaesse = [
         {anlaesse.map((a) => (
           <li>
             <h3>{a.t}</h3>
-            <p class="muted">{a.x || <span class="fehlt">[[FEHLT: Beschreibung vom Inhaber]]</span>}</p>
+            <p>{a.x || <span class="fehlt">[[FEHLT: Beschreibung vom Inhaber]]</span>}</p>
           </li>
         ))}
       </ul>
@@ -35,70 +36,21 @@ const anlaesse = [
 </section>
 
 <style>
-  .dunkel {
-    background: var(--black);
-  }
-  .grid {
-    display: grid;
-    gap: 3.5rem;
-    align-items: center;
-  }
-  .copy {
-    display: grid;
-    gap: 1.75rem;
-    justify-items: start;
-  }
-  .list {
-    display: grid;
-    inline-size: 100%;
-  }
-  .list li {
-    padding-block: 1.1rem;
-    border-block-start: 1px solid var(--border);
-    transition: padding-inline-start 0.3s var(--ease);
-  }
-  .list li:last-child {
-    border-block-end: 1px solid var(--border);
-  }
-  .list li:hover {
-    padding-inline-start: 0.75rem;
-  }
-  .list h3 {
-    font-size: 1.25rem;
-    margin-block-end: 0.2rem;
-  }
-  .visual {
-    position: relative;
-    aspect-ratio: 1;
-    max-inline-size: 30rem;
-    inline-size: 100%;
-    margin-inline: auto;
-  }
-  .disc {
-    position: absolute;
-    inset: 6%;
-    border-radius: 50%;
-    border: 1.5px solid var(--coral-soft);
-    background: radial-gradient(circle, rgb(217 33 41 / 0.28), rgb(217 33 41 / 0.06) 70%);
-  }
-  .visual :global(img) {
-    position: absolute;
-    block-size: auto;
-    filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.55));
-  }
+  .feiern { position: relative; isolation: isolate; padding-block: var(--space-section); background: var(--black) var(--bg) center / cover no-repeat; }
+  .feiern::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.86); }
+  .grid { display: grid; gap: 3.5rem; align-items: center; }
+  .copy { display: grid; gap: 1.75rem; justify-items: start; }
+  .list { display: grid; inline-size: 100%; }
+  .list li { padding-block: 1.1rem; border-block-start: 1px solid var(--border); transition: padding-inline-start 0.3s var(--ease); }
+  .list li:last-child { border-block-end: 1px solid var(--border); }
+  .list li:hover { padding-inline-start: 0.75rem; }
+  .list h3 { font-size: 1.25rem; margin-block-end: 0.2rem; }
+  .list p { color: var(--text-muted); }
+  .visual { position: relative; aspect-ratio: 1; max-inline-size: 30rem; inline-size: 100%; margin-inline: auto; }
+  .disc { position: absolute; inset: 6%; border-radius: 50%; border: 2px solid var(--brand-red); background: rgb(3 5 4 / 0.7); }
+  .visual :global(img) { position: absolute; block-size: auto; filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.55)); }
   .visual :global(.a) { inline-size: 46%; inset-block-start: 20%; inset-inline-start: 12%; rotate: -10deg; }
   .visual :global(.b) { inline-size: 44%; inset-block-start: 52%; inset-inline-start: 38%; rotate: 6deg; }
   .visual :global(.c) { inline-size: 42%; inset-block-start: 14%; inset-inline-start: 48%; rotate: 12deg; }
-  .cap {
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline-start: 50%;
-    translate: -50% 0;
-  }
-  @media (min-width: 62rem) {
-    .grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-    }
-  }
+  @media (min-width: 62rem) { .grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
 </style>

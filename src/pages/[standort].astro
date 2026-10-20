@@ -1,0 +1,248 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import ReservierungsTool from '../components/ReservierungsTool.astro';
+import PreisPanel from '../components/PreisPanel.astro';
+import { standorte, ab, routeUrl, type Standort } from '../lib/standorte';
+import { gerichte, fotos, type GerichtId } from '../lib/bilder';
+import { nummer } from '../lib/speisekarte';
+import { restaurantLd, faqLd } from '../lib/seo';
+import { SITE } from '../lib/config';
+
+export function getStaticPaths() {
+  return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
+}
+const { s } = Astro.props as { s: Standort };
+const andere = standorte.filter((x) => x.id !== s.id);
+const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
+
+// Favoriten mit den Nummern dieses Standorts (die Nummern unterscheiden sich je Standort)
+const favoriten: { id: GerichtId; name: string; text: string; abends?: boolean }[] = [
+  { id: 'sake', name: 'Sake', text: 'Lachs' },
+  { id: 'maguro', name: 'Maguro', text: 'Thunfisch' },
+  { id: 'ebi', name: 'Ebi', text: 'Garnelen' },
+  { id: 'unagi', name: 'Unagi', text: 'Aal gegrillt', abends: true },
+  { id: 'ikura', name: 'Ikura', text: 'Lachskaviar', abends: true },
+  { id: 'yaki-tori', name: 'Yaki Tori', text: 'gegrillte Hähnchenspieße' },
+];
+
+const mittag = s.lunch ? `Mittag ${s.lunch.zeit}` : null;
+const wochentage = s.ruhetag ? 'Dienstag bis Sonntag' : 'täglich';
+const fragen = [
+  {
+    q: `Wie lange darf ich in Yumini ${s.name} am Tisch bleiben?`,
+    a: `In Yumini ${s.name} haben Sie ${s.dauer} Zeit. Pro Bestellrunde und Person bestellen Sie bis zu 6 Speisen mittags und 5 Speisen abends per Tablet.`,
+  },
+  {
+    q: `Wo kann ich in ${s.name} parken?`,
+    a: `${s.parken.join('. ')}${s.parken.length > 1 ? '.' : ''}`.replace(/\.\.$/, '.'),
+  },
+  { q: `Was kosten Kinder in ${s.name}?`, a: s.kinder },
+  {
+    q: `Wann hat Yumini ${s.name} geöffnet?`,
+    a: `${mittag ? `${mittag}, ` : ''}Abend ${s.dinner.zeit}. ${s.ruhetag ? s.ruhetag + '. ' : ''}${s.lunch?.hinweis ?? ''}`.trim(),
+  },
+];
+
+const titel = `Yumini ${s.name}: All you can eat Sushi & Grill ab ${ab(s)}`;
+const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}. ${mittag ? `${mittag}, ` : ''}Abend ${s.dinner.zeit}, ab ${ab(s)}. Tisch online reservieren.`;
+---
+<Base
+  title={titel}
+  description={beschreibung}
+  pfad={`/${s.id}/`}
+  ld={[restaurantLd(s), faqLd(fragen), {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Yumini', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: s.name, item: `${SITE}/${s.id}/` },
+    ],
+  }]}
+>
+  <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="ort-title">
+    <div class="wrap grid">
+      <div class="copy">
+        <p class="eyebrow">Willkommen bei</p>
+        <h1 id="ort-title">
+          <span class="big display">Yumini<br />{s.name}</span>
+          <span class="sub">Japanese Sushi <span class="amp">&amp;</span> Grill</span>
+        </h1>
+        <address>{s.strasse}, {s.ort}{s.parkHinweis && <> · {s.parkHinweis}</>}</address>
+        <div class="actions">
+          <Button href="#reservieren" variant="primary" size="lg">Tisch reservieren</Button>
+          <Button href={routeUrl(s)} variant="outline" size="lg">Route planen</Button>
+        </div>
+        <p class="facts">
+          {mittag && <span>{mittag}</span>}<span>Abend {s.dinner.zeit}</span><span>ab {ab(s)}</span>
+          {s.ruhetag && <span>{s.ruhetag}</span>}
+        </p>
+      </div>
+      <div class="pic" aria-hidden="true">
+        <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[300, 600]} sizes="(max-width: 52rem) 50vw, 24rem" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <section id="reservieren" class="res" aria-labelledby="res-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Online reservieren</p>
+        <h2 id="res-title" class="h2">Tisch in {s.name} reservieren</h2>
+      </div>
+      <div class="tablet"><div class="screen"><ReservierungsTool ort={s.id} /></div></div>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="preise-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Zeiten und Preise</p>
+        <h2 id="preise-title" class="h2">All you can eat in {s.name}</h2>
+        <p class="muted lead">Pro Bestellrunde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Getränke sind nicht inklusive. Nicht aufgegessene Speisen berechnen wir mit 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht, der Erlös wird gespendet.</p>
+      </div>
+      <PreisPanel s={s} />
+    </div>
+  </section>
+
+  <section class="karte" aria-labelledby="karte-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Speisekarte {s.name}</p>
+        <h2 id="karte-title" class="h2">Die Nummern am Tablet in {s.name}</h2>
+        <p class="lead muted">Die Gerichte sind überall gleich, die Nummern unterscheiden sich je Standort. So finden Sie unsere beliebtesten Speisen in {s.name}.</p>
+      </div>
+      <ul class="favs">
+        {favoriten.map((f) => {
+          const nr = nummer(s.id, f.name);
+          return (
+            <li class="fav">
+              <Image src={gerichte[f.id]} alt={`${f.name}, ${f.text}`} widths={[240, 480]} sizes="12rem" />
+              <h3>{f.name}</h3>
+              <p class="muted">{f.text}</p>
+              <p class="meta">{nr ? <span class="nr">Nr. {nr}</span> : null}{f.abends && <span class="tag">Dinner Only</span>}</p>
+            </li>
+          );
+        })}
+      </ul>
+      <Button href={`/speisekarte/${s.id}/`} variant="primary">Alle Gerichte in {s.name} mit Foto</Button>
+    </div>
+  </section>
+
+  <section class="anfahrt" aria-labelledby="anfahrt-title">
+    <div class="wrap grid2">
+      <div class="shead">
+        <p class="eyebrow">Anfahrt und Kontakt</p>
+        <h2 id="anfahrt-title" class="h2">So finden Sie uns in {s.name}</h2>
+        <Button href={routeUrl(s)} variant="primary">Route in Google Maps</Button>
+      </div>
+      <dl class="kontakt">
+        <div><dt>Adresse</dt><dd>{s.strasse}<br />{s.ort}</dd></div>
+        <div><dt>Telefon</dt><dd><a href={`tel:${s.tel}`}>{s.telefon}</a></dd></div>
+        <div><dt>E-Mail</dt><dd><a href={`mailto:${s.mail}`}>{s.mail}</a></dd></div>
+        <div><dt>Parken</dt><dd>{s.parken.map((p) => <>{p}<br /></>)}</dd></div>
+        {s.facebook && <div><dt>Facebook</dt><dd><a href={s.facebook} rel="noopener">Yumini {s.name}</a></dd></div>}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="fragen-title">
+    <div class="wrap fgrid">
+      <div class="shead">
+        <p class="eyebrow">Fragen zu {s.name}</p>
+        <h2 id="fragen-title" class="h2">Gut zu wissen</h2>
+      </div>
+      <div class="list">
+        {fragen.map((f, i) => (
+          <details name="faq" open={i === 0}>
+            <summary><span>{f.q}</span><i aria-hidden="true"></i></summary>
+            <div class="ans"><p class="muted">{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mehr" aria-labelledby="mehr-title">
+    <div class="wrap">
+      <h2 id="mehr-title" class="h2">Auch in Ihrer Nähe</h2>
+      <ul class="orte">
+        {andere.map((o) => (
+          <li><a href={`/${o.id}/`}><b>{o.name}</b><span>{o.strasse}</span><span class="pfeil" aria-hidden="true">→</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; isolation: isolate; min-block-size: 82svh; display: grid; align-items: center; padding-block: 9rem 4rem; background: var(--black) var(--bg) center / cover no-repeat; overflow: clip; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.82); }
+  .grid { display: grid; gap: 2rem; align-items: center; }
+  .copy { display: grid; gap: 1.25rem; max-inline-size: 52rem; }
+  h1 { display: grid; gap: 0.8rem; }
+  .big { font-size: clamp(2.3rem, 5.2vw, 4.6rem); overflow-wrap: anywhere; }
+  .sub { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 300; }
+  .amp { color: var(--coral-soft); font-weight: 500; }
+  address { font-style: normal; color: var(--text-muted); font-size: 1.0625rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .facts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .facts span { padding: 0.25rem 0.85rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.875rem; }
+  .pic { display: none; justify-self: center; position: relative; inline-size: 20rem; aspect-ratio: 1; place-items: center; }
+  .pic::before { content: ''; position: absolute; inset: 4%; border-radius: 50%; border: 2px solid var(--brand-red); }
+  .pic :global(img) { position: relative; inline-size: 72%; block-size: auto; filter: drop-shadow(0 20px 24px rgb(0 0 0 / 0.6)); animation: float 7s ease-in-out infinite; }
+  @keyframes float { 50% { translate: 0 -10px; } }
+
+  .res { padding-block: clamp(3rem, 6vw, 5rem); background: #0a0d0c; }
+  .head { display: grid; gap: 0.6rem; justify-items: center; text-align: center; margin-block-end: 2rem; }
+  .tablet { inline-size: min(100%, 64rem); margin-inline: auto; padding: clamp(0.7rem, 1.6vw, 1.3rem); border-radius: clamp(1.25rem, 3vw, 2.25rem); background: #1a201e; box-shadow: 0 0 0 2px #2f3834, 0 40px 80px -30px #000; }
+  .screen { overflow: clip; border-radius: clamp(0.6rem, 1.4vw, 1.1rem); background: #0a0d0c; }
+  @media (max-width: 52rem) { .tablet { padding: 0; background: none; box-shadow: none; } .screen { border-radius: var(--r4); border: 1px solid var(--border); } }
+
+  .shead { display: grid; gap: 0.8rem; justify-items: start; margin-block-end: 2rem; }
+  .karte { padding-block: var(--space-section); background: var(--black); }
+  .favs { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block-end: 2rem; }
+  .fav { display: grid; gap: 0.2rem; justify-items: start; padding: 1rem; border: 1px solid var(--border); border-radius: var(--r3); background: #11161a; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
+  .fav:hover { transform: translateY(-5px); border-color: var(--coral-soft); }
+  .fav :global(img) { inline-size: 80%; block-size: auto; margin-block-end: 0.5rem; filter: drop-shadow(0 12px 14px rgb(0 0 0 / 0.55)); }
+  .fav h3 { font-size: 1.1875rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-block-start: 0.4rem; }
+  .nr { padding: 0.1rem 0.7rem; border-radius: 999px; background: var(--brand-red); font-size: 0.8125rem; font-weight: 600; }
+  .tag { padding: 0.1rem 0.6rem; border-radius: 999px; border: 1px solid var(--coral-soft); color: var(--coral-soft); font-size: 0.75rem; font-weight: 500; }
+  @media (min-width: 52rem) { .favs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 72rem) { .favs { grid-template-columns: repeat(6, minmax(0, 1fr)); } .pic { display: grid; } .grid { grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; } }
+
+  .anfahrt { padding-block: var(--space-section); background: #11161a; }
+  .grid2 { display: grid; gap: 2.5rem; }
+  .kontakt { display: grid; gap: 0; }
+  .kontakt div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-block: 1rem; border-block-start: 1px solid var(--border); }
+  .kontakt div:last-child { border-block-end: 1px solid var(--border); }
+  .kontakt dt { color: var(--text-muted); }
+  .kontakt a { text-decoration: none; }
+  .kontakt a:hover { text-decoration: underline; }
+  @media (min-width: 62rem) { .grid2 { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+
+  .fgrid { display: grid; gap: 2.5rem; }
+  details { border-block-start: 1px solid var(--border-ink); }
+  details:last-child { border-block-end: 1px solid var(--border-ink); }
+  summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.25rem; font-size: 1.1875rem; font-weight: 500; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--brand-red); }
+  summary i { position: relative; flex: none; inline-size: 1.75rem; block-size: 1.75rem; border-radius: 50%; border: 1.5px solid currentColor; }
+  summary i::before, summary i::after { content: ''; position: absolute; inset: 50% auto auto 50%; inline-size: 0.7rem; block-size: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate 0.3s var(--ease); }
+  summary i::after { rotate: 90deg; }
+  details[open] summary i::after { rotate: 0deg; }
+  .ans { padding-block-end: 1.5rem; max-inline-size: 44rem; }
+  @media (min-width: 62rem) { .fgrid { grid-template-columns: 20rem 1fr; gap: 6rem; } .fgrid .shead { position: sticky; inset-block-start: 7rem; align-self: start; } }
+
+  .mehr { padding-block: clamp(3.5rem, 7vw, 6rem); background: var(--black); }
+  .mehr h2 { margin-block-end: 1.75rem; }
+  .orte { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+  .orte a { position: relative; display: grid; gap: 0.2rem; padding: 1.25rem 3rem 1.25rem 1.25rem; border: 1px solid var(--border); border-radius: var(--r3); text-decoration: none; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease); }
+  .orte a:hover { border-color: var(--coral-soft); background: #11161a; }
+  .orte b { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.1rem; }
+  .orte span { color: var(--text-muted); font-size: 0.9375rem; }
+  .orte .pfeil { position: absolute; inset-block-start: 50%; inset-inline-end: 1.25rem; translate: 0 -50%; color: var(--text); font-size: 1.4rem; transition: translate 0.3s var(--ease); }
+  .orte a:hover .pfeil { translate: 6px -50%; }
+</style>

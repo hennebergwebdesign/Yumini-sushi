@@ -2,6 +2,7 @@
 @import '@fontsource/ibm-plex-sans/latin-400.css';
 @import '@fontsource/ibm-plex-sans/latin-500.css';
 @import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource-variable/archivo/wdth.css';
 @import './tokens.css';
 
 *,
@@ -49,6 +50,16 @@ h4 {
   line-height: 1.08;
   letter-spacing: -0.02em;
   text-wrap: balance;
+}
+
+/* Überschriften in einer breiten, kräftigen Schrift nach dem Vorbild der Wortmarke */
+.display {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 0.98;
 }
 
 p {
@@ -138,7 +149,13 @@ input {
 }
 
 .h2 {
-  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 1;
+  font-size: clamp(1.75rem, 4.2vw, 3.25rem);
 }
 
 .lead {

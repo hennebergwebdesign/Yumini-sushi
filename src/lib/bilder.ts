@@ -2,6 +2,7 @@
 // Quelle: Bestandsseite yumini.de, Rechte beim Betreiber. Freigabe zur Nutzung bestätigt der Inhaber (20.10.2026).
 import sushiPlatte from '../assets/fotos/sushi-platte.jpg';
 import nigiriSchiefer from '../assets/fotos/nigiri-schiefer.jpg';
+import schieferRund from '../assets/fotos/schiefer-rund.jpg';
 import skizze from '../assets/fotos/skizze.png';
 import sushi from '../assets/kategorien/sushi.jpg';
 import grill from '../assets/kategorien/grill.jpg';
@@ -20,7 +21,7 @@ import tekkaMaki from '../assets/gerichte/tekka-maki.png';
 import gruenerTeeEis from '../assets/gerichte/gruener-tee-eis.png';
 import ebiTempura from '../assets/gerichte/ebi-tempura.png';
 
-export const fotos = { sushiPlatte, nigiriSchiefer, skizze };
+export const fotos = { sushiPlatte, nigiriSchiefer, schieferRund, skizze };
 export const kategorien = { sushi, grill, salad, dinner, dessert };
 export const gerichte = {
   sake, maguro, ebi, unagi, 'sake-aburi': sakeAburi, ikura,

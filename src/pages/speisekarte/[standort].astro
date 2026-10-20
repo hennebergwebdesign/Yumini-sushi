@@ -1,0 +1,138 @@
+---
+import Base from '../../layouts/Base.astro';
+import { standorte, type Standort } from '../../lib/standorte';
+import { karte, kategorien, bildUrl } from '../../lib/speisekarte';
+import { SITE } from '../../lib/config';
+
+export function getStaticPaths() {
+  return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
+}
+const { s } = Astro.props as { s: Standort };
+const alle = karte(s.id);
+const anzahl = (k: string) => alle.filter((g) => g.kat === k).length;
+const abends = alle.filter((g) => g.abends).length;
+const filter = [
+  { id: 'alle', label: 'Alle', n: alle.length },
+  { id: 'dinner', label: 'Dinner Only', n: abends },
+  ...kategorien.map((k) => ({ id: k.id, label: k.label, n: anzahl(k.id) })).filter((k) => k.n > 0),
+];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: `Speisekarte Yumini ${s.name}`,
+  url: `${SITE}/speisekarte/${s.id}/`,
+  inLanguage: 'de',
+  hasMenuSection: kategorien
+    .filter((k) => anzahl(k.id) > 0)
+    .map((k) => ({
+      '@type': 'MenuSection',
+      name: k.label,
+      hasMenuItem: alle.filter((g) => g.kat === k.id).map((g) => ({ '@type': 'MenuItem', name: g.name, description: g.desc || undefined })),
+    })),
+};
+---
+<Base
+  title={`Speisekarte Yumini ${s.name}: ${alle.length} Gerichte mit Foto und Nummer`}
+  description={`Alle ${alle.length} Gerichte von Yumini ${s.name} mit Foto, Nummer und Beschreibung. Sushi, Teppanyaki, Suppen, Salate und Dessert im All you can eat, ${abends} Gerichte nur abends.`}
+  pfad={`/speisekarte/${s.id}/`}
+  ld={[ld]}
+>
+  <section class="kopf" aria-labelledby="k-title">
+    <div class="wrap">
+      <p class="eyebrow"><a href="/speisekarte/">Speisekarte</a></p>
+      <h1 id="k-title" class="display">{s.name}</h1>
+      <p class="lead">{alle.length} Gerichte mit Foto. Die Nummern gelten für das Tablet in Yumini {s.name}. Pro Runde und Person bis zu 6 Speisen mittags und 5 Speisen abends, Zeit am Tisch: {s.dauer}. Getränke sind nicht inklusive.</p>
+      <ul class="orte" aria-label="Standort wechseln">
+        {standorte.map((o) => (<li><a href={`/speisekarte/${o.id}/`} aria-current={o.id === s.id ? 'page' : undefined}>{o.name}</a></li>))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="karte" aria-label={`Gerichte in ${s.name}`}>
+    <div class="wrap">
+      <div class="werkzeuge">
+        <div class="filter" role="radiogroup" aria-label="Filter">
+          {filter.map((f, i) => (
+            <>
+              <input class="vh" type="radio" name="f" id={`f-${f.id}`} checked={i === 0} />
+              <label for={`f-${f.id}`}>{f.label}<small>{f.n}</small></label>
+            </>
+          ))}
+        </div>
+        <label class="schalter">
+          <input class="vh" type="checkbox" id="preise" />
+          <span class="sw" aria-hidden="true"></span>
+          Außer Haus, Preise anzeigen
+        </label>
+      </div>
+
+      <ul class="grid">
+        {alle.map((g) => {
+          const u = bildUrl(g);
+          return (
+            <li class="card" data-kat={g.kat} data-d={g.abends ? '1' : '0'}>
+              <div class="pic">
+                {u ? <img src={u} alt={g.name} width="420" height="420" loading="lazy" decoding="async" /> : <span class="leer" aria-hidden="true"></span>}
+                <span class="nr">{g.nr}</span>
+                {g.abends && <span class="tag">Dinner Only</span>}
+              </div>
+              <h2>{g.name}</h2>
+              {g.desc && <p class="desc">{g.desc}</p>}
+              <p class="preis">{g.preis.replace('.', ',')} €</p>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .kopf { padding-block: 9rem 2rem; background: var(--black); }
+  .kopf h1 { font-size: clamp(2.8rem, 8vw, 6.5rem); margin-block: 0.5rem 1rem; }
+  .eyebrow a { text-decoration: none; }
+  .orte { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-start: 1.5rem; }
+  .orte a { display: grid; place-items: center; min-block-size: 2.5rem; padding-inline: 1.1rem; border: 1px solid var(--border); border-radius: 999px; text-decoration: none; font-size: 0.9375rem; transition: border-color 0.2s, background-color 0.2s; }
+  .orte a:hover { border-color: var(--text); }
+  .orte a[aria-current='page'] { background: var(--text); color: var(--black); border-color: var(--text); font-weight: 500; }
+
+  .karte { padding-block: 1rem 5rem; background: var(--black); }
+  .werkzeuge { position: sticky; inset-block-start: 4.75rem; z-index: 20; display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; justify-content: space-between; align-items: center; padding-block: 0.8rem; margin-block-end: 1rem; background: rgb(3 5 4 / 0.94); backdrop-filter: blur(8px); border-block-end: 1px solid var(--border); }
+  .filter { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .filter label { display: inline-flex; align-items: center; gap: 0.45rem; min-block-size: 2.4rem; padding-inline: 0.95rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: border-color 0.2s, background-color 0.2s; }
+  .filter label:hover { border-color: var(--text-muted); }
+  .filter label small { color: var(--text-muted); font-size: 0.75rem; }
+  .filter input:checked + label { background: var(--text); color: var(--black); border-color: var(--text); font-weight: 500; }
+  .filter input:checked + label small { color: #4a524e; }
+  .filter input:focus-visible + label, .schalter input:focus-visible ~ .sw { outline: 3px solid var(--coral-soft); outline-offset: 2px; }
+  .schalter { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; }
+  .sw { position: relative; inline-size: 2.6rem; block-size: 1.5rem; border-radius: 999px; border: 1px solid var(--border); background: #1a2123; transition: background-color 0.2s; }
+  .sw::after { content: ''; position: absolute; inset-block-start: 2px; inset-inline-start: 2px; inline-size: 1.15rem; block-size: 1.15rem; border-radius: 50%; background: var(--text); transition: translate 0.25s var(--ease); }
+  #preise:checked ~ .sw { background: var(--brand-red); border-color: var(--brand-red); }
+  #preise:checked ~ .sw::after { translate: 1.1rem 0; }
+
+  .grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { position: relative; display: grid; gap: 0.2rem; align-content: start; padding: 0.75rem 0.75rem 1rem; border: 1px solid var(--border); border-radius: var(--r3); background: #0a0d0c; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease); }
+  .card:hover { border-color: var(--coral-soft); background: #11161a; transform: translateY(-4px); }
+  .pic { position: relative; display: grid; place-items: center; aspect-ratio: 1; margin-block-end: 0.4rem; }
+  .pic img { inline-size: 92%; block-size: auto; max-block-size: 92%; object-fit: contain; filter: drop-shadow(0 10px 12px rgb(0 0 0 / 0.55)); transition: transform 0.5s var(--ease); }
+  .card:hover .pic img { transform: scale(1.08) rotate(-2deg); }
+  .leer { inline-size: 46%; aspect-ratio: 1; border-radius: 50%; background: rgb(217 33 41 / 0.25); }
+  .nr { position: absolute; inset-block-start: 0; inset-inline-start: 0; display: grid; place-items: center; min-inline-size: 1.9rem; block-size: 1.9rem; padding-inline: 0.45rem; border-radius: 999px; background: var(--brand-red); font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 0.72rem; }
+  .tag { position: absolute; inset-block-start: 0; inset-inline-end: 0; padding: 0.1rem 0.55rem; border-radius: 999px; border: 1px solid var(--coral-soft); background: rgb(3 5 4 / 0.85); color: var(--coral-soft); font-size: 0.68rem; font-weight: 500; }
+  .card h2 { font-size: 1rem; font-weight: 500; letter-spacing: 0; line-height: 1.2; }
+  .desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.35; }
+  .preis { display: none; margin-block-start: 0.3rem; font-weight: 500; color: var(--coral-soft); }
+  .werkzeuge:has(#preise:checked) ~ .grid .preis { display: block; }
+
+  .werkzeuge:has(#f-dinner:checked) ~ .grid .card[data-d='0'],
+  .werkzeuge:has(#f-sushi:checked) ~ .grid .card:not([data-kat='sushi']),
+  .werkzeuge:has(#f-warm:checked) ~ .grid .card:not([data-kat='warm']),
+  .werkzeuge:has(#f-beilagen:checked) ~ .grid .card:not([data-kat='beilagen']),
+  .werkzeuge:has(#f-dessert:checked) ~ .grid .card:not([data-kat='dessert']),
+  .werkzeuge:has(#f-saucen:checked) ~ .grid .card:not([data-kat='saucen']) { display: none; }
+
+  @media (min-width: 40rem) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 62rem) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 80rem) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+</style>

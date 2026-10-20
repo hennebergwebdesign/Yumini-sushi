@@ -1,147 +1,404 @@
 ---
 import { standorte } from '../lib/standorte';
+import Logo from './ui/Logo.astro';
 
-// Vorschau ohne Funktion: Beispieldaten, keine echte Verfügbarkeit. Auswahl wirkt nur optisch (Radiofelder).
-// Echte Verfügbarkeit, Tischvergabe und Mails kommen in Bauphase 5.
-const uid = Astro.props.uid ?? 'res';
-const tage = Array.from({ length: 30 }, (_, i) => i + 1);
-const vorlauf = 6; // 1. November 2026 ist ein Sonntag, Wochenbeginn Montag
-const gesperrt = new Set([2, 3, 9, 10, 16, 17, 23, 24, 30]); // Beispiel
-const zeiten = [
-  { t: '17:30', frei: false },
-  { t: '17:45', frei: false },
-  { t: '18:00', frei: true },
-  { t: '18:15', frei: true },
-  { t: '18:30', frei: true },
-  { t: '18:45', frei: false },
-  { t: '19:00', frei: true },
-  { t: '19:15', frei: true },
-];
-const personen = [1, 2, 3, 4, 5, 6, 7, 8];
+// Interaktive Vorschau: Kalender, Personen, Uhrzeiten und Bestätigung funktionieren im Browser.
+// Verfügbarkeit ist simuliert, es wird nichts gespeichert und keine Mail versendet (Bauphase 5).
+interface Props { ort?: string }
+const { ort = 'bochum' } = Astro.props;
 ---
-<form class="tool" onsubmit="return false" aria-label="Tisch reservieren, Vorschau">
-  <div class="cols">
-    <div class="left">
-      <fieldset class="step">
-        <legend><span class="n">1</span> Standort</legend>
-        <div class="chips">
-          {standorte.map((s, i) => (
-            <label class="chip">
-              <input type="radio" name={`${uid}-ort`} value={s.id} checked={i === 0} />
-              <span>{s.name}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+<div class="tool" data-res data-ort={ort}>
+  <div class="status" aria-hidden="true">
+    <span data-clock>19:42</span>
+    <span class="icons">
+      <svg viewBox="0 0 24 16"><path d="M2 12a14 14 0 0 1 20 0M5.5 9a9 9 0 0 1 13 0M9 6a4 4 0 0 1 6 0" /><circle cx="12" cy="13" r="1.3" /></svg>
+      <svg viewBox="0 0 30 16"><rect x="1" y="2" width="24" height="12" rx="3" /><rect x="3" y="4" width="17" height="8" rx="1.5" class="fill" /><rect x="26" y="6" width="3" height="4" rx="1" class="fill" /></svg>
+    </span>
+  </div>
 
-      <fieldset class="step">
-        <legend><span class="n">2</span> Datum</legend>
-        <div class="cal">
-          <p class="month" aria-hidden="true">November 2026</p>
-          <div class="grid" role="group" aria-label="Tage im November 2026">
-            {['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((d) => <span class="dow" aria-hidden="true">{d}</span>)}
-            {Array.from({ length: vorlauf }).map(() => <span></span>)}
-            {tage.map((d) => (
-              <label class:list={['day', gesperrt.has(d) && 'off']}>
-                <input type="radio" name={`${uid}-tag`} value={d} checked={d === 14} disabled={gesperrt.has(d)} />
-                <span>{d}</span>
+  <div class="app">
+    <header class="appbar">
+      <Logo hoehe={34} />
+      <h3>Tisch reservieren</h3>
+      <span class="hint">Vorschau mit Beispieldaten</span>
+    </header>
+
+    <form class="body" novalidate onsubmit="return false">
+      <div class="col">
+        <section class="block" aria-labelledby="t-ort">
+          <h4 id="t-ort"><span class="n">1</span>Standort</h4>
+          <div class="seg" role="radiogroup" aria-labelledby="t-ort">
+            {standorte.map((s) => (
+              <label>
+                <input type="radio" name="t-ort" value={s.id} checked={s.id === ort} />
+                <span>{s.name}</span>
               </label>
             ))}
           </div>
-        </div>
-      </fieldset>
-    </div>
+        </section>
 
-    <div class="right">
-      <fieldset class="step">
-        <legend><span class="n">3</span> Personen</legend>
-        <div class="chips small">
-          {personen.map((p) => (
-            <label class="chip">
-              <input type="radio" name={`${uid}-pers`} value={p} checked={p === 2} />
-              <span>{p}</span>
-            </label>
-          ))}
-          <label class="chip wide">
-            <input type="radio" name={`${uid}-pers`} value="mehr" />
-            <span>Mehr</span>
+        <section class="block" aria-labelledby="t-datum">
+          <h4 id="t-datum"><span class="n">2</span>Datum</h4>
+          <div class="cal">
+            <div class="calhead">
+              <button type="button" data-prev aria-label="Vorheriger Monat">‹</button>
+              <strong data-monat>November 2026</strong>
+              <button type="button" data-next aria-label="Nächster Monat">›</button>
+            </div>
+            <div class="grid" data-grid role="group" aria-label="Tage"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="block" aria-labelledby="t-pers">
+          <h4 id="t-pers"><span class="n">3</span>Personen</h4>
+          <div class="step">
+            <button type="button" data-minus aria-label="Eine Person weniger">−</button>
+            <output data-pers aria-live="polite">2</output>
+            <button type="button" data-plus aria-label="Eine Person mehr">+</button>
+            <span class="unit" data-pers-label>Personen</span>
+          </div>
+          <p class="more" data-mehr hidden>Für Gruppen über 15 Personen bitte eine <a href="/feiern/">Feier anfragen</a>.</p>
+        </section>
+
+        <section class="block" aria-labelledby="t-zeit">
+          <h4 id="t-zeit"><span class="n">4</span>Uhrzeit</h4>
+          <label class="sel">
+            <span class="vh">Uhrzeit wählen</span>
+            <select data-zeit></select>
           </label>
-        </div>
-      </fieldset>
+          <ul class="quick" data-quick aria-label="Nächste freie Zeiten"></ul>
+          <p class="info" data-info></p>
+        </section>
 
-      <fieldset class="step">
-        <legend><span class="n">4</span> Uhrzeit</legend>
-        <div class="slots">
-          {zeiten.map((z) => (
-            <label class:list={['slot', !z.frei && 'off']}>
-              <input type="radio" name={`${uid}-zeit`} value={z.t} checked={z.t === '18:00'} disabled={!z.frei} />
-              <span>{z.t}</span>
-              {!z.frei && <small>ausgebucht</small>}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+        <section class="block" aria-labelledby="t-kontakt">
+          <h4 id="t-kontakt"><span class="n">5</span>Ihre Angaben</h4>
+          <div class="fields">
+            <label><span>Name</span><input data-name type="text" autocomplete="off" placeholder="Vor- und Nachname" /></label>
+            <label><span>Telefon</span><input data-tel type="tel" autocomplete="off" placeholder="Für Rückfragen" /></label>
+          </div>
+        </section>
 
-      <fieldset class="step">
-        <legend><span class="n">5</span> Ihre Angaben</legend>
-        <div class="fields">
-          <label><span>Name</span><input type="text" placeholder="Vor und Nachname" autocomplete="off" /></label>
-          <label><span>Telefon</span><input type="tel" placeholder="Für Rückfragen" autocomplete="off" /></label>
+        <div class="foot">
+          <p class="sum" data-sum aria-live="polite"></p>
+          <button type="button" class="go" data-go>Tisch reservieren</button>
+          <p class="err" data-err role="alert" hidden></p>
         </div>
-      </fieldset>
+      </div>
+    </form>
 
-      <button type="button" class="go">Tisch reservieren</button>
-      <p class="hint">Vorschau mit Beispieldaten, noch ohne Funktion.</p>
+    <div class="done" data-done hidden role="status">
+      <span class="check" aria-hidden="true">✓</span>
+      <h3>Tisch reserviert</h3>
+      <p data-done-text></p>
+      <p class="muted small">Beispiel: Es wurde nichts gespeichert und keine Mail versendet.</p>
+      <button type="button" class="again" data-again>Neue Reservierung</button>
     </div>
   </div>
-</form>
+
+  <span class="bar" aria-hidden="true"></span>
+</div>
+
+<script>
+  import { standorte } from '../lib/standorte';
+  import { geoeffnet, slots, preisFuer, iso } from '../lib/zeiten';
+
+  const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const WTAGE = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+  const MAXTAGE = 90;
+
+  document.querySelectorAll<HTMLElement>('[data-res]').forEach((root) => {
+    const $ = <T extends HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const grid = $('[data-grid]');
+    const sel = $<HTMLSelectElement>('[data-zeit]');
+    const heute = new Date();
+    heute.setHours(0, 0, 0, 0);
+    const ende = new Date(heute);
+    ende.setDate(ende.getDate() + MAXTAGE);
+
+    const st = {
+      ort: root.dataset.ort || 'bochum',
+      datum: null as Date | null,
+      monat: new Date(heute.getFullYear(), heute.getMonth(), 1),
+      pers: 2,
+      zeit: '',
+    };
+    const standort = () => standorte.find((s) => s.id === st.ort)!;
+
+    const clock = () => {
+      const n = new Date();
+      $('[data-clock]').textContent = `${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+    };
+    clock();
+    setInterval(clock, 30000);
+
+    const naechsterOffenerTag = () => {
+      const d = new Date(heute);
+      for (let i = 0; i < 14; i++) {
+        if (geoeffnet(standort(), d) && slots(standort(), d, st.pers).some((x) => x.frei)) return d;
+        d.setDate(d.getDate() + 1);
+      }
+      return new Date(heute);
+    };
+
+    function renderKalender() {
+      const m = st.monat;
+      $('[data-monat]').textContent = `${MONATE[m.getMonth()]} ${m.getFullYear()}`;
+      const erster = new Date(m.getFullYear(), m.getMonth(), 1);
+      const versatz = (erster.getDay() + 6) % 7;
+      const tage = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+      const head = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((t) => `<span class="dow" aria-hidden="true">${t}</span>`).join('');
+      let html = head + '<span></span>'.repeat(versatz);
+      for (let i = 1; i <= tage; i++) {
+        const d = new Date(m.getFullYear(), m.getMonth(), i);
+        const aus = d < heute || d > ende || !geoeffnet(standort(), d);
+        const gewaehlt = st.datum && iso(d) === iso(st.datum);
+        const label = `${WTAGE[(d.getDay() + 6) % 7]}, ${i}. ${MONATE[d.getMonth()]}${aus ? ', nicht möglich' : ''}`;
+        html += `<button type="button" class="day${gewaehlt ? ' on' : ''}${iso(d) === iso(heute) ? ' today' : ''}" data-d="${iso(d)}" ${aus ? 'disabled' : ''} aria-label="${label}" aria-pressed="${!!gewaehlt}">${i}</button>`;
+      }
+      grid.innerHTML = html;
+      ($('[data-prev]') as HTMLButtonElement).disabled = m <= new Date(heute.getFullYear(), heute.getMonth(), 1);
+      ($('[data-next]') as HTMLButtonElement).disabled = new Date(m.getFullYear(), m.getMonth() + 1, 1) > ende;
+    }
+
+    function renderZeiten() {
+      const d = st.datum;
+      const quick = $('[data-quick]');
+      const info = $('[data-info]');
+      if (!d || st.pers > 15) {
+        sel.innerHTML = '<option value="">Bitte Datum wählen</option>';
+        quick.innerHTML = '';
+        info.textContent = '';
+        st.zeit = '';
+        return;
+      }
+      const alle = slots(standort(), d, st.pers);
+      if (!alle.length) {
+        sel.innerHTML = '<option value="">Geschlossen</option>';
+        quick.innerHTML = '';
+        info.textContent = `${standort().name} hat an diesem Tag geschlossen.`;
+        st.zeit = '';
+        return;
+      }
+      const gruppen = ['Mittag', 'Abend'] as const;
+      let html = '<option value="">Uhrzeit wählen</option>';
+      for (const g of gruppen) {
+        const teil = alle.filter((x) => x.gruppe === g);
+        if (!teil.length) continue;
+        html += `<optgroup label="${g}">` + teil.map((x) => `<option value="${x.t}" ${x.frei ? '' : 'disabled'}>${x.t} Uhr${x.frei ? '' : ' (ausgebucht)'}</option>`).join('') + '</optgroup>';
+      }
+      sel.innerHTML = html;
+      const frei = alle.filter((x) => x.frei);
+      if (!frei.some((x) => x.t === st.zeit)) st.zeit = frei[0]?.t ?? '';
+      sel.value = st.zeit;
+      quick.innerHTML = frei
+        .slice(0, 4)
+        .map((x) => `<li><button type="button" data-t="${x.t}" class="${x.t === st.zeit ? 'on' : ''}">${x.t}</button></li>`)
+        .join('');
+      info.textContent = frei.length ? '' : 'An diesem Tag ist leider nichts mehr frei. Bitte anderes Datum wählen.';
+    }
+
+    function renderSumme() {
+      const sum = $('[data-sum]');
+      const d = st.datum;
+      if (!d || !st.zeit) {
+        sum.textContent = 'Bitte Datum und Uhrzeit wählen.';
+        return;
+      }
+      const gruppe = Number(st.zeit.slice(0, 2)) < 16 ? 'Mittag' : 'Abend';
+      const preis = preisFuer(standort(), d, gruppe);
+      sum.innerHTML = `<b>${standort().name}</b>, ${WTAGE[(d.getDay() + 6) % 7]} ${d.getDate()}. ${MONATE[d.getMonth()]}, ${st.zeit} Uhr, ${st.pers} ${st.pers === 1 ? 'Person' : 'Personen'}${preis ? `<br /><span class="muted">All you can eat ${preis} je Person, ${standort().dauer} Zeit am Tisch</span>` : ''}`;
+    }
+
+    function renderPersonen() {
+      $('[data-pers]').textContent = String(st.pers);
+      $('[data-pers-label]').textContent = st.pers === 1 ? 'Person' : 'Personen';
+      ($('[data-minus]') as HTMLButtonElement).disabled = st.pers <= 1;
+      ($('[data-plus]') as HTMLButtonElement).disabled = st.pers >= 16;
+      $('[data-pers]').textContent = st.pers > 15 ? '15+' : String(st.pers);
+      $('[data-mehr]').hidden = st.pers <= 15;
+      ($('[data-go]') as HTMLButtonElement).disabled = st.pers > 15;
+    }
+
+    function alles() {
+      renderKalender();
+      renderPersonen();
+      renderZeiten();
+      renderSumme();
+    }
+
+    const start = () => {
+      st.datum = naechsterOffenerTag();
+      st.monat = new Date(st.datum.getFullYear(), st.datum.getMonth(), 1);
+      alles();
+    };
+
+    root.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.name === 't-ort') {
+        st.ort = t.value;
+        if (!st.datum || !geoeffnet(standort(), st.datum)) st.datum = naechsterOffenerTag();
+        st.monat = new Date(st.datum.getFullYear(), st.datum.getMonth(), 1);
+        alles();
+      } else if (t === sel) {
+        st.zeit = sel.value;
+        renderZeiten();
+        renderSumme();
+      }
+    });
+
+    root.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('button');
+      if (!b) return;
+      if (b.dataset.d) {
+        const [y, mo, da] = b.dataset.d.split('-').map(Number);
+        st.datum = new Date(y, mo - 1, da);
+        alles();
+      } else if (b.dataset.t) {
+        st.zeit = b.dataset.t;
+        renderZeiten();
+        renderSumme();
+      } else if (b.hasAttribute('data-prev')) {
+        st.monat = new Date(st.monat.getFullYear(), st.monat.getMonth() - 1, 1);
+        renderKalender();
+      } else if (b.hasAttribute('data-next')) {
+        st.monat = new Date(st.monat.getFullYear(), st.monat.getMonth() + 1, 1);
+        renderKalender();
+      } else if (b.hasAttribute('data-minus')) {
+        st.pers = Math.max(1, st.pers - 1);
+        alles();
+      } else if (b.hasAttribute('data-plus')) {
+        st.pers = Math.min(16, st.pers + 1);
+        alles();
+      } else if (b.hasAttribute('data-go')) {
+        const err = $('[data-err]');
+        const name = ($('[data-name]') as HTMLInputElement).value.trim();
+        const tel = ($('[data-tel]') as HTMLInputElement).value.trim();
+        const fehler = !st.datum || !st.zeit ? 'Bitte Datum und Uhrzeit wählen.' : name.length < 2 ? 'Bitte geben Sie Ihren Namen ein.' : tel.replace(/\D/g, '').length < 6 ? 'Bitte geben Sie eine Telefonnummer ein.' : '';
+        err.hidden = !fehler;
+        err.textContent = fehler;
+        if (fehler) return;
+        $('[data-done-text]').textContent = `${name}, wir erwarten Sie am ${WTAGE[(st.datum!.getDay() + 6) % 7]}, ${st.datum!.getDate()}. ${MONATE[st.datum!.getMonth()]} um ${st.zeit} Uhr in ${standort().name}, ${st.pers} ${st.pers === 1 ? 'Person' : 'Personen'}.`;
+        $('[data-done]').hidden = false;
+        root.classList.add('is-done');
+      } else if (b.hasAttribute('data-again')) {
+        $('[data-done]').hidden = true;
+        root.classList.remove('is-done');
+        ($('[data-name]') as HTMLInputElement).value = '';
+        ($('[data-tel]') as HTMLInputElement).value = '';
+      }
+    });
+
+    start();
+  });
+</script>
 
 <style>
   .tool {
-    container-type: inline-size;
+    --t-line: rgb(255 255 255 / 0.14);
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: #0a0d0c;
     color: var(--text);
     font-size: 0.9375rem;
+    border-radius: inherit;
   }
-  .cols {
+  .status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 1.4rem 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .icons {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .icons svg {
+    block-size: 0.7rem;
+    inline-size: auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .icons .fill {
+    fill: currentColor;
+    stroke: none;
+  }
+  .app {
+    min-inline-size: 0;
+    position: relative;
+    padding: 0.5rem 1.4rem 1.2rem;
     display: grid;
-    gap: 1.5rem;
-  }
-  @container (min-width: 44rem) {
-    .cols {
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-  }
-  .left,
-  .right {
-    display: grid;
-    gap: 1.25rem;
+    gap: 1rem;
     align-content: start;
   }
-  fieldset {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    min-inline-size: 0;
-  }
-  legend {
+  .appbar {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0;
-    margin-block-end: 0.7rem;
+    gap: 1rem;
+    padding-block-end: 0.9rem;
+    border-block-end: 1px solid var(--t-line);
+  }
+  .appbar h3 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    margin-inline-start: auto;
+  }
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border: 1px solid var(--t-line);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    white-space: nowrap;
+  }
+  .bar {
+    justify-self: center;
+    inline-size: 9rem;
+    block-size: 5px;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 0.35);
+    margin-block: 0 0.55rem;
+  }
+  .body {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .col {
+    min-inline-size: 0;
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+  }
+  h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    font-size: 1rem;
+    margin-block-end: 0.55rem;
   }
   .n {
     display: grid;
     place-items: center;
-    inline-size: 1.6rem;
-    block-size: 1.6rem;
+    inline-size: 1.55rem;
+    block-size: 1.55rem;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    font-size: 0.8125rem;
-    color: var(--coral-soft);
+    background: var(--brand-red);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.75rem;
   }
   input[type='radio'] {
     position: absolute;
@@ -149,163 +406,325 @@ const personen = [1, 2, 3, 4, 5, 6, 7, 8];
     inline-size: 1px;
     block-size: 1px;
   }
-  .chips {
+  .seg {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
-  .chip span,
-  .day span,
-  .slot {
-    cursor: pointer;
-  }
-  .chip span {
+  .seg span {
     display: grid;
     place-items: center;
-    min-block-size: 2.75rem;
-    padding-inline: 1rem;
+    min-block-size: 2.6rem;
+    padding-inline: 0.95rem;
     border-radius: var(--r2);
-    border: 1px solid var(--border);
-    background: rgb(255 255 255 / 0.03);
+    border: 1px solid var(--t-line);
+    cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
   }
-  .chips.small .chip span {
-    min-inline-size: 2.75rem;
-    padding-inline: 0.5rem;
-  }
-  .chip:hover span {
+  .seg label:hover span {
     border-color: var(--text-muted);
   }
-  input:checked + span {
-    border-color: var(--coral-soft);
-    background: rgb(217 33 41 / 0.22);
-    color: #fff;
+  .seg input:checked + span {
+    background: var(--text);
+    color: var(--black);
+    border-color: var(--text);
+    font-weight: 500;
   }
-  input:focus-visible + span {
+  .seg input:focus-visible + span {
     outline: 3px solid var(--coral-soft);
     outline-offset: 2px;
   }
   .cal {
-    border: 1px solid var(--border);
+    border: 1px solid var(--t-line);
     border-radius: var(--r3);
-    padding: 0.85rem;
-    background: rgb(255 255 255 / 0.02);
+    padding: 0.7rem;
   }
-  .month {
-    margin-block-end: 0.5rem;
-    font-weight: 500;
+  .calhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block-end: 0.4rem;
+  }
+  .calhead button {
+    inline-size: 2.2rem;
+    block-size: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--t-line);
+    background: none;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .calhead button:hover:not(:disabled) {
+    border-color: var(--text);
+  }
+  .calhead button:disabled {
+    opacity: 0.3;
+    cursor: default;
   }
   .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.2rem;
+    gap: 0.15rem;
     text-align: center;
   }
-  .dow {
-    font-size: 0.75rem;
+  .grid :global(.dow) {
+    font-size: 0.7rem;
     color: var(--text-muted);
-    padding-block-end: 0.25rem;
+    padding-block-end: 0.2rem;
   }
-  .day {
-    display: block;
-  }
-  .day span {
-    display: grid;
-    place-items: center;
+  .grid :global(.day) {
     aspect-ratio: 1;
-    border-radius: 50%;
     border: 1px solid transparent;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
+    border-radius: 50%;
+    background: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.15s;
   }
-  .day:hover:not(.off) span {
-    background: rgb(255 255 255 / 0.1);
+  .grid :global(.day:hover:not(:disabled)) {
+    background: rgb(255 255 255 / 0.12);
   }
-  .day input:checked + span {
+  .grid :global(.day.today) {
+    border-color: var(--t-line);
+  }
+  .grid :global(.day.on) {
     background: var(--brand-red);
     border-color: var(--brand-red);
+    font-weight: 600;
   }
-  .day.off span {
-    color: rgb(255 255 255 / 0.3);
-    text-decoration: line-through;
-    cursor: not-allowed;
+  .grid :global(.day:disabled) {
+    color: rgb(255 255 255 / 0.28);
+    cursor: default;
   }
-  .slots {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.4rem;
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
   }
-  .slot {
-    position: relative;
-    display: grid;
+  .step button {
+    inline-size: 3rem;
+    block-size: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--t-line);
+    background: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
   }
-  .slot span {
-    display: grid;
-    place-items: center;
-    min-block-size: 2.75rem;
-    border-radius: var(--r2);
-    border: 1px solid var(--border);
-    transition: background-color 0.2s, border-color 0.2s;
+  .step button:hover:not(:disabled) {
+    border-color: var(--text);
+    background: rgb(255 255 255 / 0.08);
   }
-  .slot:hover:not(.off) span {
-    border-color: var(--text-muted);
+  .step button:disabled {
+    opacity: 0.3;
+    cursor: default;
   }
-  .slot.off span {
-    color: rgb(255 255 255 / 0.35);
-    background: transparent;
-    border-style: dashed;
-    cursor: not-allowed;
-  }
-  .slot small {
-    position: absolute;
-    inset-inline: 0;
-    inset-block-end: 0.15rem;
+  .step output {
+    min-inline-size: 2.6ch;
     text-align: center;
-    font-size: 0.6rem;
-    color: rgb(255 255 255 / 0.5);
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 125%;
+    font-size: 2rem;
+  }
+  .unit {
+    color: var(--text-muted);
+  }
+  .more {
+    margin-block-start: 0.5rem;
+    color: var(--coral-soft);
+    font-size: 0.875rem;
+  }
+  .sel {
+    position: relative;
+    display: block;
+  }
+  select {
+    inline-size: 100%;
+    min-block-size: 3rem;
+    padding-inline: 0.9rem 2.6rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--text);
+    font: inherit;
+    font-size: 1.0625rem;
+    appearance: none;
+    cursor: pointer;
+  }
+  select option,
+  select optgroup {
+    background: #11161a;
+    color: var(--text);
+  }
+  select option:disabled {
+    color: #7b8480;
+  }
+  .sel::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 1.1rem;
+    inline-size: 0.55rem;
+    block-size: 0.55rem;
+    border-inline-end: 2px solid var(--text);
+    border-block-end: 2px solid var(--text);
+    rotate: 45deg;
+    translate: 0 -75%;
     pointer-events: none;
   }
-  .slot.off span {
-    padding-block-end: 0.6rem;
+  .quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-block-start: 0.5rem;
+  }
+  .quick :global(button) {
+    min-block-size: 2.25rem;
+    padding-inline: 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--t-line);
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .quick :global(button:hover) {
+    border-color: var(--text);
+  }
+  .quick :global(button.on) {
+    border-color: var(--coral-soft);
+    background: rgb(217 33 41 / 0.25);
+  }
+  .info {
+    margin-block-start: 0.4rem;
+    color: var(--coral-soft);
+    font-size: 0.85rem;
   }
   .fields {
     display: grid;
-    gap: 0.6rem;
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
   }
   .fields label {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.2rem;
   }
   .fields span {
-    font-size: 0.8125rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
   }
   .fields input {
     min-block-size: 2.75rem;
-    padding-inline: 0.85rem;
+    padding-inline: 0.8rem;
     border-radius: var(--r2);
-    border: 1px solid var(--border);
+    border: 1px solid var(--t-line);
     background: rgb(255 255 255 / 0.04);
+    inline-size: 100%;
   }
   .fields input::placeholder {
-    color: rgb(255 255 255 / 0.4);
+    color: rgb(255 255 255 / 0.38);
+  }
+  .foot {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .sum {
+    padding: 0.8rem 1rem;
+    border: 1px dashed var(--t-line);
+    border-radius: var(--r3);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .sum :global(.muted) {
+    color: var(--text-muted);
+    font-size: 0.82rem;
   }
   .go {
-    min-block-size: 3rem;
+    min-block-size: 3.25rem;
     border: 0;
     border-radius: var(--r2);
     background: var(--brand-red);
     color: #fff;
     font-weight: 500;
+    font-size: 1.0625rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s var(--ease);
   }
-  .go:hover {
+  .go:hover:not(:disabled) {
     background: var(--red-deep);
+    transform: translateY(-2px);
   }
-  .hint {
-    font-size: 0.8125rem;
-    color: var(--text-muted);
+  .go:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .err {
+    color: var(--coral-soft);
+    font-size: 0.875rem;
+  }
+  .done {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.8rem;
+    padding: 2rem;
     text-align: center;
+    background: #0a0d0c;
+  }
+  .done[hidden] {
+    display: none;
+  }
+  .check {
+    display: grid;
+    place-items: center;
+    inline-size: 4.5rem;
+    block-size: 4.5rem;
+    border-radius: 50%;
+    background: var(--brand-red);
+    font-size: 2.2rem;
+  }
+  .done h3 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+  }
+  .done .muted {
+    color: var(--text-muted);
+  }
+  .small {
+    font-size: 0.82rem;
+  }
+  .again {
+    min-block-size: 2.75rem;
+    padding-inline: 1.4rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: none;
+    cursor: pointer;
+  }
+  .again:hover {
+    border-color: var(--text);
+  }
+
+  @container (max-width: 34rem) {
+    .hint { display: none; }
+    .appbar h3 { display: none; }
+    .fields { grid-template-columns: 1fr; }
+  }
+  @container (min-width: 46rem) {
+    .body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1.75rem;
+    }
+  }
+  .tool {
+    container-type: inline-size;
   }
 </style>

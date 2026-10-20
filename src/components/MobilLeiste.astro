@@ -1,14 +1,24 @@
 ---
 // Feste Leiste unten auf dem Handy, erscheint nach dem Held (nur mit Scroll Animation, sonst immer sichtbar).
 ---
-<div class="mbar">
-  <a href="/reservieren/">Tisch reservieren</a>
+<div class="mbar" data-mbar>
+  <a href="/#reservieren">Tisch reservieren</a>
 </div>
+
+<script>
+  // Die Leiste verschwindet, solange das Reservierungstool selbst im Bild ist.
+  const leiste = document.querySelector<HTMLElement>('[data-mbar]');
+  const ziel = document.getElementById('reservieren');
+  if (leiste && ziel && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => leiste.classList.toggle('aus', e.isIntersecting), { threshold: 0.05 }).observe(ziel);
+  }
+</script>
 
 <style>
   .mbar {
     display: none;
   }
+  .mbar.aus { visibility: hidden; }
   @keyframes mbar-show {
     from { opacity: 0; translate: 0 100%; }
     to { opacity: 1; translate: 0 0; }
@@ -21,7 +31,8 @@
       inset-block-end: 0;
       z-index: 40;
       padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
-      background: linear-gradient(to top, var(--black) 60%, transparent);
+      background: var(--black);
+      border-block-start: 1px solid var(--border);
     }
     .mbar a {
       display: grid;

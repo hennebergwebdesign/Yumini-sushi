@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import { standorte } from '../../lib/standorte';
+import PreisPanel from '../PreisPanel.astro';
+import Button from '../ui/Button.astro';
+import { fotos } from '../../lib/bilder';
+---
+<section id="preise" class="section paper preise" aria-labelledby="preise-title">
+  <Image class="deko" src={fotos.skizze} alt="" aria-hidden="true" widths={[512]} sizes="32rem" />
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Zeiten und Preise</p>
+      <h2 id="preise-title" class="h2">Was kostet es bei Ihnen vor Ort?</h2>
+    </div>
+
+    <div class="tabs">
+      <div class="tablist" role="group" aria-label="Standort wählen">
+        {standorte.map((s, i) => (
+          <>
+            <input class="vh" type="radio" name="preise-standort" id={`pt-${s.id}`} checked={i === 0} />
+            <label for={`pt-${s.id}`}>{s.name}</label>
+          </>
+        ))}
+      </div>
+      {standorte.map((s) => (<div class="panel" data-id={s.id}><PreisPanel s={s} /></div>))}
+    </div>
+
+    <div class="notes">
+      <p class="small muted"><strong>Speisen übrig gelassen?</strong> Für nicht aufgegessene Speisen berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird gespendet. Getränke sind nicht im Preis enthalten.</p>
+      <Button href="/speisekarte/" variant="outline">Speisekarte ansehen</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .preise { position: relative; overflow: clip; }
+  .preise :global(.deko) { position: absolute; inset-block-start: 1rem; inset-inline-end: -4rem; inline-size: min(28rem, 60vw); block-size: auto; opacity: 0.5; pointer-events: none; }
+  .wrap { position: relative; }
+  .head { display: grid; gap: 0.75rem; margin-block-end: 2rem; }
+  .tablist { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-end: 1.25rem; }
+  .tablist label {
+    display: grid; place-items: center; min-block-size: 2.75rem; padding-inline: 1.25rem;
+    border: 1px solid var(--border-ink); border-radius: 999px; background: #fff; cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .tablist label:hover { border-color: var(--ink); }
+  .tablist input:checked + label { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .tablist input:focus-visible + label { outline: 3px solid var(--brand-red); outline-offset: 2px; }
+  .panel { display: none; }
+  .tabs:has(#pt-bochum:checked) .panel[data-id='bochum'],
+  .tabs:has(#pt-dortmund:checked) .panel[data-id='dortmund'],
+  .tabs:has(#pt-gelsenkirchen:checked) .panel[data-id='gelsenkirchen'],
+  .tabs:has(#pt-luedenscheid:checked) .panel[data-id='luedenscheid'],
+  .tabs:has(#pt-siegen:checked) .panel[data-id='siegen'] { display: block; }
+  .notes { display: grid; gap: 0.75rem; justify-items: start; max-inline-size: 46rem; margin-block-start: 1.75rem; }
+  .small { font-size: 0.9375rem; }
+</style>
