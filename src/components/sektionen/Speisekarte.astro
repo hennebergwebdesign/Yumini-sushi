@@ -1,5 +1,6 @@
 ---
 import Button from '../ui/Button.astro';
+import KatalogMockup from '../ui/KatalogMockup.astro';
 import { karte, bildUrl } from '../../lib/speisekarte';
 
 // Beliebte Gerichte, Namen und Beschreibungen aus der Karte Bochum (Infopaket 20.10.2026)
@@ -16,18 +17,7 @@ const favoriten = namen.map((n) => bochum.find((g) => g.name === n)).filter((g):
         <p class="lead muted">Sushi, Nigiri, Maki, Teppanyaki, warme Gerichte, Suppen und Salate. Gerichte mit „Dinner Only“ gibt es nur abends.</p>
       </div>
 
-      <div class="mock" aria-hidden="true">
-        <div class="book">
-          <div class="page l"><i></i><i></i><i></i><i></i><i></i><i class="s"></i></div>
-          <div class="page r"><i></i><i></i><i></i><i></i><i></i><i class="s"></i></div>
-          <div class="spine"></div>
-          <div class="cover">
-            <img src="/images/logo.svg" alt="" width="200" height="70" />
-            <b>Speisekarte</b>
-            <small>Platzhalter, die gedruckte Karte folgt</small>
-          </div>
-        </div>
-      </div>
+      <div class="mock"><KatalogMockup /></div>
     </div>
 
     <ul class="favs">
@@ -55,25 +45,7 @@ const favoriten = namen.map((n) => bochum.find((g) => g.name === n)).filter((g):
   .slate { background: #11161a; overflow: clip; }
   .head { display: grid; gap: 3rem; align-items: center; margin-block-end: clamp(2.5rem, 5vw, 4rem); }
   .txt { display: grid; gap: 1rem; max-inline-size: 36rem; }
-  .mock { display: grid; place-items: center; perspective: 1400px; }
-  .book { position: relative; inline-size: min(100%, 32rem); aspect-ratio: 1.45; display: grid; grid-template-columns: 1fr 1fr; transform: rotateX(8deg); filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
-  .page { display: grid; align-content: center; gap: 0.7rem; padding: 12% 11%; }
-  .page.l { border-radius: 6px 0 0 6px; background: #f5f1ec; border-inline-end: 2px solid #ddd5c9; }
-  .page.r { border-radius: 0 6px 6px 0; background: #f5f1ec; border-inline-start: 2px solid #ddd5c9; }
-  .page i { display: block; block-size: 0.55rem; border-radius: 2px; background: #cfc7ba; }
-  .page i:nth-child(odd) { inline-size: 80%; }
-  .page i.s { inline-size: 55%; }
-  .spine { position: absolute; inset-block: 0; inset-inline-start: 50%; inline-size: 3px; translate: -50% 0; background: rgb(0 0 0 / 0.25); }
-  .cover {
-    position: absolute; inset-block-start: 8%; inset-inline-start: 24%; inline-size: 46%; aspect-ratio: 0.72;
-    display: grid; align-content: space-between; justify-items: center; padding: 1.4rem 1rem;
-    border-radius: 6px; background: var(--black); border: 1px solid #2a3530; rotate: -7deg;
-    box-shadow: 0 20px 30px -10px rgb(0 0 0 / 0.6); transition: rotate 0.5s var(--ease), translate 0.5s var(--ease);
-  }
-  .cover img { inline-size: 80%; block-size: auto; }
-  .mock:hover .cover { rotate: -3deg; translate: 0 -6px; }
-  .cover b { font-weight: 500; font-size: clamp(1rem, 2.2vw, 1.4rem); }
-  .cover small { font-size: 0.6rem; font-weight: 300; text-align: center; color: var(--text-muted); }
+  .mock { display: grid; place-items: center; }
   .favs {
     display: grid;
     gap: 1rem;

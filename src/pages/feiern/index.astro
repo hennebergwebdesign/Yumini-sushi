@@ -1,0 +1,94 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/ui/Button.astro';
+import { standorte } from '../../lib/standorte';
+import { fotos } from '../../lib/bilder';
+
+// Platzhaltertexte, vom Inhaber zu bestätigen. Keine Preise, Räume oder Leistungen erfunden.
+const bg = await getImage({ src: fotos.sushiPlatte, width: 1800, format: 'webp' });
+const anlaesse = [
+  { id: 'geburtstag', t: 'Geburtstag', x: 'Feiern Sie Ihren Geburtstag mit Familie und Freunden an einem Tisch, an dem jeder Sushi, Grillspezialitäten und Desserts nach Lust und Laune bestellt. Sie reservieren, wir decken ein. Niemand muss vorher wählen, und niemand bleibt hungrig.' },
+  { id: 'firma', t: 'Firmenfeier', x: 'Vom Teamessen bis zur Weihnachtsfeier: Alle bestellen, was sie mögen, auch wenn Geschmäcker und Ernährungsweisen weit auseinanderliegen. Das macht den Abend für Gruppen jeder Größe einfach zu planen, und Sie haben keine Vorbestellung und keine Menüwahl vorab.' },
+  { id: 'gruppe', t: 'Gruppen ab 16 Personen', x: 'Ab 16 Personen geht Ihre Anfrage direkt an den gewählten Standort, der sich bei Ihnen meldet und mit Ihnen Datum, Uhrzeit und Sitzordnung abstimmt.' },
+];
+---
+<Base title="Feiern bei Yumini | Geburtstag und Firmenfeier mit All you can eat" description="Geburtstag, Firmenfeier oder Gruppe: Feiern Sie bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid oder Siegen. Anfrage in zwei Minuten." pfad="/feiern/">
+  <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="f-title">
+    <div class="wrap copy">
+      <p class="eyebrow">Feiern und Gruppen</p>
+      <h1 id="f-title" class="display big">Feiern bei Yumini.</h1>
+      <p class="lead">Geburtstag, Firmenfeier oder große Runde: Bei uns bestellt jeder, was er mag.</p>
+      <Button href="#anfrage" variant="primary" size="lg">Feier anfragen</Button>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="a-title">
+    <div class="wrap">
+      <h2 id="a-title" class="h2">Für jeden Anlass.</h2>
+      <ul class="cards">
+        {anlaesse.map((a) => (
+          <li class="card" id={a.id}><h3>{a.t}</h3><p class="muted">{a.x}</p></li>
+        ))}
+      </ul>
+      <p class="hint muted"><span class="fehlt">[[FEHLT: Details vom Inhaber, zum Beispiel Mindestgröße, Anzahlung, Räume, Dekoration]]</span></p>
+    </div>
+  </section>
+
+  <section id="anfrage" class="anfrage" aria-labelledby="q-title">
+    <div class="wrap">
+      <h2 id="q-title" class="h2">Feier anfragen.</h2>
+      <p class="lead muted">Die Anfrage geht an den gewählten Standort.</p>
+      <form data-form novalidate>
+        <label>Standort
+          <select name="standort" required>
+            {standorte.map((s) => <option value={s.name}>{s.name}</option>)}
+          </select>
+        </label>
+        <label>Anlass
+          <select name="anlass"><option>Geburtstag</option><option>Firmenfeier</option><option>Andere Gruppe</option></select>
+        </label>
+        <label>Personen<input name="personen" type="number" min="16" inputmode="numeric" placeholder="ab 16" required /></label>
+        <label>Wunschtermin<input name="datum" type="date" required /></label>
+        <label>Name<input name="name" autocomplete="name" required /></label>
+        <label>Telefon<input name="telefon" type="tel" autocomplete="tel" required /></label>
+        <label class="wide">Nachricht <small>(optional)</small><textarea name="text" rows="3"></textarea></label>
+        <button type="submit" class="send">Anfrage senden</button>
+        <p class="ok" data-ok hidden role="status"><span class="fehlt">Prototyp: Die Anfrage wird noch nicht übertragen.</span></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-form]');
+  f?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    f.querySelector<HTMLElement>('[data-ok]')!.hidden = false;
+  });
+</script>
+
+<style>
+  .hero { position: relative; isolation: isolate; min-block-size: 70svh; display: grid; align-items: center; padding-block: 9rem 4rem; background: var(--black) var(--bg) center / cover no-repeat; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.82); }
+  .copy { display: grid; gap: 1.25rem; justify-items: start; }
+  .big { font-size: clamp(2.6rem, 6.5vw, 5rem); }
+  .cards { display: grid; gap: 1rem; margin-block-start: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  .card { display: grid; gap: 0.75rem; align-content: start; padding: 1.75rem; border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff; }
+  .card h3 { font-size: 1.4rem; }
+  .hint { margin-block-start: 1.5rem; }
+  .paper .fehlt { color: var(--ink-muted); white-space: normal; }
+  .ok .fehlt { white-space: normal; }
+  .anfrage { padding-block: var(--space-section); background: #0a0d0c; }
+  .anfrage .wrap { display: grid; gap: 1rem; justify-items: start; }
+  form { display: grid; gap: 1rem; inline-size: min(100%, 44rem); margin-block-start: 1rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--r4); background: #11161a; }
+  label { display: grid; gap: 0.35rem; font-size: 0.9375rem; }
+  small { color: var(--text-muted); }
+  form > * { min-inline-size: 0; }
+  input, select, textarea { inline-size: 100%; max-inline-size: 100%; min-block-size: 3.25rem; padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: var(--r2); background: #0a0d0c; font-size: 1.0625rem; font-family: inherit; color: inherit; }
+  :is(input, select, textarea):focus-visible { outline: 3px solid var(--coral-soft); outline-offset: 1px; }
+  .send { min-block-size: 3.25rem; border: 0; border-radius: var(--r2); background: var(--brand-red); color: #fff; font-weight: 500; font-size: 1rem; cursor: pointer; }
+  .send:hover { background: var(--red-deep); }
+  @media (min-width: 40rem) { form { grid-template-columns: 1fr 1fr; } .wide, .send, .ok { grid-column: 1 / -1; } }
+</style>

@@ -1,0 +1,419 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/ui/Button.astro';
+import Txt from '../../components/ui/Txt.astro';
+import { standorte } from '../../lib/standorte';
+import { kategorien, raeume } from '../../lib/bilder';
+import { bereiche, stellen, vorteile, tag, ablauf, fragen } from '../../lib/karriere';
+
+const bg = await getImage({ src: kategorien.grill, width: 1800, format: 'webp' });
+const erfahrung = [
+  { id: 'keine', t: 'Keine', x: 'Ich fange neu an' },
+  { id: 'wenig', t: 'Bis 1 Jahr', x: 'Erste Erfahrung' },
+  { id: 'viel', t: 'Mehr als 1 Jahr', x: 'Ich kenne den Alltag' },
+];
+const eintritt = [
+  { id: 'sofort', t: 'Sofort', x: 'Ich kann direkt starten' },
+  { id: 'bald', t: 'In 1 bis 3 Monaten', x: 'Nach Absprache' },
+  { id: 'spaeter', t: 'Später', x: 'Ich orientiere mich' },
+];
+---
+<Base
+  title="Karriere bei Yumini | Jobs in Küche, Sushi, Grill und Service"
+  description="Jobs bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen: Sushi, Küche, Grill, Service, Theke und Aushilfe. In 2 Minuten bewerben, ohne Lebenslauf."
+  pfad="/karriere/"
+  mobilLeiste={false}
+>
+  <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="k-title">
+    <div class="wrap grid">
+      <div class="copy">
+        <p class="eyebrow">Karriere bei Yumini</p>
+        <h1 id="k-title" class="display big">Dein Platz<br />im Team.</h1>
+        <p class="lead">Wir suchen Verstärkung für Sushi, Küche, Grill, Service und Theke an allen fünf Standorten. Bewirb dich in zwei Minuten, ohne Lebenslauf.</p>
+        <div class="actions">
+          <Button href="#bewerben" variant="primary" size="lg">In 2 Minuten bewerben</Button>
+          <Button href="#stellen" variant="outline" size="lg">Offene Stellen</Button>
+        </div>
+        <ul class="facts">
+          <li><b>5</b><span>Standorte</span></li>
+          <li><b>6</b><span>Bereiche</span></li>
+          <li><b>0</b><span>Lebenslauf nötig</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="bewerben" class="funnel-sec" aria-labelledby="f-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Bewerbung</p>
+        <h2 id="f-title" class="h2">In vier Schritten zu uns.</h2>
+        <p class="lead muted">Beantworte vier kurze Fragen und hinterlasse deine Nummer. Den Rest klären wir im Gespräch.</p>
+      </div>
+
+      <form class="funnel" data-funnel novalidate>
+        <div class="prog" aria-hidden="true"><span data-bar></span></div>
+        <p class="step" data-stepinfo aria-live="polite">Schritt 1 von 5</p>
+
+        <fieldset data-step>
+          <legend>Wo möchtest du arbeiten?</legend>
+          <div class="opts">
+            {standorte.map((s) => (
+              <label class="opt"><input type="radio" name="standort" value={s.name} required /><span><b>{s.name}</b><small>{s.strasse}</small></span></label>
+            ))}
+            <label class="opt"><input type="radio" name="standort" value="Egal" /><span><b>Egal, mehrere</b><small>Wir suchen den besten Standort für dich</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset data-step>
+          <legend>Was passt zu dir?</legend>
+          <div class="opts">
+            {bereiche.map((b) => (
+              <label class="opt"><input type="radio" name="bereich" value={b.name} data-id={b.id} required /><span><b>{b.name}</b><small>{b.text}</small></span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset data-step>
+          <legend>Wie viel Erfahrung hast du?</legend>
+          <div class="opts three">
+            {erfahrung.map((e) => (
+              <label class="opt"><input type="radio" name="erfahrung" value={e.t} required /><span><b>{e.t}</b><small>{e.x}</small></span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset data-step>
+          <legend>Ab wann kannst du starten?</legend>
+          <div class="opts three">
+            {eintritt.map((e) => (
+              <label class="opt"><input type="radio" name="eintritt" value={e.t} required /><span><b>{e.t}</b><small>{e.x}</small></span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset data-step>
+          <legend>Wie erreichen wir dich?</legend>
+          <div class="fields">
+            <label>Vorname<input name="name" autocomplete="given-name" required /></label>
+            <label>Telefon oder WhatsApp<input name="telefon" type="tel" autocomplete="tel" inputmode="tel" required /></label>
+            <label>E-Mail <small>(optional)</small><input name="mail" type="email" autocomplete="email" /></label>
+          </div>
+          <label class="check"><input type="checkbox" name="datenschutz" required /><span>Ich habe den <a href="/datenschutz/">Datenschutzhinweis für Bewerber</a> gelesen <span class="fehlt">[[FEHLT: Text]]</span>.</span></label>
+          <p class="err" data-err role="alert" hidden></p>
+        </fieldset>
+
+        <div class="nav">
+          <button type="button" class="back" data-back hidden>Zurück</button>
+          <button type="button" class="next" data-next hidden>Weiter</button>
+          <button type="submit" class="send" data-send hidden>Bewerbung abschicken</button>
+        </div>
+
+        <div class="done" data-done hidden tabindex="-1">
+          <h3 class="display">Geschafft.</h3>
+          <p data-summary></p>
+          <p class="proto"><span class="fehlt">Prototyp: Die Bewerbung wird noch nicht übertragen.</span> Zum Livegang geht sie per Mail an den gewählten Standort.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="stellen" class="section paper" aria-labelledby="s-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Offene Stellen</p>
+        <h2 id="s-title" class="h2">Das suchen wir.</h2>
+        <p class="lead muted">Entwurf: Welche Stellen an welchem Standort offen sind, bestätigt der Inhaber <span class="fehlt">[[FEHLT: Bedarf je Standort]]</span>.</p>
+      </div>
+      <div class="jobs">
+        {stellen.map((j, i) => (
+          <details class="job" name="stelle" open={i === 0}>
+            <summary>
+              <span class="jt"><b>{j.titel}</b><small>{j.art}</small></span>
+              <span class="ort">Alle Standorte</span>
+              <i aria-hidden="true"></i>
+            </summary>
+            <div class="jb">
+              <p class="kurz">{j.kurz}</p>
+              <div class="cols">
+                <div><h4>Deine Aufgaben</h4><ul>{j.aufgaben.map((a) => <li><Txt t={a} /></li>)}</ul></div>
+                <div><h4>Das bringst du mit</h4><ul>{j.profil.map((a) => <li><Txt t={a} /></li>)}</ul></div>
+                <div><h4>Das bieten wir</h4><ul>{j.bieten.map((a) => <li><Txt t={a} /></li>)}</ul></div>
+              </div>
+              <a class="btn-job" href="#bewerben" data-bereich={j.bereich}>Auf diese Stelle bewerben</a>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="vorteile" aria-labelledby="v-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Das bekommst du</p>
+        <h2 id="v-title" class="h2">Warum Yumini.</h2>
+        <p class="lead muted">Entwurf: Zusagen stehen erst nach Bestätigung durch den Inhaber fest.</p>
+      </div>
+      <ul class="vgrid">
+        {vorteile.map((v, i) => (
+          <li class="vcard"><span class="n">{String(i + 1).padStart(2, '0')}</span><h3>{v.t}</h3><p class="muted"><Txt t={v.x} /></p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="tagsec" aria-labelledby="t-title">
+    <div class="wrap tg">
+      <div class="shead">
+        <p class="eyebrow">Ein Abend bei Yumini</p>
+        <h2 id="t-title" class="h2">So sieht dein Dienst aus.</h2>
+        <p class="lead muted">Beispielablauf eines Abenddienstes, Zeiten je Standort <span class="fehlt">[[FEHLT: bestätigen]]</span>.</p>
+        <figure class="sym">
+          <Image src={raeume.theke.src} alt={raeume.theke.alt} widths={[500, 900]} sizes="(max-width: 62rem) 100vw, 28rem" />
+          <figcaption>Symbolbild, kein Foto aus Yumini</figcaption>
+        </figure>
+      </div>
+      <ol class="zeit">
+        {tag.map((z) => (
+          <li><time>{z.zeit}</time><div><h3>{z.t}</h3><p class="muted"><Txt t={z.x} /></p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="team" aria-labelledby="tm-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Das Team</p>
+        <h2 id="tm-title" class="h2">Die Menschen dahinter.</h2>
+        <p class="lead muted">Hier zeigen wir echte Kolleginnen und Kollegen mit Namen, sobald wir sie fotografieren dürfen. Es gibt dafür bewusst keine Stockfotos.</p>
+      </div>
+      <ul class="tiles">
+        {[0, 1, 2, 3].map(() => (
+          <li class="tile"><span class="circ"></span><span class="fehlt">Foto und Name [[FEHLT]]</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="ablauf paper section" aria-labelledby="a-title">
+    <div class="wrap">
+      <div class="shead">
+        <p class="eyebrow">Nach deiner Bewerbung</p>
+        <h2 id="a-title" class="h2">So geht es weiter.</h2>
+      </div>
+      <ol class="steps">
+        {ablauf.map((a, i) => (
+          <li><span class="num">{i + 1}</span><h3>{a.t}</h3><p class="muted"><Txt t={a.x} /></p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="q-title">
+    <div class="wrap fgrid">
+      <div class="shead">
+        <p class="eyebrow">Fragen</p>
+        <h2 id="q-title" class="h2">Gut zu wissen.</h2>
+      </div>
+      <div>
+        {fragen.map((f, i) => (
+          <details name="kfaq" open={i === 0}>
+            <summary><span>{f.q}</span><i aria-hidden="true"></i></summary>
+            <div class="ans"><p class="muted"><Txt t={f.a} /></p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="ende" aria-labelledby="e-title">
+    <div class="wrap">
+      <h2 id="e-title" class="h2">Bereit für den ersten Schritt?</h2>
+      <p class="lead muted">Zwei Minuten reichen.</p>
+      <Button href="#bewerben" variant="primary" size="lg">In 2 Minuten bewerben</Button>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-funnel]');
+  if (form) {
+    const steps = [...form.querySelectorAll<HTMLElement>('[data-step]')];
+    const bar = form.querySelector<HTMLElement>('[data-bar]')!;
+    const info = form.querySelector<HTMLElement>('[data-stepinfo]')!;
+    const back = form.querySelector<HTMLButtonElement>('[data-back]')!;
+    const next = form.querySelector<HTMLButtonElement>('[data-next]')!;
+    const send = form.querySelector<HTMLButtonElement>('[data-send]')!;
+    const err = form.querySelector<HTMLElement>('[data-err]')!;
+    const done = form.querySelector<HTMLElement>('[data-done]')!;
+    let i = 0;
+    form.classList.add('js');
+
+    const gueltig = (n: number) => {
+      const felder = [...steps[n].querySelectorAll<HTMLInputElement>('input')];
+      return felder.every((f) => (f.type === 'radio' ? !!form.querySelector(`input[name="${f.name}"]:checked`) : !f.required || (f.type === 'checkbox' ? f.checked : f.value.trim() !== '')));
+    };
+    const zeige = (n: number, fokus = true) => {
+      i = Math.max(0, Math.min(steps.length - 1, n));
+      steps.forEach((s, k) => (s.hidden = k !== i));
+      bar.style.inlineSize = `${((i + 1) / steps.length) * 100}%`;
+      info.textContent = `Schritt ${i + 1} von ${steps.length}`;
+      back.hidden = i === 0;
+      const letzte = i === steps.length - 1;
+      send.hidden = !letzte;
+      next.hidden = letzte || !(steps[i].querySelector('input[type=radio]') && gueltig(i));
+      err.hidden = true;
+      if (fokus) (steps[i].querySelector('input') as HTMLElement | null)?.focus({ preventScroll: true });
+    };
+
+    form.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.type === 'radio' && i < steps.length - 1) setTimeout(() => zeige(i + 1), 220);
+    });
+    next.addEventListener('click', () => gueltig(i) && zeige(i + 1));
+    back.addEventListener('click', () => zeige(i - 1));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!gueltig(i)) { err.textContent = 'Bitte trage Vorname und Telefon ein und bestätige den Datenschutzhinweis.'; err.hidden = false; return; }
+      const d = new FormData(form);
+      form.querySelectorAll<HTMLElement>('[data-step], .nav, .prog, .step').forEach((n) => (n.hidden = true));
+      form.querySelector<HTMLElement>('[data-summary]')!.textContent = `Danke, ${d.get('name')}. Deine Anfrage: ${d.get('bereich')} in ${d.get('standort') === 'Egal' ? 'einem unserer Standorte' : d.get('standort')}, Erfahrung ${String(d.get('erfahrung')).toLowerCase()}, Start ${String(d.get('eintritt')).toLowerCase()}.`;
+      done.hidden = false;
+      done.focus();
+    });
+
+    // Stellen springen mit vorgewähltem Bereich in den Funnel
+    document.querySelectorAll<HTMLElement>('[data-bereich]').forEach((a) =>
+      a.addEventListener('click', () => {
+        const r = form.querySelector<HTMLInputElement>(`input[data-id="${a.dataset.bereich}"]`);
+        if (r) { r.checked = true; }
+        const offen = steps.findIndex((_, n) => !gueltig(n));
+        zeige(offen === -1 ? steps.length - 1 : offen, false);
+      }),
+    );
+    zeige(0, false);
+  }
+</script>
+
+<style>
+  .hero { position: relative; isolation: isolate; min-block-size: 88svh; display: grid; align-items: center; padding-block: 8rem 4rem; background: var(--black) var(--bg) center / cover no-repeat; overflow: clip; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.78); }
+  .copy { display: grid; gap: 1.4rem; max-inline-size: 40rem; }
+  .big { font-size: clamp(2.8rem, 7vw, 5.6rem); }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .facts { display: flex; flex-wrap: wrap; gap: 2rem; margin-block-start: 1rem; }
+  .facts li { display: grid; }
+  .facts b { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 2.2rem; line-height: 1; }
+  .facts span { color: var(--text-muted); font-size: 0.9375rem; }
+
+  .shead { display: grid; gap: 0.8rem; justify-items: start; margin-block-end: 2.25rem; }
+
+  .funnel-sec { padding-block: var(--space-section); background: #0a0d0c; }
+  .funnel { position: relative; inline-size: min(100%, 52rem); padding: clamp(1.25rem, 3.5vw, 2.5rem); border: 1px solid var(--border); border-radius: var(--r4); background: #11161a; }
+  .prog { block-size: 4px; border-radius: 2px; background: rgb(255 255 255 / 0.1); margin-block-end: 0.75rem; overflow: clip; }
+  .prog span { display: block; block-size: 100%; inline-size: 20%; background: var(--coral-soft); transition: inline-size 0.4s var(--ease); }
+  .step { font-size: 0.875rem; color: var(--text-muted); margin-block-end: 1.25rem; }
+  fieldset { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+  legend { padding: 0; margin-block-end: 1.25rem; font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: clamp(1.25rem, 2.8vw, 1.75rem); line-height: 1.05; }
+  .funnel:not(.js) fieldset { margin-block-end: 2.5rem; }
+  .opts { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+  .opt { position: relative; display: block; cursor: pointer; }
+  .opt input { position: absolute; opacity: 0; inset: 0; }
+  .opt span { display: grid; gap: 0.15rem; min-block-size: 4.2rem; padding: 0.9rem 1.1rem; border: 1px solid var(--border); border-radius: var(--r3); background: rgb(255 255 255 / 0.03); transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease), transform 0.2s var(--ease); }
+  .opt b { font-weight: 500; }
+  .opt small { color: var(--text-muted); font-size: 0.8125rem; }
+  .opt:hover span { border-color: var(--coral-soft); transform: translateY(-2px); }
+  .opt input:checked + span { border-color: var(--coral-soft); background: rgb(255 143 134 / 0.12); }
+  .opt input:focus-visible + span { outline: 3px solid var(--coral-soft); outline-offset: 2px; }
+  .fields { display: grid; gap: 1rem; margin-block-end: 1rem; }
+  .fields label { display: grid; gap: 0.35rem; font-size: 0.9375rem; }
+  .fields small { color: var(--text-muted); }
+  .fields input { min-block-size: 3.25rem; padding: 0 1rem; border: 1px solid var(--border); border-radius: var(--r2); background: #0a0d0c; font-size: 1.0625rem; }
+  .fields input:focus-visible { outline: 3px solid var(--coral-soft); outline-offset: 1px; }
+  .check { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9375rem; color: var(--text-muted); }
+  .check input { inline-size: 1.25rem; block-size: 1.25rem; margin-block-start: 0.2rem; accent-color: var(--brand-red); }
+  .err { margin-block-start: 1rem; color: var(--coral-soft); }
+  .nav { display: flex; gap: 0.75rem; align-items: center; justify-content: space-between; margin-block-start: 1.5rem; }
+  .nav button { min-block-size: 3rem; padding-inline: 1.5rem; border-radius: var(--r2); border: 1px solid var(--border); background: none; cursor: pointer; font-weight: 500; }
+  .nav button:hover { border-color: var(--coral-soft); }
+  .nav .send { margin-inline-start: auto; border-color: transparent; background: var(--brand-red); color: #fff; }
+  .nav .send:hover { background: var(--red-deep); }
+  .nav .next { margin-inline-start: auto; }
+  .nav [hidden], .funnel:not(.js) .nav button:not(.send) { display: none; }
+  .funnel:not(.js) .nav .send { display: inline-flex; align-items: center; }
+  .done h3 { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-block-end: 1rem; }
+  .done .proto { margin-block-start: 1rem; color: var(--text-muted); }
+
+  .jobs { display: grid; gap: 0.75rem; }
+  .job { border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff; transition: box-shadow 0.3s var(--ease); }
+  .job[open] { box-shadow: 0 18px 40px -24px rgb(17 21 19 / 0.4); }
+  .job summary { display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1rem; align-items: center; padding: 1.25rem 1.25rem; font-size: 1rem; }
+  .job summary:hover { color: inherit; }
+  .jt { display: grid; }
+  .jt b { font-size: 1.1875rem; font-weight: 500; }
+  .jt small { color: var(--ink-muted); font-size: 0.875rem; }
+  .ort { display: none; padding: 0.15rem 0.75rem; border: 1px solid var(--border-ink); border-radius: 999px; font-size: 0.8125rem; color: var(--ink-muted); }
+  .job summary i { grid-column: 2; grid-row: 1; }
+  .jb { display: grid; gap: 1.25rem; padding: 0 1.25rem 1.5rem; }
+  .kurz { max-inline-size: 44rem; }
+  .cols { display: grid; gap: 1.5rem; }
+  .cols h4 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand-red); margin-block-end: 0.5rem; }
+  .cols li { position: relative; padding-inline-start: 1.1rem; margin-block-end: 0.4rem; color: var(--ink-muted); }
+  .cols li::before { content: ''; position: absolute; inset: 0.65em auto auto 0; inline-size: 0.4rem; block-size: 0.4rem; border-radius: 50%; background: var(--brand-red); }
+  .btn-job { justify-self: start; display: inline-flex; align-items: center; min-block-size: 3rem; padding-inline: 1.5rem; border-radius: var(--r2); background: var(--ink); color: #fff; font-weight: 500; text-decoration: none; transition: background-color 0.25s var(--ease); }
+  .btn-job:hover { background: var(--brand-red); }
+  .paper .fehlt { color: var(--ink-muted); }
+  @media (min-width: 52rem) { .cols { grid-template-columns: repeat(3, 1fr); } .ort { display: inline-block; } .job summary { grid-template-columns: 1fr auto auto; } .job summary i { grid-column: 3; } }
+
+  .vorteile { padding-block: var(--space-section); background: var(--black); }
+  .vgrid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  .vcard { display: grid; gap: 0.6rem; align-content: start; padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--r3); background: #11161a; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
+  .vcard:hover { transform: translateY(-4px); border-color: var(--coral-soft); }
+  .n { font-family: var(--display); font-weight: 800; font-stretch: 125%; color: var(--coral-soft); font-size: 0.9375rem; }
+  .vcard h3 { font-size: 1.3125rem; }
+
+  .tagsec { padding-block: var(--space-section); background: #0a0d0c; }
+  .tg { display: grid; gap: 2.5rem; }
+  .sym { position: relative; inline-size: 100%; max-inline-size: 28rem; border-radius: var(--r3); overflow: clip; }
+  .sym img { inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  figcaption { position: absolute; inset: auto 0.6rem 0.6rem auto; padding: 0.15rem 0.6rem; border-radius: 999px; background: rgb(3 5 4 / 0.72); font-size: 0.6875rem; }
+  .zeit { display: grid; align-content: start; }
+  .zeit li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 1.25rem; padding-block: 1.25rem; border-block-start: 1px solid var(--border); }
+  .zeit li:last-child { border-block-end: 1px solid var(--border); }
+  .zeit time { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 1.25rem; color: var(--coral-soft); }
+  .zeit h3 { font-size: 1.25rem; margin-block-end: 0.2rem; }
+  @media (min-width: 62rem) { .tg { grid-template-columns: 1fr 1fr; gap: 6rem; } .zeit time { font-size: 1.5rem; } .zeit li { grid-template-columns: 6rem 1fr; } }
+
+  .team { padding-block: var(--space-section); background: var(--black); }
+  .tiles { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
+  .tile { position: relative; display: grid; place-items: center; aspect-ratio: 3 / 4; border: 1px dashed var(--border); border-radius: var(--r3); color: var(--text-muted); }
+  .circ { position: absolute; inline-size: 44%; aspect-ratio: 1; border-radius: 50%; background: rgb(217 33 41 / 0.22); }
+  .tile .fehlt { position: relative; font-size: 0.75rem; white-space: normal; text-align: center; margin: 0.75rem; }
+  @media (min-width: 52rem) { .tiles { grid-template-columns: repeat(4, 1fr); } }
+
+  .steps { display: grid; gap: 1.5rem; counter-reset: s; }
+  .steps li { display: grid; gap: 0.5rem; align-content: start; padding-block-start: 1.25rem; border-block-start: 2px solid var(--ink); }
+  .num { display: grid; place-items: center; inline-size: 2.25rem; block-size: 2.25rem; border-radius: 50%; background: var(--brand-red); color: #fff; font-weight: 600; }
+  .steps h3 { font-size: 1.25rem; }
+  @media (min-width: 52rem) { .steps { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+  .faq { padding-block: var(--space-section); background: #11161a; }
+  .fgrid { display: grid; gap: 2.5rem; }
+  .faq details { border-block-start: 1px solid var(--border); }
+  .faq details:last-child { border-block-end: 1px solid var(--border); }
+  summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.25rem; font-size: 1.1875rem; font-weight: 500; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  .faq summary:hover { color: var(--coral-soft); }
+  summary i { position: relative; flex: none; inline-size: 1.75rem; block-size: 1.75rem; border-radius: 50%; border: 1.5px solid currentColor; }
+  summary i::before, summary i::after { content: ''; position: absolute; inset: 50% auto auto 50%; inline-size: 0.7rem; block-size: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate 0.3s var(--ease); }
+  summary i::after { rotate: 90deg; }
+  details[open] summary i::after { rotate: 0deg; }
+  .ans { padding-block-end: 1.5rem; max-inline-size: 44rem; }
+  @media (min-width: 62rem) { .fgrid { grid-template-columns: 20rem 1fr; gap: 6rem; } .fgrid .shead { position: sticky; inset-block-start: 7rem; align-self: start; } }
+
+  .ende { display: grid; gap: 1.25rem; justify-items: center; text-align: center; padding-block: var(--space-section); background: var(--black); }
+  .ende .wrap { display: grid; gap: 1.25rem; justify-items: center; }
+</style>

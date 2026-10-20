@@ -9,6 +9,10 @@ import grill from '../assets/kategorien/grill.jpg';
 import salad from '../assets/kategorien/salad.jpg';
 import dinner from '../assets/kategorien/dinner.jpg';
 import dessert from '../assets/kategorien/dessert.jpg';
+import laternen from '../assets/raeume/laternen.jpg';
+import halle from '../assets/raeume/halle.jpg';
+import theke from '../assets/raeume/theke.jpg';
+import gasse from '../assets/raeume/gasse.jpg';
 import sake from '../assets/gerichte/sake.png';
 import maguro from '../assets/gerichte/maguro.png';
 import ebi from '../assets/gerichte/ebi.png';
@@ -29,3 +33,13 @@ export const gerichte = {
   'gruener-tee-eis': gruenerTeeEis, 'ebi-tempura': ebiTempura,
 } as const;
 export type GerichtId = keyof typeof gerichte;
+
+// Symbolbilder japanischer Restaurants (Unsplash Lizenz), KEINE Aufnahmen der Yumini Standorte.
+// Sie stehen nur bis zum Fotoshooting da und sind im Bild als Symbolbild beschriftet.
+export const raeume = {
+  laternen: { src: laternen, alt: 'Japanisch gestalteter Gastraum mit Papierlaternen und Kalligrafie an der Wand', von: 'Nastia Petruk' },
+  halle: { src: halle, alt: 'Großer Gastraum mit Laternen, Theke und gedämpftem Licht', von: 'hiding ninja' },
+  theke: { src: theke, alt: 'Lange Holztheke mit Sushi Köchen und Pendelleuchten', von: 'Ryunosuke Kikuno' },
+  gasse: { src: gasse, alt: 'Gasse mit großen Papierlaternen und Sitzplätzen', von: 'ayumi kubo' },
+} as const;
+export type RaumId = keyof typeof raeume;

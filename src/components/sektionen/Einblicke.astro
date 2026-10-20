@@ -1,8 +1,8 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import { fotos, kategorien } from '../../lib/bilder';
-// Nur Food Fotos vom Betreiber. Gäste, Team und Räume einer Filiale werden nie als Stockfoto gezeigt,
-// sondern erst nach dem Fotoshooting (docs/plan.md, Abschnitt 12).
+import { fotos, kategorien, raeume } from '../../lib/bilder';
+// Food Fotos vom Betreiber. Der Gastraum ist ein beschriftetes Symbolbild, bis das Fotoshooting vorliegt.
+// Gäste und Team gibt es nie als Stockfoto (docs/plan.md, Abschnitt 12).
 const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp' });
 ---
 <section class="einblicke" aria-labelledby="einblicke-title">
@@ -15,7 +15,7 @@ const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp
       <li class="tile a"><Image src={fotos.sushiPlatte} alt="Nigiri auf Schiefer mit Stäbchen" widths={[600, 1000, 1400]} sizes="(max-width: 52rem) 100vw, 50vw" /></li>
       <li class="tile b"><Image src={kategorien.dinner} alt="Nigiri Auswahl auf dunklem Teller" widths={[400, 800]} sizes="(max-width: 52rem) 50vw, 25vw" /></li>
       <li class="tile c"><Image src={kategorien.grill} alt="Gegrilltes vom Teppangrill" widths={[400, 800]} sizes="(max-width: 52rem) 50vw, 25vw" /></li>
-      <li class="tile d ph"><span class="circ"></span><span class="fehlt">Foto: Gäste und Gastraum [[FEHLT]]</span></li>
+      <li class="tile d"><Image src={raeume.laternen.src} alt={raeume.laternen.alt} widths={[400, 800]} sizes="(max-width: 52rem) 50vw, 25vw" /><span class="sym">Symbolbild</span></li>
       <li class="tile e"><Image src={kategorien.dessert} alt="Grüner Tee Eis in der Schale" widths={[400, 800]} sizes="(max-width: 52rem) 50vw, 25vw" /></li>
     </ul>
   </div>
@@ -44,6 +44,7 @@ const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp
   .tile :global(img) { inline-size: 100%; block-size: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
   .tile:hover :global(img) { transform: scale(1.05); }
   .a { grid-column: span 2; }
+  .sym { position: absolute; inset: auto 0.6rem 0.6rem auto; padding: 0.15rem 0.6rem; border-radius: 999px; background: rgb(3 5 4 / 0.72); font-size: 0.6875rem; letter-spacing: 0.04em; }
   .ph { display: grid; place-items: center; color: var(--text-muted); border: 1px dashed var(--border); }
   .circ { position: absolute; inline-size: 44%; aspect-ratio: 1; max-block-size: 80%; border-radius: 50%; background: rgb(217 33 41 / 0.22); }
   .ph .fehlt { position: relative; font-size: 0.75rem; white-space: normal; text-align: center; margin: 0.75rem; }

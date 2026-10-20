@@ -4,10 +4,11 @@ import Button from '../ui/Button.astro';
 import { fotos, gerichte } from '../../lib/bilder';
 
 const bg = await getImage({ src: fotos.sushiPlatte, width: 1800, format: 'webp' });
+// Platzhaltertexte, vom Inhaber zu bestätigen. Keine Preise, Räume oder Leistungen genannt, die nicht belegt sind.
 const anlaesse = [
-  { t: 'Geburtstag', x: '' },
-  { t: 'Firmenfeier', x: '' },
-  { t: 'Gruppen ab 16 Personen', x: 'Die Anfrage geht direkt an den gewählten Standort.' },
+  { t: 'Geburtstag', x: 'Feiern Sie Ihren Geburtstag mit Familie und Freunden an einem Tisch, an dem jeder Sushi, Grillspezialitäten und Desserts nach Lust und Laune bestellt. Sie reservieren, wir decken ein.' },
+  { t: 'Firmenfeier', x: 'Vom Teamessen bis zur Weihnachtsfeier: Alle bestellen, was sie mögen, und niemand muss vorher wählen. Das macht den Abend für Gruppen jeder Größe einfach zu planen.' },
+  { t: 'Gruppen ab 16 Personen', x: 'Die Anfrage geht direkt an den gewählten Standort, der sich bei Ihnen meldet.' },
 ];
 ---
 <section id="feiern" class="feiern" aria-labelledby="feiern-title" style={`--bg:url(${bg.src})`}>
@@ -26,7 +27,7 @@ const anlaesse = [
         {anlaesse.map((a) => (
           <li>
             <h3>{a.t}</h3>
-            <p>{a.x || <span class="fehlt">[[FEHLT: Beschreibung vom Inhaber]]</span>}</p>
+            <p>{a.x}</p>
           </li>
         ))}
       </ul>
