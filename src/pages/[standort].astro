@@ -126,7 +126,7 @@ const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}
           );
         })}
       </ul>
-      <Button href="/speisekarte/" variant="outline">Ganze Speisekarte ansehen</Button>
+      <Button href={`/speisekarte/${s.id}/`} variant="primary">Alle Gerichte in {s.name} mit Foto</Button>
     </div>
   </section>
 

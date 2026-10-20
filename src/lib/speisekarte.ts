@@ -1,23 +1,22 @@
-// Speisekarten je Standort aus den CSV Dateien der Bestandsseite (Infopaket 20.10.2026).
-// Spalten: Nr; Name; Beschreibung; Preis_EUR; Dinner_Only. Die Nummern unterscheiden sich je Standort.
-const dateien = import.meta.glob('../data/menu/*.csv', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+// Speisekarten je Standort, erzeugt aus den Karten der Bestandsseite (Infopaket 20.10.2026).
+// Die Karten unterscheiden sich je Standort in Nummern, Beschreibungen und Gerichten (Dortmund hat eigene Gerichte).
+// Die Kategorien sind per Stichwort abgeleitet und im Rohdatensatz nicht enthalten.
+import daten from '../data/speisekarte.json';
 
-export type Gericht = { nr: number; name: string; beschreibung: string; preis: string; abends: boolean };
+export type Kategorie = 'sushi' | 'warm' | 'beilagen' | 'dessert' | 'saucen';
+export type Gericht = { nr: number; name: string; desc: string; preis: string; abends: boolean; kat: Kategorie; bild: string | null };
 
-export function karte(standort: string): Gericht[] {
-  const roh = dateien[`../data/menu/${standort}.csv`] ?? '';
-  return roh
-    .split(/\r?\n/)
-    .slice(1)
-    .filter(Boolean)
-    .map((zeile) => {
-      const [nr, name, beschreibung, preis, d] = zeile.split(';');
-      return { nr: Number(nr), name: name?.trim(), beschreibung: (beschreibung ?? '').trim(), preis: preis?.trim(), abends: (d ?? '').trim() === 'D' };
-    })
-    .filter((g) => g.name);
-}
+export const kategorien: { id: Kategorie; label: string }[] = [
+  { id: 'sushi', label: 'Sushi' },
+  { id: 'warm', label: 'Warm Dishes' },
+  { id: 'beilagen', label: 'Salate, Suppen, Nudeln, Reis' },
+  { id: 'dessert', label: 'Dessert' },
+  { id: 'saucen', label: 'Saucen' },
+];
 
-/** Nummer eines Gerichts am Standort, über den Namen (nur exakte Treffer, sonst null) */
-export function nummer(standort: string, name: string) {
-  return karte(standort).find((g) => g.name.toLowerCase() === name.toLowerCase())?.nr ?? null;
-}
+export const karte = (standort: string): Gericht[] => ((daten as Record<string, Gericht[]>)[standort] ?? []);
+
+/** Nummer eines Gerichts am Standort über den Namen, nur exakte Treffer */
+export const nummer = (standort: string, name: string) => karte(standort).find((g) => g.name.toLowerCase() === name.toLowerCase())?.nr ?? null;
+
+export const bildUrl = (g: Gericht) => (g.bild ? `/images/speisekarte/${g.bild}.webp` : null);

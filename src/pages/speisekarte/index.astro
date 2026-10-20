@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/ui/Button.astro';
+import { standorte } from '../../lib/standorte';
+import { karte } from '../../lib/speisekarte';
+import { gerichte, type GerichtId } from '../../lib/bilder';
+
+const mitZahl = standorte.map((s) => ({ s, n: karte(s.id).length, d: karte(s.id).filter((g) => g.abends).length }));
+---
+<Base
+  title="Speisekarte Yumini: über 100 Gerichte mit Fotos"
+  description="Die Speisekarte von Yumini Japanese Sushi & Grill mit Fotos aller Gerichte. Wählen Sie Ihren Standort, die Karten unterscheiden sich in Nummern und Gerichten."
+  pfad="/speisekarte/"
+>
+  <section class="kopf" aria-labelledby="sk-title">
+    <div class="wrap">
+      <p class="eyebrow">Speisekarte</p>
+      <h1 id="sk-title" class="display">Die ganze Karte<br />mit Fotos</h1>
+      <p class="lead">Über 100 warme und kalte Speisen, Suppen, Salate, Sushi und Teppanyaki. Die Karte unterscheidet sich je Standort in Nummern und einzelnen Gerichten, wählen Sie deshalb Ihren Standort.</p>
+    </div>
+  </section>
+
+  <section class="orte" aria-label="Standort wählen">
+    <div class="wrap">
+      <ul class="liste">
+        {mitZahl.map(({ s, n, d }) => (
+          <li>
+            <a href={`/speisekarte/${s.id}/`}>
+              <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[160, 320]} sizes="8rem" />
+              <span class="t"><b>{s.name}</b><span>{n} Gerichte, davon {d} nur abends</span></span>
+              <span class="pfeil" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="regeln" aria-labelledby="regeln-title">
+    <div class="wrap grid">
+      <div>
+        <h2 id="regeln-title" class="h2">So bestellen Sie</h2>
+        <p class="muted">Sie bestellen per Tablet in mehreren Runden. Pro Runde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Gerichte mit „Dinner Only“ gibt es nur abends.</p>
+      </div>
+      <p class="muted">Bitte bestellen Sie nur so viel, wie Sie essen können. Für Reste berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht, der Erlös wird gespendet. Getränke sind nicht inklusive.</p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .kopf { padding-block: 9rem 3rem; background: var(--black); }
+  .kopf h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); margin-block: 0.6rem 1.2rem; }
+  .orte { padding-block: 1rem 3rem; background: var(--black); }
+  .liste { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
+  .liste a { position: relative; display: grid; grid-template-columns: 5rem 1fr auto; gap: 1rem; align-items: center; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--r3); text-decoration: none; background: #0a0d0c; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease); }
+  .liste a:hover { border-color: var(--coral-soft); background: #11161a; transform: translateY(-3px); }
+  .liste :global(img) { inline-size: 100%; block-size: auto; filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.5)); }
+  .t { display: grid; gap: 0.15rem; }
+  .t b { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 1.15rem; }
+  .t span { color: var(--text-muted); font-size: 0.9rem; }
+  .pfeil { font-size: 1.5rem; transition: translate 0.3s var(--ease); }
+  .liste a:hover .pfeil { translate: 6px 0; }
+  .regeln { padding-block: 3rem; background: #11161a; }
+  .grid { display: grid; gap: 1.5rem; }
+  .grid .h2 { margin-block-end: 0.75rem; }
+  @media (min-width: 62rem) { .grid { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+</style>

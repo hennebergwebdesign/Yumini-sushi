@@ -82,6 +82,13 @@ sind keine Fotos der Restaurants.
 8. Nicht erreichbar von hier: Awwwards, Behance, Lapa Ninja, Unsplash (Bot Schutz). Referenzen dieser Runde: haven-annecy.fr (Wortmarke mit Foto Füllung),
    mrspringmrsfresh.com (Markenschrift, Stempel). Nur Aufbau und Idee übernommen, nichts kopiert.
 
+**Stand 3 (20.10.2026): Speisekarten je Standort.** Die Karten der fünf Standorte unterscheiden sich nicht nur in den Nummern, Dortmund hat über 40
+eigene Gerichte, Lüdenscheid und Siegen weitere. Deshalb gibt es `/speisekarte/` (Standortwahl) und `/speisekarte/<standort>/` mit allen Gerichten als
+Fotokarten (Filter Alle, Dinner Only, Sushi, Warm Dishes, Salate/Suppen/Nudeln/Reis, Dessert, Saucen, Schalter „Außer Haus" für Preise, reines CSS),
+dazu `Menu` Auszeichnung. Datenquelle `src/data/speisekarte.json` mit Fotos in `public/images/speisekarte/` (214 WebP, 420 px). Die Kategorien sind per
+Stichwort abgeleitet und gehören stichprobenartig geprüft. 24 neue Gerichte in Lüdenscheid und Siegen haben kein Foto. Die Fotos enthalten teils eingebrannte
+Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV) liegen in der Git Historie (Commit e9418d4), das Erzeugungsskript nicht im Repository.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
