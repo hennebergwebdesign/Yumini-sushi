@@ -16,8 +16,8 @@ export const GET = mit(async () => {
 
 export const POST = mit(async ({ request, nutzer }) => {
   const b = await lies(request);
-  const benutzername = text(b.benutzername, 'Benutzername', 3, 40);
-  if (!/^[a-z0-9._-]+$/i.test(benutzername)) return fehler('Benutzername: Buchstaben, Ziffern, Punkt, Strich.');
+  const benutzername = text(b.benutzername, 'Benutzername', 3, 80);
+  if (!/^[a-z0-9._@+-]+$/i.test(benutzername)) return fehler('Benutzername: Buchstaben, Ziffern, @ . _ + -');
   const name = text(b.name, 'Name', 2, 80);
   if (!ROLLEN.includes(b.rolle)) return fehler('Rolle ungültig.');
   if (b.rolle !== 'admin' && !istStandort(b.standort)) return fehler('Für diese Rolle ist ein Standort nötig.');

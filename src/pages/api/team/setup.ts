@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   const b = await lies(request);
   const benutzername = String(b.benutzername ?? '').trim();
   const name = String(b.name ?? '').trim() || benutzername;
-  if (!/^[a-z0-9._-]{3,40}$/i.test(benutzername)) return fehler('Benutzername: 3 bis 40 Zeichen, Buchstaben, Ziffern, Punkt, Strich.');
+  if (!/^[a-z0-9._@+-]{3,80}$/i.test(benutzername)) return fehler('Benutzername: 3 bis 80 Zeichen, Buchstaben, Ziffern, @ . _ + -');
   const pf = passwortFehler(b.passwort);
   if (pf) return fehler(pf);
   try {
