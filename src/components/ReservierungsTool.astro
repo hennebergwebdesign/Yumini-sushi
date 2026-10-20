@@ -1,0 +1,311 @@
+---
+import { standorte } from '../lib/standorte';
+
+// Vorschau ohne Funktion: Beispieldaten, keine echte Verfügbarkeit. Auswahl wirkt nur optisch (Radiofelder).
+// Echte Verfügbarkeit, Tischvergabe und Mails kommen in Bauphase 5.
+const uid = Astro.props.uid ?? 'res';
+const tage = Array.from({ length: 30 }, (_, i) => i + 1);
+const vorlauf = 6; // 1. November 2026 ist ein Sonntag, Wochenbeginn Montag
+const gesperrt = new Set([2, 3, 9, 10, 16, 17, 23, 24, 30]); // Beispiel
+const zeiten = [
+  { t: '18:00', frei: false },
+  { t: '18:15', frei: false },
+  { t: '18:30', frei: true },
+  { t: '18:45', frei: true },
+  { t: '19:00', frei: true },
+  { t: '19:15', frei: false },
+  { t: '19:30', frei: true },
+  { t: '19:45', frei: true },
+];
+const personen = [1, 2, 3, 4, 5, 6, 7, 8];
+---
+<form class="tool" onsubmit="return false" aria-label="Tisch reservieren, Vorschau">
+  <div class="cols">
+    <div class="left">
+      <fieldset class="step">
+        <legend><span class="n">1</span> Standort</legend>
+        <div class="chips">
+          {standorte.map((s, i) => (
+            <label class="chip">
+              <input type="radio" name={`${uid}-ort`} value={s.id} checked={i === 0} />
+              <span>{s.name}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="n">2</span> Datum</legend>
+        <div class="cal">
+          <p class="month" aria-hidden="true">November 2026</p>
+          <div class="grid" role="group" aria-label="Tage im November 2026">
+            {['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((d) => <span class="dow" aria-hidden="true">{d}</span>)}
+            {Array.from({ length: vorlauf }).map(() => <span></span>)}
+            {tage.map((d) => (
+              <label class:list={['day', gesperrt.has(d) && 'off']}>
+                <input type="radio" name={`${uid}-tag`} value={d} checked={d === 14} disabled={gesperrt.has(d)} />
+                <span>{d}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="right">
+      <fieldset class="step">
+        <legend><span class="n">3</span> Personen</legend>
+        <div class="chips small">
+          {personen.map((p) => (
+            <label class="chip">
+              <input type="radio" name={`${uid}-pers`} value={p} checked={p === 2} />
+              <span>{p}</span>
+            </label>
+          ))}
+          <label class="chip wide">
+            <input type="radio" name={`${uid}-pers`} value="mehr" />
+            <span>Mehr</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="n">4</span> Uhrzeit</legend>
+        <div class="slots">
+          {zeiten.map((z) => (
+            <label class:list={['slot', !z.frei && 'off']}>
+              <input type="radio" name={`${uid}-zeit`} value={z.t} checked={z.t === '18:30'} disabled={!z.frei} />
+              <span>{z.t}</span>
+              {!z.frei && <small>ausgebucht</small>}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="n">5</span> Ihre Angaben</legend>
+        <div class="fields">
+          <label><span>Name</span><input type="text" placeholder="Vor und Nachname" autocomplete="off" /></label>
+          <label><span>Telefon</span><input type="tel" placeholder="Für Rückfragen" autocomplete="off" /></label>
+        </div>
+      </fieldset>
+
+      <button type="button" class="go">Tisch reservieren</button>
+      <p class="hint">Vorschau mit Beispieldaten, noch ohne Funktion.</p>
+    </div>
+  </div>
+</form>
+
+<style>
+  .tool {
+    container-type: inline-size;
+    color: var(--text);
+    font-size: 0.9375rem;
+  }
+  .cols {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @container (min-width: 44rem) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+  .left,
+  .right {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-inline-size: 0;
+  }
+  legend {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0;
+    margin-block-end: 0.7rem;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .n {
+    display: grid;
+    place-items: center;
+    inline-size: 1.6rem;
+    block-size: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    font-size: 0.8125rem;
+    color: var(--coral-soft);
+  }
+  input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+    inline-size: 1px;
+    block-size: 1px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip span,
+  .day span,
+  .slot {
+    cursor: pointer;
+  }
+  .chip span {
+    display: grid;
+    place-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: 1rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--border);
+    background: rgb(255 255 255 / 0.03);
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .chips.small .chip span {
+    min-inline-size: 2.75rem;
+    padding-inline: 0.5rem;
+  }
+  .chip:hover span {
+    border-color: var(--text-muted);
+  }
+  input:checked + span {
+    border-color: var(--coral-soft);
+    background: rgb(217 33 41 / 0.22);
+    color: #fff;
+  }
+  input:focus-visible + span {
+    outline: 3px solid var(--coral-soft);
+    outline-offset: 2px;
+  }
+  .cal {
+    border: 1px solid var(--border);
+    border-radius: var(--r3);
+    padding: 0.85rem;
+    background: rgb(255 255 255 / 0.02);
+  }
+  .month {
+    margin-block-end: 0.5rem;
+    font-weight: 500;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem;
+    text-align: center;
+  }
+  .dow {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-block-end: 0.25rem;
+  }
+  .day {
+    display: block;
+  }
+  .day span {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  .day:hover:not(.off) span {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .day input:checked + span {
+    background: var(--brand-red);
+    border-color: var(--brand-red);
+  }
+  .day.off span {
+    color: rgb(255 255 255 / 0.3);
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+  .slots {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+  }
+  .slot {
+    position: relative;
+    display: grid;
+  }
+  .slot span {
+    display: grid;
+    place-items: center;
+    min-block-size: 2.75rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--border);
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .slot:hover:not(.off) span {
+    border-color: var(--text-muted);
+  }
+  .slot.off span {
+    color: rgb(255 255 255 / 0.35);
+    background: transparent;
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+  .slot small {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0.15rem;
+    text-align: center;
+    font-size: 0.6rem;
+    color: rgb(255 255 255 / 0.5);
+    pointer-events: none;
+  }
+  .slot.off span {
+    padding-block-end: 0.6rem;
+  }
+  .fields {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .fields label {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .fields span {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .fields input {
+    min-block-size: 2.75rem;
+    padding-inline: 0.85rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--border);
+    background: rgb(255 255 255 / 0.04);
+  }
+  .fields input::placeholder {
+    color: rgb(255 255 255 / 0.4);
+  }
+  .go {
+    min-block-size: 3rem;
+    border: 0;
+    border-radius: var(--r2);
+    background: var(--brand-red);
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .go:hover {
+    background: var(--red-deep);
+  }
+  .hint {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+</style>

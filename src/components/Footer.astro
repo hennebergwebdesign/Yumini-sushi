@@ -1,0 +1,130 @@
+---
+import Logo from './ui/Logo.astro';
+import { standorte } from '../lib/standorte';
+---
+<footer class="foot">
+  <div class="wrap">
+    <div class="top">
+      <div class="intro">
+        <Logo />
+        <p class="sig"><span class="o">Yumini</span><span class="l">Japanese Sushi &amp; Grill</span></p>
+        <p class="muted small">All you can eat an fünf Standorten in Nordrhein-Westfalen.</p>
+      </div>
+
+      <ul class="locs">
+        {standorte.map((s) => (
+          <li>
+            <h3>{s.name}</h3>
+            <address>
+              {s.strasse}<br />{s.ort}
+              {s.hinweis && <><br /><span class="muted">{s.hinweis}</span></>}
+            </address>
+            <p><a href={`tel:${s.tel}`}>{s.telefon}</a><br /><a href={`mailto:${s.mail}`}>{s.mail}</a></p>
+            <p class="muted small">Öffnungszeiten <span class="fehlt">[[FEHLT]]</span></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="bottom">
+      <p class="muted small">© 2026 Yumini Japanese Sushi &amp; Grill</p>
+      <nav aria-label="Rechtliches">
+        <ul>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutz/">Datenschutz</a></li>
+          <li><a href="/karriere/">Karriere</a></li>
+          <li><button type="button" class="linkbtn">Cookie Einstellungen</button></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    padding-block: clamp(3.5rem, 7vw, 6rem) 2rem;
+    background: var(--black);
+    border-block-start: 1px solid var(--border);
+  }
+  .top {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .intro {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .sig {
+    display: grid;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  .sig .o {
+    font-weight: 500;
+  }
+  .sig .l {
+    font-weight: 300;
+  }
+  .small {
+    font-size: 0.9375rem;
+  }
+  .locs {
+    display: grid;
+    gap: 2.25rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+  .locs h3 {
+    font-size: 1.125rem;
+    margin-block-end: 0.6rem;
+  }
+  address {
+    font-style: normal;
+    color: var(--text-muted);
+    margin-block-end: 0.75rem;
+  }
+  .locs p {
+    margin-block-end: 0.5rem;
+  }
+  .locs a {
+    text-decoration: none;
+  }
+  .locs a:hover {
+    text-decoration: underline;
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    margin-block-start: 3.5rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--border);
+  }
+  .bottom ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .bottom a,
+  .linkbtn {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .bottom a:hover,
+  .linkbtn:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+  @media (min-width: 64rem) {
+    .top {
+      grid-template-columns: 18rem minmax(0, 1fr);
+    }
+  }
+</style>

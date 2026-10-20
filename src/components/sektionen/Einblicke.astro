@@ -1,0 +1,82 @@
+---
+// Platzhalterflächen im richtigen Format. Gäste, Team und Räume einer bestimmten Filiale werden nie
+// als Stockfoto gezeigt, sondern erst nach dem Fotoshooting (docs/plan.md, Abschnitt 12).
+const bilder = [
+  { c: 'a', t: 'Gäste beim Essen' },
+  { c: 'b', t: 'Sushitheke' },
+  { c: 'c', t: 'Grill' },
+  { c: 'd', t: 'Gastraum' },
+  { c: 'e', t: 'Teller und Details' },
+];
+---
+<section class="section paper" aria-labelledby="einblicke-title">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Einblicke</p>
+      <h2 id="einblicke-title" class="h2">So sieht ein Abend bei Yumini aus.</h2>
+    </div>
+
+    <ul class="mosaik">
+      {bilder.map((b) => (
+        <li class={`tile ${b.c}`}>
+          <div class="ph" aria-hidden="true">
+            <span class="circ"></span>
+            <span class="fehlt">Foto: {b.t} [[FEHLT]]</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: grid;
+    gap: 0.75rem;
+    margin-block-end: 2.5rem;
+  }
+  .mosaik {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: clamp(9rem, 28vw, 15rem);
+  }
+  .tile {
+    overflow: clip;
+    border-radius: var(--r3);
+  }
+  .a { grid-column: span 2; }
+  .ph {
+    position: relative;
+    display: grid;
+    place-items: center;
+    block-size: 100%;
+    background: linear-gradient(160deg, #1b2420, #0a0f0d);
+    color: var(--text-muted);
+    transition: transform 0.6s var(--ease);
+  }
+  .tile:hover .ph {
+    transform: scale(1.04);
+  }
+  .circ {
+    position: absolute;
+    inline-size: 46%;
+    aspect-ratio: 1;
+    max-block-size: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(217 33 41 / 0.5), rgb(217 33 41 / 0.08) 70%);
+  }
+  .ph .fehlt {
+    position: relative;
+    font-size: 0.75rem;
+    white-space: normal;
+    text-align: center;
+    margin: 0.75rem;
+  }
+  @media (min-width: 52rem) {
+    .mosaik {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .a { grid-column: span 2; grid-row: span 2; }
+  }
+</style>

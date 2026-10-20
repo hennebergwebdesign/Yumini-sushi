@@ -1,0 +1,46 @@
+/*
+  Designtokens Yumini. Quelle: Designsystem „Yumini" Version 2 (Claude Design).
+  Werte mit "provisorisch" stehen nicht im Designsystem, das mir vorliegt (CLAUDE.md), und
+  werden beim Abgleich mit dem Designsystem ersetzt.
+*/
+:root {
+  /* Flächen */
+  --black: #030504;
+  --surface: #0b100e;            /* provisorisch: leicht angehobene dunkle Fläche */
+  --surface-2: #131a17;          /* provisorisch: Karten auf dunkel */
+  --paper: #f5f1ec;              /* provisorisch: helle Inhaltssektion */
+  --paper-2: #ebe5dd;            /* provisorisch */
+
+  /* Text */
+  --text: #f7f5f2;
+  --text-muted: #b4bbb7;         /* provisorisch, 9,5:1 auf black */
+  --ink: #111513;
+  --ink-muted: #4a524e;          /* provisorisch, 7,6:1 auf paper */
+
+  /* Rot und Akzent */
+  --brand-red: #d92129;
+  --red-deep: #b81b22;
+  --coral-soft: #ff8f86;         /* provisorisch */
+
+  /* Linien */
+  --border: rgb(255 255 255 / 0.14);
+  --border-ink: rgb(17 21 19 / 0.16);
+
+  /* Schrift */
+  --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Radien */
+  --r1: 4px;
+  --r2: 8px;
+  --r3: 12px;
+  --r4: 16px;
+
+  /* Raum */
+  --space-section: clamp(4.5rem, 9vw, 8rem);
+  --space-tight: clamp(2rem, 4vw, 3.5rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --max: 76rem;
+
+  /* Bewegung */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

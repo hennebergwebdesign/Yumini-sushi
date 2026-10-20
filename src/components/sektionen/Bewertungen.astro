@@ -1,0 +1,75 @@
+---
+import Button from '../ui/Button.astro';
+import { standorte } from '../../lib/standorte';
+// Keine Zitate erfunden. Die Stimmen kommen später serverseitig aus Google Places, je Standort mit Stand.
+---
+<section id="bewertungen" class="section dunkel" aria-labelledby="bew-title">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Bewertungen</p>
+        <h2 id="bew-title" class="h2">Stimmen unserer Gäste.</h2>
+      </div>
+      <Button href="/#vertrauen" variant="outline">Alle Bewertungen</Button>
+    </div>
+
+    <ul class="cards">
+      {standorte.slice(0, 3).map((s) => (
+        <li class="card">
+          <p class="stars" aria-hidden="true">★★★★★</p>
+          <p class="quote"><span class="fehlt">[[FEHLT: Stimme von Google]]</span></p>
+          <p class="who muted">Gast, {s.name}, Quelle und Datum <span class="fehlt">[[FEHLT]]</span></p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .dunkel {
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: end;
+    justify-content: space-between;
+    margin-block-end: 2.5rem;
+  }
+  .head .h2 {
+    margin-block-start: 0.75rem;
+  }
+  .cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+  .card {
+    display: grid;
+    gap: 1rem;
+    align-content: space-between;
+    min-block-size: 13rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r3);
+    background: var(--surface-2);
+    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--coral-soft);
+  }
+  .stars {
+    color: var(--coral-soft);
+    letter-spacing: 0.12em;
+  }
+  .quote {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+  .who {
+    font-size: 0.875rem;
+  }
+</style>

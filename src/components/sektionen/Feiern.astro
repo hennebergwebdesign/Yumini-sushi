@@ -1,0 +1,101 @@
+---
+import Button from '../ui/Button.astro';
+const anlaesse = [
+  { t: 'Geburtstag', x: 'Bildplatz und Text vom Inhaber' },
+  { t: 'Firmenfeier', x: 'Bildplatz und Text vom Inhaber' },
+  { t: 'Gruppen ab 16 Personen', x: 'Anfrage geht direkt an den gewählten Standort' },
+];
+---
+<section id="feiern" class="section dunkel" aria-labelledby="feiern-title">
+  <div class="wrap grid">
+    <div class="visual" aria-hidden="true">
+      <div class="disc"></div>
+      <svg viewBox="0 0 100 100" class="a"><use href="#maki" width="100" height="100" /></svg>
+      <svg viewBox="0 0 140 90" class="b"><use href="#nigiri" width="140" height="90" /></svg>
+      <svg viewBox="0 0 100 100" class="c"><use href="#maki" width="100" height="100" /></svg>
+      <span class="fehlt cap">Foto Feier [[FEHLT]]</span>
+    </div>
+
+    <div class="copy">
+      <p class="eyebrow">Feiern und Gruppen</p>
+      <h2 id="feiern-title" class="h2">Feiern bei Yumini.</h2>
+      <ul class="list">
+        {anlaesse.map((a) => (
+          <li>
+            <h3>{a.t}</h3>
+            <p class="muted">{a.x}</p>
+          </li>
+        ))}
+      </ul>
+      <Button href="/feiern/" variant="primary">Feier anfragen</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dunkel {
+    background: var(--black);
+  }
+  .grid {
+    display: grid;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .copy {
+    display: grid;
+    gap: 1.75rem;
+    justify-items: start;
+  }
+  .list {
+    display: grid;
+    inline-size: 100%;
+  }
+  .list li {
+    padding-block: 1.1rem;
+    border-block-start: 1px solid var(--border);
+    transition: padding-inline-start 0.3s var(--ease);
+  }
+  .list li:last-child {
+    border-block-end: 1px solid var(--border);
+  }
+  .list li:hover {
+    padding-inline-start: 0.75rem;
+  }
+  .list h3 {
+    font-size: 1.25rem;
+    margin-block-end: 0.2rem;
+  }
+  .visual {
+    position: relative;
+    aspect-ratio: 1;
+    max-inline-size: 30rem;
+    inline-size: 100%;
+    margin-inline: auto;
+  }
+  .disc {
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    border: 1.5px solid var(--coral-soft);
+    background: radial-gradient(circle, rgb(217 33 41 / 0.28), rgb(217 33 41 / 0.06) 70%);
+  }
+  .visual svg {
+    position: absolute;
+    filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.5));
+  }
+  .a { inline-size: 34%; inset-block-start: 22%; inset-inline-start: 18%; rotate: -10deg; }
+  .b { inline-size: 42%; inset-block-start: 46%; inset-inline-start: 40%; rotate: 8deg; }
+  .c { inline-size: 28%; inset-block-start: 16%; inset-inline-start: 54%; rotate: 14deg; }
+  .cap {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+  }
+  @media (min-width: 62rem) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+  }
+</style>

@@ -1,0 +1,149 @@
+---
+import Logo from './ui/Logo.astro';
+import Button from './ui/Button.astro';
+
+const nav = [
+  { href: '/speisekarte/', label: 'Speisekarte' },
+  { href: '/#standorte', label: 'Standorte' },
+  { href: '/#angebote', label: 'Angebote' },
+  { href: '/#feiern', label: 'Feiern' },
+  { href: '/karriere/', label: 'Karriere' },
+];
+---
+<header class="bar">
+  <div class="pill">
+    <a class="brand" href="/" aria-label="Yumini, zur Startseite"><Logo /></a>
+
+    <nav class="desk" aria-label="Hauptnavigation">
+      <ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="cta">
+      <Button href="/reservieren/" variant="outline">Tisch reservieren</Button>
+    </div>
+
+    <details class="mob">
+      <summary aria-label="Menü öffnen"><span></span><span></span></summary>
+      <nav aria-label="Mobile Navigation">
+        <ul>
+          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a class="mobres" href="/reservieren/">Tisch reservieren</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .bar {
+    position: fixed;
+    inset-block-start: 1rem;
+    inset-inline: 0;
+    z-index: 50;
+    padding-inline: var(--gutter);
+    pointer-events: none;
+  }
+  .pill {
+    pointer-events: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    max-inline-size: var(--max);
+    margin-inline: auto;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgb(3 5 4 / 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .brand {
+    text-decoration: none;
+    display: inline-flex;
+  }
+  .desk ul {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .desk a {
+    display: block;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .desk a:hover {
+    color: var(--text);
+    background: rgb(255 255 255 / 0.08);
+  }
+  .cta :global(.btn) {
+    min-block-size: 2.75rem;
+    border-radius: 999px;
+  }
+  .mob {
+    display: none;
+  }
+  summary {
+    list-style: none;
+    display: grid;
+    place-items: center;
+    gap: 5px;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    align-content: center;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary span {
+    display: block;
+    inline-size: 1.1rem;
+    block-size: 2px;
+    background: var(--text);
+  }
+  .mob nav {
+    position: absolute;
+    inset-block-start: calc(100% + 0.5rem);
+    inset-inline: 0;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r4);
+    background: rgb(3 5 4 / 0.96);
+  }
+  .mob li a {
+    display: block;
+    padding: 0.9rem 0.75rem;
+    text-decoration: none;
+    font-size: 1.125rem;
+  }
+  .mob .mobres {
+    margin-block-start: 0.5rem;
+    border-radius: var(--r2);
+    background: var(--brand-red);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  @media (max-width: 62rem) {
+    .desk,
+    .cta {
+      display: none;
+    }
+    .mob {
+      display: block;
+    }
+    .pill {
+      padding-block: 0.5rem;
+      padding-inline: 1.25rem 0.5rem;
+    }
+  }
+</style>

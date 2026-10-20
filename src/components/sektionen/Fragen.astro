@@ -1,0 +1,128 @@
+---
+// Nur belegte Antworten stehen im Text. Alles andere bleibt sichtbar offen.
+const fragen = [
+  {
+    q: 'Sind Getränke im Preis enthalten?',
+    a: 'Nein. All you can eat gilt für Speisen. Getränke bestellen Sie zusätzlich.',
+  },
+  {
+    q: 'Was gilt bei „Dinner Only“?',
+    a: 'Gerichte mit der Kennzeichnung „Dinner Only“ gibt es nur abends. Sie sind in der Speisekarte so markiert.',
+  },
+  {
+    q: 'Was passiert, wenn ich Speisen übrig lasse?',
+    a: 'Für nicht aufgegessene Speisen berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird gespendet.',
+  },
+  {
+    q: 'Wie lange darf ich am Tisch bleiben?',
+    a: 'Eine Reservierung gilt für zwei Stunden, so lange dauert auch das All you can eat.',
+  },
+  {
+    q: 'Gibt es Parkplätze?',
+    a: 'In Lüdenscheid haben wir eigene Parkplätze. Für die anderen Standorte folgt die Anfahrt auf der jeweiligen Standortseite.',
+  },
+  { q: 'Gibt es Preise für Kinder?', a: null },
+  { q: 'Welche Allergene sind enthalten?', a: null },
+  { q: 'Gibt es vegetarische Gerichte?', a: null },
+  { q: 'Muss ich reservieren?', a: null },
+  { q: 'Wie funktionieren Gruppen ab 16 Personen?', a: null },
+];
+---
+<section id="fragen" class="section paper" aria-labelledby="fragen-title">
+  <div class="wrap grid">
+    <div class="intro">
+      <p class="eyebrow">Fragen</p>
+      <h2 id="fragen-title" class="h2">Gut zu wissen.</h2>
+      <p class="muted lead">Etwas anderes? Rufen Sie den Standort an, die Nummern stehen im Fuß der Seite.</p>
+    </div>
+
+    <div class="list">
+      {fragen.map((f, i) => (
+        <details name="faq" open={i === 0}>
+          <summary>
+            <span>{f.q}</span>
+            <i aria-hidden="true"></i>
+          </summary>
+          <div class="ans">
+            {f.a ? <p class="muted">{f.a}</p> : <p><span class="fehlt">[[FEHLT: Antwort vom Inhaber]]</span></p>}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .intro {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  details {
+    border-block-start: 1px solid var(--border-ink);
+  }
+  details:last-child {
+    border-block-end: 1px solid var(--border-ink);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    font-size: 1.1875rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover {
+    color: var(--brand-red);
+  }
+  summary i {
+    position: relative;
+    flex: none;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+  }
+  summary i::before,
+  summary i::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    inline-size: 0.7rem;
+    block-size: 1.5px;
+    background: currentColor;
+    translate: -50% -50%;
+    transition: rotate 0.3s var(--ease);
+  }
+  summary i::after {
+    rotate: 90deg;
+  }
+  details[open] summary i::after {
+    rotate: 0deg;
+  }
+  .ans {
+    padding-block-end: 1.5rem;
+    max-inline-size: 44rem;
+  }
+  @media (min-width: 62rem) {
+    .grid {
+      grid-template-columns: 20rem 1fr;
+      gap: 6rem;
+    }
+    .intro {
+      position: sticky;
+      inset-block-start: 7rem;
+    }
+  }
+</style>
