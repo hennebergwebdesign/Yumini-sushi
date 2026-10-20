@@ -1,0 +1,6 @@
+---
+import { teile } from '../../lib/karriere';
+interface Props { t: string }
+const { t } = Astro.props;
+---
+{teile(t).map((p) => (p.fehlt ? <span class="fehlt">{p.t}</span> : p.t))}

@@ -3,6 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Button from '../components/ui/Button.astro';
 import ReservierungsTool from '../components/ReservierungsTool.astro';
+import Lokal from '../components/sektionen/Lokal.astro';
 import PreisPanel from '../components/PreisPanel.astro';
 import { standorte, ab, routeUrl, type Standort } from '../lib/standorte';
 import { gerichte, fotos, type GerichtId } from '../lib/bilder';
@@ -105,6 +106,8 @@ const beschreibung = `All you can eat Sushi und Grill in ${s.name}, ${s.strasse}
       <PreisPanel s={s} />
     </div>
   </section>
+
+  <Lokal s={s} />
 
   <section class="karte" aria-labelledby="karte-title">
     <div class="wrap">

@@ -38,7 +38,7 @@ Gebaut wird erst, wenn dieser Plan und die Referenzen freigegeben sind.
 | --- | --- |
 | Projektart | Homepage für alle Standorte, dazu Reservierungssystem und Karriere Landingpage |
 | Primäre Handlung | Tisch reservieren |
-| Vertrauen | Bewertungen von Google, Trustpilot und weiteren Portalen (genannt: Kolibri) mit Logos schon im Heldenbereich |
+| Vertrauen | Bewertungen von Google und Trustpilot (Kolibri entfällt, Entscheidung 20.10.2026) mit Logos schon im Heldenbereich |
 | Reservierung | echte Verfügbarkeit, Tischplan, Dashboard für die Mitarbeiter |
 | Zeitfenster | alle 15 Minuten |
 | Personen | 1 bis 15 online nach Verfügbarkeit, darüber eine Plusfunktion. Realistisch liegt die Grenze meist bei 10 |
@@ -107,7 +107,7 @@ Navigation: Speisekarte, Standorte, Angebote, Feiern, Karriere. Rechts „Tisch 
 | # | Abschnitt | Inhalt | Handlung |
 | --- | --- | --- | --- |
 | 0 | Kopfzeile | Logo, Navigation, „Tisch reservieren" | Tisch reservieren |
-| 1 | Held, volle Bildschirmhöhe | Foto mit Sushi, roter Kreis aus dem Logo, „Yumini" in 500 und „Japanese Sushi & Grill" in 300. Eine Zeile zum Angebot (All you can eat, 2 Stunden, 5 Standorte). **Vertrauen direkt unter den Buttons:** Logos von Google, Trustpilot und Kolibri mit Sternewert, Anzahl und Stand | Tisch reservieren, Speisekarte ansehen |
+| 1 | Held, volle Bildschirmhöhe | Foto mit Sushi, roter Kreis aus dem Logo, „Yumini" in 500 und „Japanese Sushi & Grill" in 300. Eine Zeile zum Angebot (All you can eat, 2 Stunden, 5 Standorte). **Vertrauen direkt unter den Buttons:** Logos von Google und Trustpilot mit Sternewert, Anzahl und Stand | Tisch reservieren, Speisekarte ansehen |
 | 2 | So funktioniert All you can eat | Zwei Stunden Ring, drei Schritte: Platz nehmen, am Tablet bestellen (6 Speisen je Runde mittags, 5 abends, je Person), zwei Stunden genießen. Preise Mittag, Abend, Wochenende, Kinder. Hinweis zu Resten (1,00 € je Stück Sushi und Salat, 2,00 € je warmes Gericht, Erlös wird gespendet). Getränke nicht inklusive | Preise im Detail |
 | 3 | Standorte | fünf Karten mit Foto, Adresse, Telefon, heutigen Öffnungszeiten, „Jetzt geöffnet". Daneben die NRW Karte mit fünf roten Punkten, Hover über eine Karte lässt ihren Punkt aufleuchten. Keine Google Maps, also kein Consent nötig | Hier reservieren, Route |
 | 4 | Reservierung im Tablet | Tablet im Querformat, gerade, darin das echte Tool (Abschnitt 8). Auf dem Handy fällt der Rahmen weg, das Tool nimmt die volle Breite | Tisch reservieren |

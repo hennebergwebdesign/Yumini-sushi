@@ -89,6 +89,14 @@ dazu `Menu` Auszeichnung. Datenquelle `src/data/speisekarte.json` mit Fotos in `
 Stichwort abgeleitet und gehören stichprobenartig geprüft. 24 neue Gerichte in Lüdenscheid und Siegen haben kein Foto. Die Fotos enthalten teils eingebrannte
 Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV) liegen in der Git Historie (Commit e9418d4), das Erzeugungsskript nicht im Repository.
 
+**Stand 4 (20.10.2026): Mockup, Karriere, Feiern, Bilder, Bewertungen.**
+
+1. Speisekarten Mockup `src/components/ui/KatalogMockup.astro`: aufgeschlagene Karte mit echten Gerichten (Bochum) und geschlossenes Exemplar mit Lesebändchen, nur HTML und CSS, skaliert mit `cqw`. Die gedruckte Karte aus Claude Design ersetzt später nur den Inhalt.
+2. `/karriere/` komplett: Held, Funnel in fünf Schritten (Standort, Bereich, Erfahrung, Eintritt, Kontakt, ohne Lebenslauf), sechs Stellenanzeigen (`src/lib/karriere.ts`, Auf Stelle bewerben springt vorbelegt in den Funnel), Vorteile, Ablauf eines Dienstes, Team Platzhalter, Ablauf nach der Bewerbung, Fragen. Ansprache „du" ist ein Entwurf (offen). Stellen, Konditionen und Zeiten sind erfunden und als `[[FEHLT]]` markiert, deshalb noch keine `JobPosting` Auszeichnung. Der Funnel überträgt nichts (Prototyp).
+3. `/feiern/` mit Platzhaltertexten für Geburtstag, Firmenfeier und Gruppen und einer Anfrage (überträgt nichts). Dieselben Texte stehen im Abschnitt Feiern der Startseite.
+4. Raumbilder: Unsplash Symbolbilder (`src/assets/raeume/`, `raeume` in `bilder.ts`), auf Wunsch des Inhabers statt Platzhalter, im Bild als „Symbolbild" beschriftet. Es sind KEINE Aufnahmen der Standorte, echte Fotos von Google Maps oder der Bestandsseite waren nicht erreichbar. Wird nach dem Shooting je Standort ersetzt. Eingebaut im Abschnitt Einblicke und als Abschnitt „Im Lokal" auf den Standortseiten.
+5. Bewertungen: Kolibri entfernt. Google und Trustpilot mit Logo (Simple Icons) und gefüllten Sternen, Werte in `src/lib/bewertungen.ts`. Google 4,4 aus 1.927 Bewertungen ist VORLÄUFIG (Quelle reviewhero.io, nicht gegen die Google Profile geprüft). Trustpilot hat keinen belegten Wert und bleibt `[[FEHLT]]`.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
@@ -189,3 +197,4 @@ Rechtstexte, 404.
 5. **20.10.2026** Zweite Runde: Kopfzeile, Drehteller Held, interaktives Tablet, Standortseiten mit SEO, Archivo Überschriften, keine Verläufe,
    Speisekarte in Claude Design. Geprüft: Build grün (6 Seiten), Chromium auf 1440 und 390 px, Tablet Durchlauf mit Eingaben,
    keine Konsolenfehler, kein horizontales Scrollen.
+6. **20.10.2026** Dritte Runde: Speisekarten Mockup, Karriereseite mit Funnel, Feiern Seite, Symbolbilder Gastraum, Bewertungen Google und Trustpilot. Geprüft: Build grün (14 Seiten), Chromium 1440 und 390 px, Funnel durchgespielt, keine Konsolenfehler, kein horizontales Scrollen.

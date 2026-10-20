@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import Sterne from '../ui/Sterne.astro';
 import { fotos, kategorien } from '../../lib/bilder';
+import { bewertungen, komma } from '../../lib/bewertungen';
 
-// Bewertungswerte liegen noch nicht vor (docs/quellen/bewertungen: keine belegten Zahlen).
-// Sterne bleiben als Umriss, bis echte Werte aus Google, Trustpilot und Kolibri kommen.
-const plattformen = ['Google', 'Trustpilot', 'Kolibri'];
+// Werte und Quellen in src/lib/bewertungen.ts. Google ist vorläufig, Trustpilot hat noch keinen belegten Wert.
 const orbit = [
   { bild: kategorien.sushi, name: 'Sushi' },
   { bild: kategorien.grill, name: 'Grill' },
@@ -28,19 +28,17 @@ const orbit = [
       </div>
 
       <ul class="trust" aria-label="Bewertungen unserer Gäste">
-        {plattformen.map((p) => (
+        {bewertungen.map((p) => (
           <li>
-            <a href="#bewertungen" class="widget">
-              <span class="logo" aria-hidden="true">{p[0]}</span>
+            <a href="#bewertungen" class="widget" aria-label={p.wert ? `${p.name}: ${komma(p.wert)} von 5 Sternen${p.anzahl ? `, ${p.anzahl.toLocaleString('de-DE')} Bewertungen` : ''}` : `${p.name}: Bewertung folgt`}>
+              <span class="logo" aria-hidden="true"><img src={p.logo} alt="" width="20" height="20" /></span>
               <span class="meta">
-                <b>{p}</b>
-                <span class="stars" aria-hidden="true">
-                  {[0, 1, 2, 3, 4].map(() => (
-                    <svg viewBox="0 0 20 20"><path d="M10 1.8l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L10 14.3 5 17l1.2-5.6L2 7.6l5.6-.6z" /></svg>
-                  ))}
-                </span>
+                <b>{p.name}</b>
+                <Sterne wert={p.wert} groesse="0.8rem" />
               </span>
-              <span class="val"><span class="fehlt">[[FEHLT]]</span></span>
+              <span class="val">
+                {p.wert ? <><b>{komma(p.wert)}</b>{p.anzahl && <small>{p.anzahl.toLocaleString('de-DE')} Bewertungen</small>}</> : <span class="fehlt">[[FEHLT]]</span>}
+              </span>
             </a>
           </li>
         ))}
@@ -134,15 +132,13 @@ const orbit = [
   .logo {
     display: grid;
     place-items: center;
-    inline-size: 1.9rem;
-    block-size: 1.9rem;
+    flex: none;
+    inline-size: 2rem;
+    block-size: 2rem;
     border-radius: 50%;
-    border: 1px dashed var(--border);
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+    background: #fff;
   }
+  .logo img { inline-size: 1.15rem; block-size: 1.15rem; }
   .meta {
     display: grid;
     line-height: 1.1;
@@ -151,17 +147,9 @@ const orbit = [
     font-size: 0.8125rem;
     font-weight: 500;
   }
-  .stars {
-    display: flex;
-    gap: 1px;
-  }
-  .stars svg {
-    inline-size: 0.75rem;
-    block-size: 0.75rem;
-    fill: none;
-    stroke: var(--coral-soft);
-    stroke-width: 1.4;
-  }
+  .val { display: grid; line-height: 1.1; }
+  .val b { font-size: 1rem; font-weight: 600; }
+  .val small { font-size: 0.6875rem; color: var(--text-muted); }
   .val .fehlt {
     font-size: 0.65rem;
     padding: 0 0.35em;
@@ -238,7 +226,7 @@ const orbit = [
     }
     .trust {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.4rem;
     }
     .widget {
@@ -249,7 +237,7 @@ const orbit = [
       text-align: center;
     }
     .meta { justify-items: center; }
-    .stars svg { inline-size: 0.62rem; block-size: 0.62rem; }
+    .val { justify-items: center; }
     .actions :global(.btn) {
       flex: 1 1 100%;
     }

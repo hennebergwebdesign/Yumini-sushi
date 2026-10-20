@@ -1,0 +1,143 @@
+---
+// Speisekarten Mockup: aufgeschlagene Karte mit echten Gerichten aus der Karte Bochum und geschlossenes Exemplar mit Lesebändchen.
+// Alles aus HTML und CSS, skaliert über Container Einheiten (cqw). Die gedruckte Karte folgt aus Claude Design,
+// bis dahin sind Seitenaufbau und Gerichte Platzhalter in der Anmutung der späteren Karte.
+import { karte, bildUrl, type Gericht } from '../../lib/speisekarte';
+
+const bochum = karte('bochum');
+const hole = (namen: string[]) => namen.map((n) => bochum.find((g) => g.name === n)).filter((g): g is Gericht => !!g && !!g.bild);
+const links = hole(['Sake', 'Maguro', 'Ebi', 'Unagi']);
+const rechts = hole(['Yaki Tori', 'Ebi Tempura', 'Gyoza', 'Tempura California Maki']);
+---
+<div class="stage" aria-hidden="true">
+  <span class="floor"></span>
+
+  <div class="open">
+    <div class="block"></div>
+    <div class="page l">
+      <header><small>Kapitel 01</small><h4>Sushi</h4><i class="rule"></i></header>
+      <ul class="grid">
+        {links.map((g) => (
+          <li>
+            <span class="photo"><img src={bildUrl(g)!} alt="" width="120" height="120" loading="lazy" decoding="async" /></span>
+            <b>{g.name}</b><em>{g.desc}</em><span class="nr">{g.nr}</span>
+          </li>
+        ))}
+      </ul>
+      <footer><span>12</span><span>Yumini</span></footer>
+    </div>
+    <div class="page r">
+      <header><small>Kapitel 02</small><h4>Warm Dishes</h4><i class="rule"></i></header>
+      <ul class="rows">
+        {rechts.map((g) => (
+          <li>
+            <span class="photo"><img src={bildUrl(g)!} alt="" width="120" height="120" loading="lazy" decoding="async" /></span>
+            <span class="t"><b>{g.name}</b><em>{g.desc}</em></span>
+            <span class="nr">{g.nr}</span>
+          </li>
+        ))}
+      </ul>
+      <footer><span>Yumini</span><span>13</span></footer>
+    </div>
+    <span class="gutter"></span>
+  </div>
+
+  <div class="closed">
+    <span class="back"></span>
+    <span class="cover">
+      <img class="logo" src="/images/logo.svg" alt="" width="200" height="70" />
+      <b>Speisekarte</b>
+      <small>Japanese Sushi &amp; Grill</small>
+    </span>
+    <span class="ribbon"></span>
+  </div>
+</div>
+
+<style>
+  .stage {
+    position: relative;
+    container-type: inline-size;
+    inline-size: min(100%, 38rem);
+    aspect-ratio: 1.2;
+    margin-inline: auto;
+    perspective: 1800px;
+    perspective-origin: 50% 30%;
+  }
+  .floor {
+    position: absolute; inset: 70% 4% 2% 4%;
+    border-radius: 50%; background: #000; filter: blur(3.2cqw); opacity: 0.6;
+  }
+
+  /* aufgeschlagene Karte */
+  .open {
+    position: absolute; inset: 7% auto auto 19%;
+    inline-size: 79%; aspect-ratio: 1.5;
+    display: grid; grid-template-columns: 1fr 1fr;
+    transform: rotateX(16deg) rotateZ(-3deg);
+    transform-style: preserve-3d;
+    transition: transform 0.8s var(--ease);
+  }
+  .stage:hover .open { transform: rotateX(10deg) rotateZ(-1.5deg) translateY(-1.5%); }
+  .block {
+    position: absolute; inset: 1.2% -1.4% -3.2% -1.4%;
+    border-radius: 0.9cqw; background: #101312;
+    box-shadow: 0 1.2cqw 0 #0a0c0b, 0 2.2cqw 3cqw rgb(0 0 0 / 0.55);
+  }
+  .page {
+    position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 2cqw;
+    padding: 4.4cqw 4cqw 2.4cqw; background: #f6f2ec; color: #1b1c1a;
+    font-size: 1.5cqw;
+  }
+  .page.l { border-radius: 0.8cqw 0 0 0.8cqw; box-shadow: inset -3.4cqw 0 3cqw -2.2cqw rgb(60 45 25 / 0.32), -0.15cqw 0.9cqw 0 #e9e2d6, -0.3cqw 1.2cqw 0 #fbf9f5, -0.45cqw 1.5cqw 0 #ddd5c8; }
+  .page.r { border-radius: 0 0.8cqw 0.8cqw 0; box-shadow: inset 3.4cqw 0 3cqw -2.2cqw rgb(60 45 25 / 0.32), 0.15cqw 0.9cqw 0 #e9e2d6, 0.3cqw 1.2cqw 0 #fbf9f5, 0.45cqw 1.5cqw 0 #ddd5c8; }
+  .gutter { position: absolute; inset-block: 0; inset-inline-start: 50%; inline-size: 0.2cqw; translate: -50% 0; background: rgb(40 28 12 / 0.35); }
+
+  header small { display: block; font-size: 1.15cqw; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #b81b22; }
+  header h4 { margin-block: 0.4cqw 1.2cqw; font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: 3.2cqw; line-height: 1; letter-spacing: -0.01em; }
+  .rule { display: block; inline-size: 5cqw; block-size: 0.35cqw; background: #d92129; }
+  footer { display: flex; justify-content: space-between; font-size: 1.1cqw; letter-spacing: 0.18em; text-transform: uppercase; color: #8b857a; }
+
+  .photo { display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%; background: #ece5da; }
+  .photo img { inline-size: 88%; block-size: 88%; object-fit: contain; filter: drop-shadow(0 0.6cqw 0.7cqw rgb(0 0 0 / 0.28)); }
+  b { font-weight: 600; }
+  em { font-style: normal; color: #6b665d; }
+  .nr { display: grid; place-items: center; min-inline-size: 3cqw; block-size: 3cqw; padding-inline: 0.5cqw; border-radius: 99px; background: #1b1c1a; color: #f6f2ec; font-size: 1.25cqw; font-weight: 600; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8cqw 2.4cqw; align-content: start; }
+  .grid li { position: relative; display: grid; gap: 0.25cqw; justify-items: start; }
+  .grid .photo { inline-size: 100%; margin-block-end: 0.8cqw; }
+  .grid b { font-size: 1.75cqw; }
+  .grid em { font-size: 1.35cqw; }
+  .grid .nr { position: absolute; inset: 0 auto auto 0; background: #d92129; }
+
+  .rows { display: grid; align-content: start; gap: 1.4cqw; }
+  .rows li { display: grid; grid-template-columns: 7.6cqw 1fr auto; gap: 1.6cqw; align-items: center; padding-block-end: 1.4cqw; border-block-end: 0.15cqw solid #dcd4c7; }
+  .rows li:last-child { border: 0; }
+  .rows .t { display: grid; gap: 0.1cqw; }
+  .rows b { font-size: 1.75cqw; }
+  .rows em { font-size: 1.35cqw; }
+
+  /* geschlossenes Exemplar */
+  .closed {
+    position: absolute; inset: auto auto 3% 0;
+    inline-size: 32%; aspect-ratio: 0.7;
+    transform: rotateX(8deg) rotateY(14deg) rotateZ(-8deg); transform-origin: 50% 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s var(--ease);
+  }
+  .stage:hover .closed { transform: rotateX(6deg) rotateY(8deg) rotateZ(-5deg) translateY(-2%); }
+  .back { position: absolute; inset: 0.8cqw -1.1cqw -1.1cqw 1cqw; border-radius: 0.8cqw; background: #070908; box-shadow: 0 2.5cqw 4cqw rgb(0 0 0 / 0.6); }
+  .cover {
+    position: absolute; inset: 0; display: grid; align-content: space-between; justify-items: center; padding: 5cqw 3cqw 4.2cqw;
+    border-radius: 0.5cqw 0.9cqw 0.9cqw 0.5cqw; background: #0e1110;
+    box-shadow: inset 1.6cqw 0 1.4cqw -1cqw rgb(255 255 255 / 0.07), inset 0.3cqw 0 0 rgb(255 255 255 / 0.12), inset -0.2cqw -0.2cqw 0.6cqw rgb(0 0 0 / 0.8);
+    text-align: center;
+  }
+  .cover::after { content: ''; position: absolute; inset: 1.6cqw; border: 0.15cqw solid rgb(255 255 255 / 0.1); border-radius: 0.4cqw; pointer-events: none; }
+  .logo { inline-size: 80%; block-size: auto; }
+  .cover b { font-weight: 500; font-size: 2.6cqw; letter-spacing: 0.03em; text-shadow: 0 -0.1cqw 0 rgb(0 0 0 / 0.9), 0 0.1cqw 0 rgb(255 255 255 / 0.12); }
+  .cover small { font-size: 1.25cqw; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: #aab1ac; }
+  .ribbon { position: absolute; inset: auto 22% -5% auto; inline-size: 3.2%; block-size: 14%; background: #d92129; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%); box-shadow: 0 0.4cqw 0.6cqw rgb(0 0 0 / 0.5); }
+
+  @media (prefers-reduced-motion: reduce) { .open, .closed { transition: none; } }
+</style>
