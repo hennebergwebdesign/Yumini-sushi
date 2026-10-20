@@ -69,12 +69,12 @@ export const stellen: Stelle[] = [
 ];
 
 export const vorteile = [
-  { t: 'Faire Bezahlung', x: 'Pünktlich und transparent. Konkreter Lohn je Stelle: [[FEHLT: Spanne vom Inhaber]].' },
-  { t: 'Planbare Dienste', x: 'Dein Dienstplan steht rechtzeitig: [[FEHLT: Frist vom Inhaber]].' },
-  { t: 'Mitarbeiteressen', x: 'Wer bei Yumini arbeitet, isst auch dort. [[FEHLT: Regelung vom Inhaber]]' },
-  { t: 'Gute Einarbeitung', x: 'Du lernst Abläufe, Hygiene und Tablet System von erfahrenen Kollegen.' },
-  { t: 'Ein Team, fünf Standorte', x: 'Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wechsel und Aufstieg sind möglich: [[FEHLT: bestätigen]].' },
-  { t: 'Bewerben ohne Lebenslauf', x: 'Vier Klicks und drei Felder. Alles Weitere klären wir im Gespräch.' },
+  { icon: 'lohn', t: 'Faire Bezahlung', x: 'Pünktlich und transparent. Konkreter Lohn je Stelle: [[FEHLT: Spanne vom Inhaber]].' },
+  { icon: 'plan', t: 'Planbare Dienste', x: 'Dein Dienstplan steht rechtzeitig: [[FEHLT: Frist vom Inhaber]].' },
+  { icon: 'essen', t: 'Mitarbeiteressen', x: 'Wer bei Yumini arbeitet, isst auch dort. [[FEHLT: Regelung vom Inhaber]]' },
+  { icon: 'lernen', t: 'Gute Einarbeitung', x: 'Du lernst Abläufe, Hygiene und Tablet System von erfahrenen Kollegen.' },
+  { icon: 'team', t: 'Ein Team, fünf Standorte', x: 'Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wechsel und Aufstieg sind möglich: [[FEHLT: bestätigen]].' },
+  { icon: 'schnell', t: 'Bewerben ohne Lebenslauf', x: 'Vier Klicks und drei Felder. Alles Weitere klären wir im Gespräch.' },
 ];
 
 // Beispielablauf eines Abenddienstes. Zeiten sind Platzhalter und folgen den echten Öffnungszeiten je Standort.

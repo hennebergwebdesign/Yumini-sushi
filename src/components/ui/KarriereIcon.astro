@@ -1,0 +1,37 @@
+---
+// Eigens gezeichnete Linien Icons für die Vorteile der Karriereseite, 24er Raster, Strich übernimmt currentColor.
+interface Props { name: 'lohn' | 'plan' | 'essen' | 'lernen' | 'team' | 'schnell' }
+const { name } = Astro.props;
+---
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === 'lohn' && (<>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M15.2 9.3a3.7 3.7 0 1 0 0 5.4" />
+    <path d="M7.6 11h5.6M7.6 13.1h5.6" />
+  </>)}
+  {name === 'plan' && (<>
+    <rect x="3.8" y="5.2" width="16.4" height="15" rx="3" />
+    <path d="M3.8 10h16.4M8.5 3.3v3.8M15.5 3.3v3.8" />
+    <path d="m9 15.1 2 2 4-4.2" />
+  </>)}
+  {name === 'essen' && (<>
+    <path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0z" />
+    <path d="m8 9 7.8-5.6M10.8 9.2 18 4.6" />
+    <path d="M8.5 20.3h7" />
+  </>)}
+  {name === 'lernen' && (<>
+    <path d="M2.5 9.5 12 5l9.5 4.5L12 14z" />
+    <path d="M6.5 11.8V16c0 1.3 2.5 2.9 5.5 2.9s5.5-1.6 5.5-2.9v-4.2" />
+    <path d="M21.5 9.5v5.2" />
+  </>)}
+  {name === 'team' && (<>
+    <path d="M12 21s-6.6-5.6-6.6-11A6.6 6.6 0 0 1 12 3.4 6.6 6.6 0 0 1 18.6 10c0 5.4-6.6 11-6.6 11z" />
+    <circle cx="12" cy="10" r="2.4" />
+    <path d="M3 17.5c-.9.6-1.4 1.2-1.4 1.8 0 1.5 4.3 2.7 9.4 2.7M21 17.5c.9.6 1.4 1.2 1.4 1.8" />
+  </>)}
+  {name === 'schnell' && (<>
+    <path d="M6 3.5h8l4 4v13H6z" />
+    <path d="M14 3.5v4h4" />
+    <path d="M3.5 3.5l17 17" />
+  </>)}
+</svg>
