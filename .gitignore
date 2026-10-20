@@ -1,0 +1,8 @@
+.designrecherche/
+.relaunch-inventory/
+.brand-extraktion/
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env
