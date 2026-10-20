@@ -97,6 +97,8 @@ Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV
 4. Raumbilder: Unsplash Symbolbilder (`src/assets/raeume/`, `raeume` in `bilder.ts`), auf Wunsch des Inhabers statt Platzhalter, im Bild als „Symbolbild" beschriftet. Es sind KEINE Aufnahmen der Standorte, echte Fotos von Google Maps oder der Bestandsseite waren nicht erreichbar. Wird nach dem Shooting je Standort ersetzt. Eingebaut im Abschnitt Einblicke und als Abschnitt „Im Lokal" auf den Standortseiten.
 5. Bewertungen: Kolibri entfernt. Google und Trustpilot mit Logo (Simple Icons) und gefüllten Sternen, Werte in `src/lib/bewertungen.ts`. Google 4,4 aus 1.927 Bewertungen ist VORLÄUFIG (Quelle reviewhero.io, nicht gegen die Google Profile geprüft). Trustpilot hat keinen belegten Wert und bleibt `[[FEHLT]]`.
 
+**Stand 5 (20.10.2026): Karriereseite überarbeitet.** Headline in zwei Zeilen, Kennzahlen als große Glaskacheln rechts im Held, Stellen als Bildkarten zum Aufklappen (Bild je Bereich, Raumbilder als Symbolbild gekennzeichnet), sechs Vorteile in drei Spalten mit eigenen Icons (`src/components/ui/KarriereIcon.astro`), Glas Kacheln (`backdrop-filter`) auf flach abgedunkelten Bildgründen, Team mit Bereichsfotos statt Personen (Namen und Fotos `[[FEHLT]]`), Ablauf als Zeitleiste mit CSS Scroll Zeitleisten, CTAs nach jedem Abschnitt. Der Bewerbungsfunnel steht jetzt als letzter Abschnitt vor dem Fuß. Geprüft: Build grün, Chromium 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
