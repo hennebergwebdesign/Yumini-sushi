@@ -1,0 +1,144 @@
+---
+// Vorbild: dunkles Band mit Überschrift links, Plattform Siegeln rechts und großen Kennzahlen darunter.
+// Alle Bewertungswerte fehlen noch und werden aus Google Places und den Profilen geholt, nie geschätzt.
+// Die Plattformnamen stehen als Platzhalter, bis die Original SVG Logos vorliegen.
+const plattformen = ['Google', 'Trustpilot', 'Kolibri'];
+const zahlen = [
+  { wert: '5', einheit: '', text: 'Standorte in NRW' },
+  { wert: '100', einheit: '+', text: 'Speisen im All you can eat' },
+  { wert: '2', einheit: 'Std', text: 'Zeit am Tisch' },
+];
+---
+<section id="vertrauen" class="band" aria-labelledby="vertrauen-title">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="vertrauen-title" class="h2">Das sagen unsere Gäste.</h2>
+      <ul class="badges" aria-label="Bewertungen auf Plattformen">
+        {plattformen.map((p) => (
+          <li class="badge">
+            <span class="logo" aria-hidden="true"><span class="fehlt">Logo</span></span>
+            <span class="name">{p}</span>
+            <span class="stars" aria-hidden="true">★★★★★</span>
+            <span class="val"><span class="fehlt">[[FEHLT: Wert und Stand]]</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <dl class="stats">
+      {zahlen.map((z) => (
+        <div class="stat">
+          <dt class="vh">{z.text}</dt>
+          <dd class="num" aria-hidden="true">{z.wert}<small>{z.einheit}</small></dd>
+          <dd class="txt">{z.text}</dd>
+        </div>
+      ))}
+      <div class="stat">
+        <dd class="num"><span class="fehlt">[[FEHLT]]</span></dd>
+        <dd class="txt">Zahl vom Inhaber, zum Beispiel Gäste im Jahr</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+  }
+  .head {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .head h2 {
+    max-inline-size: 22ch;
+    font-weight: 400;
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .badge {
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    min-inline-size: 9.5rem;
+    padding: 1.1rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r3);
+    background: var(--surface-2);
+    text-align: center;
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .badge:hover {
+    border-color: var(--coral-soft);
+    transform: translateY(-3px);
+  }
+  .logo {
+    display: grid;
+    place-items: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    border-radius: 50%;
+    border: 1px dashed var(--border);
+    margin-block-end: 0.35rem;
+  }
+  .logo .fehlt {
+    font-size: 0.6rem;
+    padding: 0;
+    border: 0;
+  }
+  .name {
+    font-weight: 500;
+  }
+  .stars {
+    color: var(--coral-soft);
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+  }
+  .val {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .stats {
+    margin-block-start: clamp(2.5rem, 5vw, 4.5rem);
+    padding-block-start: clamp(2rem, 4vw, 3rem);
+    border-block-start: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.25rem 1.5rem;
+  }
+  .stat {
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
+    text-align: center;
+  }
+  .num {
+    font-size: clamp(2.75rem, 6vw, 4.75rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .num small {
+    font-size: 0.5em;
+    font-weight: 300;
+    margin-inline-start: 0.1em;
+  }
+  .txt {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    max-inline-size: 16ch;
+  }
+  @media (min-width: 62rem) {
+    .head {
+      grid-template-columns: 1fr auto;
+    }
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

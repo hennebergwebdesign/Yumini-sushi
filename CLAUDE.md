@@ -7,14 +7,47 @@ Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Gebaut nach dem Plugin `webdes
 
 ## Stand
 
-**Phase 3, Umsetzungsplan und Referenzen in Abstimmung.** Es ist noch kein Code gebaut.
+**Phase 3, Plan in Abstimmung, Prototyp der Startseite steht.** Auf ausdrückliche Anweisung des Inhabers
+(Startseite zuerst bauen, provisorisch und ohne Funktion) ist die Startseite als Astro Prototyp gebaut,
+vor der formalen Freigabe der Referenzen. Das ist ein Format Entwurf, keine Abnahme.
 
 1. Der Plan steht in `docs/plan.md` (zweite Fassung nach der ersten Abstimmung). Er ist die Quelle
    für Seitenstruktur, Abschnitte, Reservierungssystem, Speisekarte, Karriere und Bauphasen.
 2. Referenzen werden nach Tor 1 vorgelegt. Ohne Freigabe wird keine fremde Seite abgerufen.
    Register und Brief liegen in `.designrecherche/` (nicht im Git).
-3. Gebaut wird erst nach Freigabe von Plan und Referenzen, in den acht Phasen aus `docs/plan.md`,
-   Abschnitt 16. Zuerst ein Pilot: Startseite mit Tablet und Reservierung auf Testdaten.
+3. Gebaut wird in den acht Phasen aus `docs/plan.md`, Abschnitt 16. Der Pilot (Startseite mit Tablet und
+   Reservierung auf Testdaten) ist als Prototyp vorgezogen, siehe Abschnitt Prototyp.
+
+## Prototyp Startseite (Stand 20.10.2026)
+
+Befehle: `npm install`, `npm run dev`, `npm run build`, `npm run preview`. Astro, statisch, kein Adapter,
+ohne CSS Framework und ohne Skript. Schrift IBM Plex Sans über `@fontsource`, in den Build gebündelt.
+
+| Datei | Zweck |
+| --- | --- |
+| `src/styles/tokens.css` | Designtokens, Werte ohne Quelle im Designsystem sind als „provisorisch" kommentiert |
+| `src/layouts/Base.astro` | Kopf, Fuß, Sprite, `noindex` solange Prototyp |
+| `src/components/sektionen/` | eine Datei je Abschnitt der Startseite, Reihenfolge in `src/pages/index.astro` |
+| `src/components/ReservierungsTool.astro` | Vorschau des Tools mit Beispieldaten, nur Auswahl per Radiofelder, ohne Funktion |
+| `src/components/ui/Sprite.astro` | gezeichnete Sushi Elemente als Platzhalter bis zum Shooting |
+| `src/components/ui/Logo.astro` | **Platzhalter**, nicht das Original Logo (liegt nicht vor) |
+| `src/lib/standorte.ts` | Adressen und Telefon aus der Bestandsseite |
+
+Entscheidungen mit Grund:
+
+1. Kopfzeile als frei stehende Pille, „Tisch reservieren" dort nur als Umriss, damit im Held genau ein rotes
+   Flächenelement bleibt (der Hauptbutton). Der rote Kreis im Held ist getönt und mit Ring, nicht deckend.
+2. Vertrauensband nach Vorbild des vom Inhaber gezeigten Bandes (Überschrift links, Siegel rechts, große
+   Kennzahlen darunter). Bewertungswerte und Plattform Logos fehlen und stehen als `[[FEHLT]]`.
+3. Zwei Stunden Ring und mobile Leiste laufen über CSS Scroll Zeitleisten. Die Zeitleiste steht in einer eigenen
+   Regel, weil der Minifier sie sonst in die Kurzschreibweise von `animation` zieht, die Chrome ignoriert.
+4. Alle Texte ohne Gedankenstriche, `hyphens: none`. Nichts erfunden: fehlende Preise, Zeiten, Stimmen,
+   Angebote und Antworten sind als `[[FEHLT: …]]` sichtbar.
+5. Die NRW Karte ist eine grobe Skizze, kein exakter Grenzverlauf, und im Bild so beschriftet.
+6. Lumexx (`KatalogMockup.astro`, `Flipbook.astro`) ist privat und aus der Cloud Umgebung nicht lesbar. Das Mockup
+   ist nach Beschreibung neu gezeichnet, das Flipbook (Phase 3) steht noch aus.
+
+Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
 
@@ -102,3 +135,6 @@ Rechtstexte, 404.
 2. **20.10.2026** Antworten des Inhabers eingearbeitet, Plan als `docs/plan.md` angelegt,
    `.gitignore` mit den Arbeitsordnern der Agenturwerkzeuge, Designrecherche-Brief angelegt,
    Referenzkandidaten werden vorgelegt.
+3. **20.10.2026** Prototyp der Startseite in Astro gebaut (14 Abschnitte, Tablet mit Reservierungsvorschau,
+   Standortkarten mit NRW Skizze). Geprüft: Build grün, Chromium Durchlauf auf 1440 und 390 px, keine Konsolenfehler,
+   kein horizontales Scrollen. Weitere Referenzen noch nicht erfasst.

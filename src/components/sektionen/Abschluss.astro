@@ -1,0 +1,53 @@
+---
+import { standorte } from '../../lib/standorte';
+import Button from '../ui/Button.astro';
+---
+<section id="abschluss" class="end" aria-labelledby="end-title">
+  <div class="disc" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <h2 id="end-title" class="h2">Ihr Tisch wartet.</h2>
+    <p class="lead">Wählen Sie Ihren Standort und reservieren Sie in unter einer Minute.</p>
+    <ul class="locs">
+      {standorte.map((s) => (
+        <li><Button href={`/reservieren/?standort=${s.id}`} variant="outline">{s.name}</Button></li>
+      ))}
+    </ul>
+    <Button href="/reservieren/" variant="primary" size="lg">Tisch reservieren</Button>
+  </div>
+</section>
+
+<style>
+  .end {
+    position: relative;
+    overflow: clip;
+    padding-block: clamp(5rem, 11vw, 9rem);
+    background: var(--black);
+    text-align: center;
+  }
+  .disc {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: min(110vw, 52rem);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 1.5px solid rgb(255 143 134 / 0.5);
+    background: radial-gradient(circle, rgb(217 33 41 / 0.32), rgb(217 33 41 / 0.04) 70%);
+  }
+  .inner {
+    position: relative;
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .h2 {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+  }
+  .locs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+</style>

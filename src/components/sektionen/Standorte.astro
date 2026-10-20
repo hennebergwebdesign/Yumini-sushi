@@ -1,0 +1,235 @@
+---
+import { standorte } from '../../lib/standorte';
+import Button from '../ui/Button.astro';
+
+// Grobe Kartenskizze von Nordrhein-Westfalen. Provisorisch gezeichnet, kein exakter Grenzverlauf.
+// Länge 5.8 bis 9.5, Breite 50.3 bis 52.6.
+const W = 420;
+const H = 480;
+const lon0 = 5.8, lon1 = 9.5, lat0 = 50.3, lat1 = 52.6;
+const x = (lon: number) => ((lon - lon0) / (lon1 - lon0)) * W;
+const y = (lat: number) => ((lat1 - lat) / (lat1 - lat0)) * H;
+const umriss: [number, number][] = [
+  [6.02, 51.97], [6.05, 51.84], [5.9, 51.78], [6.1, 51.6], [6.2, 51.38], [5.96, 51.05], [6.02, 50.8],
+  [6.2, 50.62], [6.3, 50.33], [6.9, 50.38], [7.05, 50.62], [7.5, 50.34], [7.85, 50.52], [8.15, 50.52],
+  [8.25, 50.62], [8.7, 50.78], [8.42, 51.0], [8.5, 51.3], [8.95, 51.4], [9.2, 51.6], [9.45, 51.78],
+  [9.4, 52.05], [9.05, 52.22], [8.9, 52.5], [8.45, 52.48], [8.45, 52.27], [7.9, 52.35], [7.6, 52.2],
+  [7.0, 52.2], [7.05, 52.05], [6.72, 51.95], [6.4, 51.95],
+];
+// Ecken über Mittelpunkte abrunden, damit die Skizze nicht wie ein Polygon wirkt
+const pts = umriss.map(([lo, la]) => [x(lo), y(la)] as const);
+const mid = (a: readonly [number, number], b: readonly [number, number]) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2] as const;
+const n = pts.length;
+let pfad = `M${mid(pts[n - 1], pts[0]).map((v) => v.toFixed(1)).join(' ')}`;
+for (let i = 0; i < n; i++) {
+  const c = pts[i];
+  const m = mid(c, pts[(i + 1) % n]);
+  pfad += `Q${c[0].toFixed(1)} ${c[1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`;
+}
+pfad += 'Z';
+---
+<section id="standorte" class="section dunkel" aria-labelledby="standorte-title">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Fünf Standorte</p>
+      <h2 id="standorte-title" class="h2">Ein Tisch in Ihrer Nähe.</h2>
+      <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Gleiche Preise, gleiche Speisekarte, gleiche zwei Stunden.</p>
+    </div>
+
+    <div class="stage">
+      <ul class="cards">
+        {standorte.map((s) => (
+          <li class="card" data-id={s.id}>
+            <div class="photo" aria-hidden="true">
+              <svg viewBox="0 0 120 60"><use href="#nigiri" x="30" y="6" width="60" height="40" /></svg>
+              <span class="fehlt">Foto [[FEHLT]]</span>
+            </div>
+            <div class="info">
+              <h3>{s.name}</h3>
+              <address>
+                {s.strasse}<br />{s.ort}
+                {s.hinweis && <><br /><span class="tag">{s.hinweis}</span></>}
+              </address>
+              <p class="small muted">Öffnungszeiten <span class="fehlt">[[FEHLT]]</span></p>
+              <p class="small"><a href={`tel:${s.tel}`}>{s.telefon}</a></p>
+              <div class="act">
+                <Button href={`/reservieren/?standort=${s.id}`} variant="outline">Hier reservieren</Button>
+                <Button href={`/${s.id}/`} variant="ghost">Mehr</Button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <figure class="map" aria-label="Kartenskizze von Nordrhein-Westfalen mit den fünf Standorten">
+        <svg viewBox={`-20 -20 ${W + 40} ${H + 40}`} role="img" aria-label="Standorte in Nordrhein-Westfalen">
+          <path class="land" d={pfad} />
+          {standorte.map((s) => (
+            <g class="dot" data-id={s.id} transform={`translate(${x(s.lon).toFixed(1)} ${y(s.lat).toFixed(1)})`}>
+              <circle class="halo" r="16" />
+              <circle class="pt" r="6" />
+            </g>
+          ))}
+          {standorte.map((s) => {
+            const left = s.id === 'gelsenkirchen' || s.id === 'bochum';
+            const dy = s.id === 'bochum' ? 22 : s.id === 'dortmund' ? -14 : 4;
+            return (
+              <text class="lbl" data-id={s.id} x={x(s.lon) + (left ? -14 : 14)} y={y(s.lat) + dy} text-anchor={left ? 'end' : 'start'}>{s.name}</text>
+            );
+          })}
+        </svg>
+        <figcaption class="small muted">Kartenskizze, provisorisch</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dunkel {
+    background: var(--black);
+  }
+  .head {
+    display: grid;
+    gap: 1rem;
+    margin-block-end: clamp(2.5rem, 5vw, 4rem);
+  }
+  .stage {
+    display: grid;
+    gap: 3rem;
+    align-items: start;
+  }
+  .cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+  .card {
+    display: grid;
+    border: 1px solid var(--border);
+    border-radius: var(--r3);
+    background: var(--surface);
+    overflow: clip;
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), background-color 0.3s var(--ease);
+  }
+  .card:hover {
+    border-color: var(--coral-soft);
+    transform: translateY(-4px);
+    background: var(--surface-2);
+  }
+  .photo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 8;
+    background:
+      radial-gradient(circle at 50% 120%, rgb(217 33 41 / 0.35), transparent 60%),
+      var(--surface-2);
+  }
+  .photo svg {
+    inline-size: 45%;
+  }
+  .photo .fehlt {
+    position: absolute;
+    inset-block-end: 0.5rem;
+    inset-inline-start: 0.75rem;
+    font-size: 0.7rem;
+  }
+  .info {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  address {
+    font-style: normal;
+    color: var(--text-muted);
+  }
+  .tag {
+    display: inline-block;
+    margin-block-start: 0.35rem;
+    padding: 0.1rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-size: 0.8125rem;
+    color: var(--text);
+  }
+  .small {
+    font-size: 0.9375rem;
+  }
+  .info a {
+    text-decoration: none;
+  }
+  .act {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-start: 0.75rem;
+  }
+  .map {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+    max-inline-size: 28rem;
+    margin-inline: auto;
+    inline-size: 100%;
+  }
+  .land {
+    fill: var(--surface-2);
+    stroke: var(--border);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .pt {
+    fill: var(--brand-red);
+    stroke: var(--text);
+    stroke-width: 1.5;
+  }
+  .halo {
+    fill: var(--brand-red);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+  .lbl {
+    fill: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition: fill 0.3s;
+  }
+  /* Hover über eine Karte lässt ihren Punkt aufleuchten, ohne Skript */
+  .stage:has(.card[data-id='bochum']:hover) .dot[data-id='bochum'] .halo,
+  .stage:has(.card[data-id='dortmund']:hover) .dot[data-id='dortmund'] .halo,
+  .stage:has(.card[data-id='gelsenkirchen']:hover) .dot[data-id='gelsenkirchen'] .halo,
+  .stage:has(.card[data-id='luedenscheid']:hover) .dot[data-id='luedenscheid'] .halo,
+  .stage:has(.card[data-id='siegen']:hover) .dot[data-id='siegen'] .halo {
+    opacity: 0.45;
+  }
+  .stage:has(.card[data-id='bochum']:hover) .lbl[data-id='bochum'],
+  .stage:has(.card[data-id='dortmund']:hover) .lbl[data-id='dortmund'],
+  .stage:has(.card[data-id='gelsenkirchen']:hover) .lbl[data-id='gelsenkirchen'],
+  .stage:has(.card[data-id='luedenscheid']:hover) .lbl[data-id='luedenscheid'],
+  .stage:has(.card[data-id='siegen']:hover) .lbl[data-id='siegen'] {
+    fill: var(--text);
+  }
+  @media (min-width: 64rem) {
+    .stage {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+    }
+    .card:last-child:nth-child(odd) .photo {
+      aspect-ratio: auto;
+    }
+    .map {
+      position: sticky;
+      inset-block-start: 6rem;
+    }
+  }
+</style>
