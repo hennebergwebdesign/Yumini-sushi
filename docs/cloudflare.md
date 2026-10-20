@@ -6,8 +6,8 @@ Die Seite läuft als **Cloudflare Worker mit statischen Assets** (Astro mit `@as
 
 | Feld | Wert |
 | --- | --- |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
+| Build command | `npm run build` (muss gesetzt sein, sonst fehlt `dist/` und der Deploy bricht mit "Missing entry-point" ab) |
+| Deploy command | `npx wrangler deploy` (Alternative ohne Build command: `npm run deploy`, baut und deployt in einem Schritt) |
 | Worker Name | muss `name` in `wrangler.jsonc` entsprechen (`yumini-sushi`), sonst anpassen |
 
 ## Bindings und Variablen (in `wrangler.jsonc`, im Git)
