@@ -1,9 +1,10 @@
 ---
 import Logo from './ui/Logo.astro';
+import { standorte } from '../lib/standorte';
 
 const nav = [
   { href: '/speisekarte/', label: 'Speisekarte' },
-  { href: '/#standorte', label: 'Standorte' },
+  { href: '/#standorte', label: 'Standorte', sub: true },
   { href: '/#preise', label: 'Preise' },
   { href: '/#feiern', label: 'Feiern' },
   { href: '/karriere/', label: 'Karriere' },
@@ -13,9 +14,21 @@ const nav = [
   <a class="brand" href="/" aria-label="Yumini, zur Startseite"><Logo hoehe={64} /></a>
 
   <div class="pill">
+    <a class="home" href="/" aria-label="Startseite">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 3.8l8.5 7.2" /><path d="M5.8 9.8V20h4.4v-5.4h3.6V20h4.4V9.8" /></svg>
+    </a>
     <nav class="desk" aria-label="Hauptnavigation">
       <ul>
-        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        {nav.map((n) => (
+          <li class={n.sub ? 'has-sub' : undefined}>
+            <a href={n.href}>{n.label}{n.sub && <svg class="chev" viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" /></svg>}</a>
+            {n.sub && (
+              <ul class="sub">
+                {standorte.map((o) => <li><a href={`/${o.id}/`}><b>{o.name}</b><small>{o.strasse}</small></a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
       </ul>
     </nav>
     <a class="res" href="/#reservieren">Tisch reservieren</a>
@@ -24,7 +37,13 @@ const nav = [
       <summary aria-label="Menü öffnen"><span></span><span></span></summary>
       <nav aria-label="Mobile Navigation">
         <ul>
-          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="/">Start</a></li>
+          {nav.map((n) => (
+            <li>
+              <a href={n.href}>{n.label}</a>
+              {n.sub && <ul class="msub">{standorte.map((o) => <li><a href={`/${o.id}/`}>{o.name}</a></li>)}</ul>}
+            </li>
+          ))}
           <li><a class="mobres" href="/#reservieren">Tisch reservieren</a></li>
         </ul>
       </nav>
@@ -49,7 +68,7 @@ const nav = [
     justify-self: start;
     display: inline-flex;
     text-decoration: none;
-    filter: drop-shadow(0 2px 8px rgb(0 0 0 / 0.55));
+    filter: drop-shadow(0 0 1.5px rgb(0 0 0 / 0.85)) drop-shadow(0 2px 8px rgb(0 0 0 / 0.55));
   }
   .pill {
     pointer-events: auto;
@@ -57,17 +76,56 @@ const nav = [
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.3rem 0.3rem 0.3rem 0.75rem;
+    padding: 0.3rem 0.3rem 0.3rem 0.3rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: rgb(3 5 4 / 0.82);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
-  .desk ul {
+  .desk > ul {
     display: flex;
     gap: 0.1rem;
   }
+  .home {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: color 0.2s, background-color 0.2s, transform 0.3s var(--ease);
+  }
+  .home:hover { color: var(--text); background: rgb(255 255 255 / 0.09); transform: translateY(-1px); }
+  .chev { margin-inline-start: 0.35rem; vertical-align: 0.05em; transition: rotate 0.25s var(--ease); }
+  .has-sub { position: relative; }
+  .has-sub:hover .chev, .has-sub:focus-within .chev { rotate: 180deg; }
+  .sub {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 50%;
+    translate: -50% 0.4rem;
+    inline-size: 17rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r4);
+    background: rgb(3 5 4 / 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s var(--ease), translate 0.25s var(--ease), visibility 0s linear 0.25s;
+  }
+  /* unsichtbare Brücke, damit der Mauszeiger beim Wechsel zur Auswahl nichts schließt */
+  .sub::before { content: ''; position: absolute; inset: -0.6rem 0 auto 0; block-size: 0.6rem; }
+  .has-sub:hover .sub, .has-sub:focus-within .sub { opacity: 1; visibility: visible; translate: -50% 0; transition-delay: 0s; }
+  .desk .sub a { display: grid; gap: 0.05rem; padding: 0.6rem 0.85rem; border-radius: var(--r2); }
+  .desk .sub b { font-weight: 500; color: var(--text); }
+  .desk .sub small { font-size: 0.78rem; }
+  .desk .sub a:hover { background: rgb(255 255 255 / 0.09); }
+  .msub { padding-inline-start: 1rem; }
+  .mob .msub a { padding: 0.5rem 0.75rem; font-size: 1rem; color: var(--text-muted); }
   .desk a {
     display: block;
     padding: 0.5rem 0.85rem;
@@ -152,6 +210,7 @@ const nav = [
       grid-template-columns: 1fr auto;
     }
     .desk,
+    .home,
     .res {
       display: none;
     }

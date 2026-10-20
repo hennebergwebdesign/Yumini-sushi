@@ -99,6 +99,8 @@ Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV
 
 **Stand 5 (20.10.2026): Karriereseite überarbeitet.** Headline in zwei Zeilen, Kennzahlen als große Glaskacheln rechts im Held, Stellen als Bildkarten zum Aufklappen (Bild je Bereich, Raumbilder als Symbolbild gekennzeichnet), sechs Vorteile in drei Spalten mit eigenen Icons (`src/components/ui/KarriereIcon.astro`), Glas Kacheln (`backdrop-filter`) auf flach abgedunkelten Bildgründen, Team mit Bereichsfotos statt Personen (Namen und Fotos `[[FEHLT]]`), Ablauf als Zeitleiste mit CSS Scroll Zeitleisten, CTAs nach jedem Abschnitt. Der Bewerbungsfunnel steht jetzt als letzter Abschnitt vor dem Fuß. Geprüft: Build grün, Chromium 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
 
+**Stand 6 (20.10.2026): Karriere und Kopfzeile.** Held auf 100 % Höhe mit Platz für ein späteres Video (Kommentar und `.hvideo` Regel in `karriere/index.astro`, Hinweis `[[FEHLT: Video]]`), Auftrittsanimation und hochzählende Kennzahlen, Lesefortschritt oben. Offene Stellen auf dunklem Grund, Bilder überall als kleine Vorschau (17 rem Desktop, 6,5 rem Mobil). Vorteile mit Hintergrundbild `halle`. „Nach deiner Bewerbung" hell, Linie verbindet nur die Punkte 1 bis 4 und füllt sich beim Scrollen. Kopfzeile: Home Button und Dropdown „Standorte" mit den fünf Standortseiten (Hover und Tastatur, mobil als Unterliste). Geprüft: Build grün, Chromium 1440, 820 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
