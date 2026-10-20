@@ -12,6 +12,12 @@
     { "binding": "CACHE" }
   ],
 
+  // Reservierungen, Benutzer, Tische. Ohne database_id legt Wrangler die Datenbank beim ersten Deploy selbst an,
+  // das Schema legt das Backend beim ersten Zugriff an (src/lib/server/db.ts, migrations/0001_init.sql).
+  "d1_databases": [
+    { "binding": "DB", "database_name": "yumini-reservierung", "migrations_dir": "migrations" }
+  ],
+
   // Öffentliche Variablen (nicht geheim). Place IDs der Google Unternehmensprofile hier eintragen.
   // Geheimes (GOOGLE_PLACES_KEY, TURNSTILE_SECRET, RESEND_API_KEY) kommt NICHT hierhin, siehe docs/cloudflare.md.
   "vars": {
@@ -20,6 +26,8 @@
     "PLACE_ID_GELSENKIRCHEN": "",
     "PLACE_ID_LUEDENSCHEID": "",
     "PLACE_ID_SIEGEN": "",
-    "TURNSTILE_SITE_KEY": ""
+    "TURNSTILE_SITE_KEY": "",
+    // "true" erlaubt im Backend Testdaten anlegen und Reservierungen leeren. Zum Livegang auf "false" setzen.
+    "TESTPHASE": "true"
   }
 }
