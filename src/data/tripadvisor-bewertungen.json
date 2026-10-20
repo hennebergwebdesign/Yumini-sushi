@@ -1,9 +1,61 @@
 {
   "quelle": "Tripadvisor Screenshots, vom Inhaber geliefert am 20.10.2026. Texte wörtlich. Standort nur gesetzt, wenn er aus der Bewertung hervorgeht (Titel nennt Dortmund). Der Wohnort der Schreibenden ist nicht der Standort. Weitere Bewertungen folgen.",
   "bewertungen": [
-    { "standort": null, "name": "BBQStocki", "sterne": 5, "datum": "2023-05-13", "titel": "Leckeres Sushi zum Festpreis", "text": "Wie immer kann ich nur danke sagen für das tolle leckere asiatische Essen. Das Sushi dort ist einfach der hammer. Die riesen Auswahl lässt keine Wünsche offen. Der Service ist sehe freundlich und die Bestellungen kommen zügig an den Tisch" },
-    { "standort": null, "name": "MarSch66", "sterne": 5, "datum": "2020-01-02", "titel": "Ein perfekter Abend", "text": "Wir waren mit unseren 2 Kindern hier und die gesamte Familie war sich einig: super Sushi!!! Frisch, vielseitig, tolle Portionen und Dank der Technik ideal auf persönliche Wünsche gemünzt. Einrichtung edel und trotzdem gemütlich. Service freundlich und schnell trotz eines vollen restaurants. Definitiv empfehlenswert!" },
-    { "standort": null, "name": "Nathalie", "sterne": 5, "datum": "2019-10-02", "titel": "Leckeres Sushi und große Auswahl", "text": "Unkomplizierte Reservierung und Bestellung, sehr schnelle Lieferung des Essens, man kann in Ruhe speisen. Schöne Atmosphäre in interessantem Ambiente. Großteil des Personals sehr freundlich und zuvorkommend. Man wird auf jeden Fall satt. Auch für größere Gruppen geeignet. Die Misosuppe und der Kuchen sind sehr zu empfehlen. Wir werden wiederkommen!" },
-    { "standort": "dortmund", "name": "Fabian H", "sterne": 5, "datum": "2023-10-24", "titel": "Leckeres Sushi in Dortmund", "text": "Es war sehr lecker! Wir waren zum All You Can Mittagessen da! Wie bei vielen Sushi Restaurants üblich, haben wir über das Tablet bestellt! Die Auswahl ist gut und davor allem ist das Essen sehr schnell da! Die Bedienung ist freundlich und das Ambiente ebenfalls ansprechend! Klare Empfehlung!" }
+    {
+      "standort": null,
+      "name": "BBQStocki",
+      "sterne": 5,
+      "datum": "2023-05-13",
+      "titel": "Leckeres Sushi zum Festpreis",
+      "text": "Wie immer kann ich nur danke sagen für das tolle leckere asiatische Essen. Das Sushi dort ist einfach der hammer. Die riesen Auswahl lässt keine Wünsche offen. Der Service ist sehe freundlich und die Bestellungen kommen zügig an den Tisch"
+    },
+    {
+      "standort": null,
+      "name": "MarSch66",
+      "sterne": 5,
+      "datum": "2020-01-02",
+      "titel": "Ein perfekter Abend",
+      "text": "Wir waren mit unseren 2 Kindern hier und die gesamte Familie war sich einig: super Sushi!!! Frisch, vielseitig, tolle Portionen und Dank der Technik ideal auf persönliche Wünsche gemünzt. Einrichtung edel und trotzdem gemütlich. Service freundlich und schnell trotz eines vollen restaurants. Definitiv empfehlenswert!"
+    },
+    {
+      "standort": null,
+      "name": "Nathalie",
+      "sterne": 5,
+      "datum": "2019-10-02",
+      "titel": "Leckeres Sushi und große Auswahl",
+      "text": "Unkomplizierte Reservierung und Bestellung, sehr schnelle Lieferung des Essens, man kann in Ruhe speisen. Schöne Atmosphäre in interessantem Ambiente. Großteil des Personals sehr freundlich und zuvorkommend. Man wird auf jeden Fall satt. Auch für größere Gruppen geeignet. Die Misosuppe und der Kuchen sind sehr zu empfehlen. Wir werden wiederkommen!"
+    },
+    {
+      "standort": "dortmund",
+      "name": "Fabian H",
+      "sterne": 5,
+      "datum": "2023-10-24",
+      "titel": "Leckeres Sushi in Dortmund",
+      "text": "Es war sehr lecker! Wir waren zum All You Can Mittagessen da! Wie bei vielen Sushi Restaurants üblich, haben wir über das Tablet bestellt! Die Auswahl ist gut und davor allem ist das Essen sehr schnell da! Die Bedienung ist freundlich und das Ambiente ebenfalls ansprechend! Klare Empfehlung!"
+    },
+    {
+      "standort": null,
+      "name": "Charlotte",
+      "sterne": 5,
+      "datum": "2021-07-01",
+      "titel": "Super!",
+      "text": "Immer gut! Die Gerichte schmecken stets super, das Personal ist freundlich und die Speisen sind schnell am Tisch. Komme immer gerne wieder"
+    },
+    {
+      "standort": null,
+      "name": "mrichter82",
+      "sterne": 4,
+      "datum": "2020-02-25",
+      "titel": "Sehr lecker, die Speisen werden",
+      "text": "Sehr lecker, die Speisen werden sehr schnell zum Tisch gebracht und sind trotzdem frisch zubereitet. Wir kommen definitiv nochmal."
+    },
+    {
+      "standort": "dortmund",
+      "name": "Ingo Reinert",
+      "sterne": 5,
+      "datum": "2018-12-28",
+      "titel": "Tolles und frisches Sushi",
+      "text": "Hier waren wir schon öfter und dieses Mal mit der ganzen Familie. Das tolle und sehr frische Sushi lockt uns zu recht nach Dortmund. Neben Sushi sind auch die warmen japanischen Köstlichkeiten zu empfehlen. Alles schnell mit IPad bestellt und quasi schon am Tisch. Tolles Personal sorgt für ein leckeres und passend kulinarisches Erlebnis. Gerne wieder"
+    }
   ]
 }
