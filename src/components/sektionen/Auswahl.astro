@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import { kategorien } from '../../lib/bilder';
+
+// Kacheln wie auf der Bestandsseite ("Unsere Angebote"), dort sind es Speisekategorien und keine Aktionen.
+const kacheln = [
+  { id: 'sushi', titel: 'Sushi', text: 'Nigiri, Maki, Gunkan, Temaki', bild: kategorien.sushi },
+  { id: 'grill', titel: 'Warm Dishes', text: 'Teppanyaki, Spieße, Frittiertes', bild: kategorien.grill },
+  { id: 'salad', titel: 'Salate, Suppen, Nudeln, Reis', text: 'Edamame, Miso, Yaki Soba', bild: kategorien.salad },
+  { id: 'dinner', titel: 'Dinner Only', text: 'Nur abends, mit Aal, Rogen, Jakobsmuschel', bild: kategorien.dinner },
+  { id: 'dessert', titel: 'Dessert', text: 'Eis, Obst, kleine Süßspeisen', bild: kategorien.dessert },
+];
+---
+<section id="auswahl" class="section paper" aria-labelledby="auswahl-title">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Unsere Auswahl</p>
+      <h2 id="auswahl-title" class="h2">Von Sushi bis Dessert.</h2>
+    </div>
+
+    <ul class="tiles">
+      {kacheln.map((k) => (
+        <li class="tile">
+          <a href="/speisekarte/">
+            <Image src={k.bild} alt="" widths={[360, 720]} sizes="(max-width: 52rem) 90vw, 30vw" />
+            <span class="shade" aria-hidden="true"></span>
+            <span class="cap"><b>{k.titel}</b><small>{k.text}</small></span>
+          </a>
+        </li>
+      ))}
+      <li class="tile menu">
+        <a href="/speisekarte/">
+          <span class="cap"><b>Speisekarte</b><small>Alle Gerichte ansehen</small></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="note muted">Sushi Menüs können Sie in Lüdenscheid und Siegen bestellen. <span class="fehlt">[[FEHLT: Ziel des Bestell Links]]</span></p>
+  </div>
+</section>
+
+<style>
+  .head { display: grid; gap: 0.75rem; margin-block-end: 2.5rem; }
+  .tiles { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tile { position: relative; overflow: clip; border-radius: var(--r3); background: var(--black); }
+  .tile a { position: relative; display: grid; align-items: end; block-size: 100%; min-block-size: clamp(11rem, 36vw, 18rem); text-decoration: none; color: #fff; }
+  .tile :global(img) {
+    position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover;
+    transition: transform 0.7s var(--ease);
+  }
+  .tile:hover :global(img) { transform: scale(1.07); }
+  .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgb(3 5 4 / 0.9), rgb(3 5 4 / 0.15) 60%, transparent); }
+  .cap { position: relative; display: grid; gap: 0.15rem; padding: 1rem 1.1rem 1.2rem; }
+  .cap b { font-size: clamp(1.0625rem, 2vw, 1.375rem); font-weight: 500; line-height: 1.15; }
+  .cap small { font-size: 0.875rem; color: rgb(255 255 255 / 0.78); }
+  .menu { background: var(--black); border: 1px solid var(--black); transition: background-color 0.3s; }
+  .menu:hover { background: var(--brand-red); border-color: var(--brand-red); }
+  .arrow { position: absolute; inset-block-start: 1rem; inset-inline-end: 1.1rem; font-size: 1.5rem; transition: transform 0.3s var(--ease); }
+  .menu:hover .arrow { transform: translateX(6px); }
+  .note { margin-block-start: 1.5rem; font-size: 0.9375rem; }
+  @media (min-width: 52rem) {
+    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

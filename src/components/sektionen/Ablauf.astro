@@ -1,17 +1,11 @@
 ---
+import { standorte } from '../../lib/standorte';
 import Button from '../ui/Button.astro';
 
 const schritte = [
   { n: '1', titel: 'Platz nehmen', text: 'Sie reservieren oder kommen spontan vorbei. Wir führen Sie an Ihren Tisch.' },
-  { n: '2', titel: 'Am Tablet bestellen', text: 'Pro Runde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Die nächste Runde bestellen Sie, sobald Sie bereit sind.' },
-  { n: '3', titel: 'Zwei Stunden genießen', text: 'Sushi, Grill und warme Gerichte, so oft Sie möchten. Getränke sind nicht inklusive.' },
-];
-
-const preise = [
-  { name: 'Mittag', hinweis: 'Uhrzeit [[FEHLT]]' },
-  { name: 'Abend', hinweis: 'Uhrzeit [[FEHLT]]' },
-  { name: 'Wochenende und Feiertage', hinweis: 'Zeiten [[FEHLT]]' },
-  { name: 'Kinder', hinweis: 'Altersgrenze [[FEHLT]]' },
+  { n: '2', titel: 'Am Tablet bestellen', text: 'Pro Bestellrunde und Person bis zu 6 Speisen mittags und 5 Speisen abends. Die nächste Runde bestellen Sie, sobald Sie bereit sind.' },
+  { n: '3', titel: 'Zwei Stunden genießen', text: 'Sushi, Grill, warme Gerichte, Suppen und Salate, so oft Sie möchten. Getränke sind nicht inklusive.' },
 ];
 ---
 <section id="ablauf" class="section paper" aria-labelledby="ablauf-title">
@@ -29,8 +23,7 @@ const preise = [
 
       <div class="body">
         <p class="eyebrow">So funktioniert All you can eat</p>
-        <h2 id="ablauf-title" class="h2">Drei Schritte, zwei Stunden, ein Preis.</h2>
-
+        <h2 id="ablauf-title" class="h2">Platz nehmen, bestellen, genießen.</h2>
         <ol class="steps">
           {schritte.map((s) => (
             <li>
@@ -42,52 +35,74 @@ const preise = [
             </li>
           ))}
         </ol>
+        <p class="small muted">In Dortmund haben Sie 2,5 Stunden Zeit.</p>
       </div>
     </div>
 
-    <div class="prices">
-      <ul class="cards">
-        {preise.map((p) => (
-          <li class="card">
-            <h3>{p.name}</h3>
-            <p class="price"><span class="fehlt">[[FEHLT: Preis]]</span></p>
-            <p class="muted small"><span class="fehlt">{p.hinweis}</span></p>
-          </li>
+    <div id="preise" class="prices">
+      <div class="phead">
+        <p class="eyebrow">Zeiten und Preise</p>
+        <h2 class="h3">Was kostet es bei Ihnen vor Ort?</h2>
+      </div>
+
+      <div class="tabs">
+        <div class="tablist" role="group" aria-label="Standort wählen">
+          {standorte.map((s, i) => (
+            <>
+              <input class="vh" type="radio" name="preise-standort" id={`pt-${s.id}`} checked={i === 0} />
+              <label for={`pt-${s.id}`}>{s.name}</label>
+            </>
+          ))}
+        </div>
+
+        {standorte.map((s) => (
+          <div class="panel" data-id={s.id}>
+            <div class="meals">
+              {s.lunch && (
+                <article class="meal">
+                  <h3>Mittag</h3>
+                  <p class="time">{s.lunch.zeit}</p>
+                  <p class="muted small">{s.lunch.kueche}</p>
+                  <dl>
+                    {s.lunch.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}
+                  </dl>
+                  {s.lunch.hinweis && <p class="muted small">{s.lunch.hinweis}</p>}
+                </article>
+              )}
+              <article class="meal dark">
+                <h3>Abend</h3>
+                <p class="time">{s.dinner.zeit}</p>
+                <p class="small">{s.dinner.kueche}</p>
+                <dl>
+                  {s.dinner.preise.map((p) => (<div><dt>{p.label}</dt><dd>{p.wert}</dd></div>))}
+                </dl>
+              </article>
+              <article class="meal">
+                <h3>Kinder</h3>
+                <p class="kids">{s.kinder}</p>
+                <p class="muted small">Zeit am Tisch: {s.dauer}.</p>
+                {s.ruhetag && <p class="small"><strong>{s.ruhetag}.</strong></p>}
+                {s.feiertag && <p class="muted small">{s.feiertag}</p>}
+              </article>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
+
       <div class="notes">
-        <p class="small muted"><strong>Speisen übrig gelassen?</strong> Für nicht aufgegessene Speisen berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird gespendet.</p>
-        <p class="small muted">Alle Preise gelten an allen Standorten. Getränke sind nicht im Preis enthalten.</p>
-        <Button href="/speisekarte/" variant="outline">Preise im Detail</Button>
+        <p class="small muted"><strong>Speisen übrig gelassen?</strong> Für nicht aufgegessene Speisen berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird gespendet. Getränke sind nicht im Preis enthalten.</p>
+        <Button href="/speisekarte/" variant="outline">Speisekarte ansehen</Button>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .layout {
-    display: grid;
-    gap: 3rem;
-  }
-  .ringcol {
-    display: grid;
-    place-items: start center;
-  }
-  .ring {
-    position: relative;
-    inline-size: min(70vw, 20rem);
-    aspect-ratio: 1;
-  }
-  .ring svg {
-    inline-size: 100%;
-    block-size: 100%;
-    rotate: -90deg;
-  }
-  .track {
-    fill: none;
-    stroke: var(--border-ink);
-    stroke-width: 10;
-  }
+  .layout { display: grid; gap: 3rem; }
+  .ringcol { display: grid; place-items: start center; }
+  .ring { position: relative; inline-size: min(70vw, 20rem); aspect-ratio: 1; }
+  .ring svg { inline-size: 100%; block-size: 100%; rotate: -90deg; }
+  .track { fill: none; stroke: var(--border-ink); stroke-width: 10; }
   .fill {
     fill: none;
     stroke: var(--brand-red);
@@ -102,105 +117,60 @@ const preise = [
       animation: fillring linear both;
       animation-range: entry 20% cover 55%;
     }
-    .fill:where(*) {
-      animation-timeline: view();
-    }
+    .fill:where(*) { animation-timeline: view(); }
   }
-  @keyframes fillring {
-    to { stroke-dashoffset: 0; }
-  }
-  .mid {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-content: center;
-    text-align: center;
-  }
-  .mid b {
-    font-size: clamp(4rem, 12vw, 6rem);
-    font-weight: 500;
-    line-height: 0.9;
-  }
-  .mid span {
-    font-weight: 300;
-    font-size: 1.25rem;
-  }
-  .body {
-    display: grid;
-    gap: 1.5rem;
-    align-content: start;
-  }
-  .steps {
-    display: grid;
-    gap: 1.75rem;
-    margin-block-start: 1rem;
-  }
-  .steps li {
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: 1rem;
-    align-items: start;
-  }
+  @keyframes fillring { to { stroke-dashoffset: 0; } }
+  .mid { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+  .mid b { font-size: clamp(4rem, 12vw, 6rem); font-weight: 500; line-height: 0.9; }
+  .mid span { font-weight: 300; font-size: 1.25rem; }
+  .body { display: grid; gap: 1.5rem; align-content: start; }
+  .steps { display: grid; gap: 1.75rem; margin-block-start: 1rem; }
+  .steps li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; }
   .n {
-    display: grid;
-    place-items: center;
-    inline-size: 3rem;
-    block-size: 3rem;
-    border-radius: 50%;
-    border: 1.5px solid var(--brand-red);
-    font-weight: 500;
-    color: var(--brand-red);
+    display: grid; place-items: center; inline-size: 3rem; block-size: 3rem; border-radius: 50%;
+    border: 1.5px solid var(--brand-red); font-weight: 500; color: var(--brand-red);
   }
-  .steps h3 {
-    font-size: 1.375rem;
-    margin-block-end: 0.25rem;
+  .steps h3 { font-size: 1.375rem; margin-block-end: 0.25rem; }
+  .small { font-size: 0.9375rem; }
+
+  .prices { margin-block-start: clamp(3.5rem, 7vw, 6rem); display: grid; gap: 1.75rem; }
+  .phead { display: grid; gap: 0.6rem; }
+  .h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+  .tablist { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block-end: 1.25rem; }
+  .tablist label {
+    display: grid; place-items: center; min-block-size: 2.75rem; padding-inline: 1.25rem;
+    border: 1px solid var(--border-ink); border-radius: 999px; background: #fff; cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   }
-  .prices {
-    margin-block-start: clamp(3rem, 6vw, 5rem);
-    display: grid;
-    gap: 2rem;
-  }
-  .cards {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  }
-  .card {
-    display: grid;
-    gap: 0.5rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-ink);
-    border-radius: var(--r3);
-    background: #fff;
+  .tablist label:hover { border-color: var(--ink); }
+  .tablist input:checked + label { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .tablist input:focus-visible + label { outline: 3px solid var(--brand-red); outline-offset: 2px; }
+  .panel { display: none; }
+  .tabs:has(#pt-bochum:checked) .panel[data-id='bochum'],
+  .tabs:has(#pt-dortmund:checked) .panel[data-id='dortmund'],
+  .tabs:has(#pt-gelsenkirchen:checked) .panel[data-id='gelsenkirchen'],
+  .tabs:has(#pt-luedenscheid:checked) .panel[data-id='luedenscheid'],
+  .tabs:has(#pt-siegen:checked) .panel[data-id='siegen'] { display: block; }
+  .meals { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .meal {
+    display: grid; gap: 0.5rem; align-content: start; padding: 1.5rem;
+    border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff;
     transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
   }
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: var(--brand-red);
-    box-shadow: 0 14px 30px -18px rgb(17 21 19 / 0.4);
-  }
-  .card h3 {
-    font-size: 1.125rem;
-  }
-  .price {
-    font-size: 2rem;
-    font-weight: 500;
-  }
-  .small {
-    font-size: 0.9375rem;
-  }
-  .notes {
-    display: grid;
-    gap: 0.75rem;
-    justify-items: start;
-    max-inline-size: 46rem;
-  }
+  .meal:hover { transform: translateY(-4px); border-color: var(--brand-red); box-shadow: 0 14px 30px -18px rgb(17 21 19 / 0.4); }
+  .meal.dark { background: var(--black); color: var(--text); border-color: var(--black); }
+  .meal.dark:hover { border-color: var(--coral-soft); }
+  .meal h3 { font-size: 1.125rem; }
+  .time { font-size: 1.375rem; font-weight: 500; }
+  .meal dl { display: grid; gap: 0.5rem; margin-block-start: 0.5rem; }
+  .meal dl div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding-block-start: 0.5rem; border-block-start: 1px solid var(--border-ink); }
+  .meal.dark dl div { border-color: var(--border); }
+  .meal dt { font-size: 0.9375rem; }
+  .meal dd { font-size: 1.75rem; font-weight: 500; white-space: nowrap; }
+  .kids { font-size: 1.0625rem; }
+  .notes { display: grid; gap: 0.75rem; justify-items: start; max-inline-size: 46rem; }
 
   @media (min-width: 62rem) {
-    .layout {
-      grid-template-columns: 22rem 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
+    .layout { grid-template-columns: 22rem 1fr; gap: 5rem; align-items: center; }
   }
 </style>

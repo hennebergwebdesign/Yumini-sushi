@@ -1,5 +1,7 @@
 ---
-import { standorte } from '../../lib/standorte';
+import { Image } from 'astro:assets';
+import { standorte, ab } from '../../lib/standorte';
+import { gerichte, type GerichtId } from '../../lib/bilder';
 import Button from '../ui/Button.astro';
 
 // Grobe Kartenskizze von Nordrhein-Westfalen. Provisorisch gezeichnet, kein exakter Grenzverlauf.
@@ -33,7 +35,7 @@ pfad += 'Z';
     <div class="head">
       <p class="eyebrow">Fünf Standorte</p>
       <h2 id="standorte-title" class="h2">Ein Tisch in Ihrer Nähe.</h2>
-      <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Gleiche Preise, gleiche Speisekarte, gleiche zwei Stunden.</p>
+      <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wählen Sie Ihren Standort und reservieren Sie direkt.</p>
     </div>
 
     <div class="stage">
@@ -41,16 +43,20 @@ pfad += 'Z';
         {standorte.map((s) => (
           <li class="card" data-id={s.id}>
             <div class="photo" aria-hidden="true">
-              <svg viewBox="0 0 120 60"><use href="#nigiri" x="30" y="6" width="60" height="40" /></svg>
-              <span class="fehlt">Foto [[FEHLT]]</span>
+              <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[240, 480]} sizes="14rem" />
+              <span class="fehlt">Foto des Restaurants [[FEHLT]]</span>
             </div>
             <div class="info">
               <h3>{s.name}</h3>
               <address>
                 {s.strasse}<br />{s.ort}
-                {s.hinweis && <><br /><span class="tag">{s.hinweis}</span></>}
+                {s.parkHinweis && <><br /><span class="tag">{s.parkHinweis}</span></>}
               </address>
-              <p class="small muted">Öffnungszeiten <span class="fehlt">[[FEHLT]]</span></p>
+              <p class="small muted">
+                {s.lunch ? <>Mittag {s.lunch.zeit}<br /></> : null}Abend {s.dinner.zeit}
+                {s.ruhetag && <><br />{s.ruhetag}</>}
+              </p>
+              <p class="small price">All you can eat ab {ab(s)}</p>
               <p class="small"><a href={`tel:${s.tel}`}>{s.telefon}</a></p>
               <div class="act">
                 <Button href={`/reservieren/?standort=${s.id}`} variant="outline">Hier reservieren</Button>
@@ -120,13 +126,23 @@ pfad += 'Z';
     position: relative;
     display: grid;
     place-items: center;
-    aspect-ratio: 16 / 8;
+    aspect-ratio: 16 / 9;
     background:
       radial-gradient(circle at 50% 120%, rgb(217 33 41 / 0.35), transparent 60%),
       var(--surface-2);
   }
-  .photo svg {
-    inline-size: 45%;
+  .photo :global(img) {
+    inline-size: 46%;
+    block-size: auto;
+    filter: drop-shadow(0 12px 14px rgb(0 0 0 / 0.55));
+    transition: transform 0.5s var(--ease);
+  }
+  .card:hover .photo :global(img) {
+    transform: scale(1.08) rotate(-4deg);
+  }
+  .price {
+    color: var(--coral-soft);
+    font-weight: 500;
   }
   .photo .fehlt {
     position: absolute;

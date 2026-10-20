@@ -8,14 +8,14 @@ const tage = Array.from({ length: 30 }, (_, i) => i + 1);
 const vorlauf = 6; // 1. November 2026 ist ein Sonntag, Wochenbeginn Montag
 const gesperrt = new Set([2, 3, 9, 10, 16, 17, 23, 24, 30]); // Beispiel
 const zeiten = [
-  { t: '18:00', frei: false },
-  { t: '18:15', frei: false },
+  { t: '17:30', frei: false },
+  { t: '17:45', frei: false },
+  { t: '18:00', frei: true },
+  { t: '18:15', frei: true },
   { t: '18:30', frei: true },
-  { t: '18:45', frei: true },
+  { t: '18:45', frei: false },
   { t: '19:00', frei: true },
-  { t: '19:15', frei: false },
-  { t: '19:30', frei: true },
-  { t: '19:45', frei: true },
+  { t: '19:15', frei: true },
 ];
 const personen = [1, 2, 3, 4, 5, 6, 7, 8];
 ---
@@ -74,7 +74,7 @@ const personen = [1, 2, 3, 4, 5, 6, 7, 8];
         <div class="slots">
           {zeiten.map((z) => (
             <label class:list={['slot', !z.frei && 'off']}>
-              <input type="radio" name={`${uid}-zeit`} value={z.t} checked={z.t === '18:30'} disabled={!z.frei} />
+              <input type="radio" name={`${uid}-zeit`} value={z.t} checked={z.t === '18:00'} disabled={!z.frei} />
               <span>{z.t}</span>
               {!z.frei && <small>ausgebucht</small>}
             </label>
