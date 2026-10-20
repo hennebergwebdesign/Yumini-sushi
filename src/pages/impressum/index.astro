@@ -1,17 +1,46 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Rechtsseite from '../../components/Rechtsseite.astro';
+import { standorte } from '../../lib/standorte';
 ---
-<Base title="Impressum | Yumini Japanese Sushi & Grill" description="Impressum von Yumini Japanese Sushi & Grill." pfad="/impressum/" noindex mobilLeiste={false}>
-  <section class="legal" aria-labelledby="l-title">
-    <div class="wrap">
-      <h1 id="l-title" class="display">Impressum</h1>
-      <p><span class="fehlt">[[FEHLT: Rechtstext vom Inhaber]]</span></p>
-      <p><a href="/">Zurück zur Startseite</a></p>
-    </div>
-  </section>
-</Base>
+<Rechtsseite titel="Impressum" beschreibung="Impressum von Yumini Japanese Sushi & Grill, Viktoriastraße 43 bis 45, 44787 Bochum." pfad="/impressum/" stand="20. Oktober 2026">
+  <p class="hinweis">Entwurf. Die Angaben stammen von der bisherigen Website. Vor dem Livegang bitte vollständig prüfen, besonders die mit [[FEHLT]] markierten Stellen.</p>
 
-<style>
-  .legal { min-block-size: 70svh; padding-block: 8rem 4rem; }
-  .wrap { display: grid; gap: 1.25rem; justify-items: start; }
-</style>
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <address>
+    <strong>Yumini</strong><br />
+    Inhaber: <span class="fehlt">[[FEHLT: Vor- und Nachname des Inhabers]]</span><br />
+    Viktoriastraße 43 bis 45<br />
+    44787 Bochum
+  </address>
+  <p>Rechtsform: Einzelunternehmen</p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: <a href="tel:+4923492726123">0234 927 26 123</a><br />
+    E-Mail: <a href="mailto:bochum@yumini.de">bochum@yumini.de</a>
+  </p>
+
+  <h2>Umsatzsteuer</h2>
+  <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE304572836</p>
+
+  <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+  <p><span class="fehlt">[[FEHLT: Name und Anschrift, in der Regel der Inhaber]]</span></p>
+
+  <h2>Standorte</h2>
+  <ul>
+    {standorte.map((s) => <li><a href={`/${s.id}/`}>Yumini {s.name}</a>, {s.strasse}, {s.ort}, <a href={`tel:${s.tel}`}>{s.telefon}</a></li>)}
+  </ul>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <p>Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+  <h2>Haftung für Inhalte</h2>
+  <p>Als Diensteanbieter sind wir nach den allgemeinen Gesetzen für eigene Inhalte auf diesen Seiten verantwortlich. Wir sind nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Bei Bekanntwerden von Rechtsverletzungen entfernen wir entsprechende Inhalte umgehend.</p>
+
+  <h2>Haftung für Links</h2>
+  <p>Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir keine Gewähr. Verantwortlich ist stets der jeweilige Anbieter. Bei Bekanntwerden von Rechtsverletzungen entfernen wir solche Links umgehend.</p>
+
+  <h2>Urheberrecht und Bildnachweis</h2>
+  <p>Die Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des Betreibers.</p>
+  <p>Die Fotos der Speisen stammen vom Betreiber. Die Raumbilder sind Symbolbilder und zeigen nicht unsere Restaurants: Fotos von Nastia Petruk, hiding ninja, Ryunosuke Kikuno und ayumi kubo auf Unsplash. Logos der Bewertungsplattformen: Simple Icons.</p>
+</Rechtsseite>

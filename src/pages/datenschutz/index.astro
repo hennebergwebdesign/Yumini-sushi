@@ -1,17 +1,77 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Rechtsseite from '../../components/Rechtsseite.astro';
 ---
-<Base title="Datenschutz | Yumini Japanese Sushi & Grill" description="Datenschutz von Yumini Japanese Sushi & Grill." pfad="/datenschutz/" noindex mobilLeiste={false}>
-  <section class="legal" aria-labelledby="l-title">
-    <div class="wrap">
-      <h1 id="l-title" class="display">Datenschutz</h1>
-      <p><span class="fehlt">[[FEHLT: Rechtstext vom Inhaber]]</span></p>
-      <p><a href="/">Zurück zur Startseite</a></p>
-    </div>
-  </section>
-</Base>
+<Rechtsseite titel="Datenschutzerklärung" beschreibung="Datenschutzerklärung von Yumini Japanese Sushi & Grill: Welche Daten wir bei Besuch, Reservierung und Bewerbung verarbeiten und welche Rechte Sie haben." pfad="/datenschutz/" stand="20. Oktober 2026">
+  <p class="hinweis">Entwurf nach der Datenschutz-Grundverordnung (DSGVO), dem Bundesdatenschutzgesetz (BDSG) und dem Telekommunikation-Digitale-Dienste-Datenschutz-Gesetz (TDDDG). Er beschreibt auch Funktionen, die mit dem Livegang starten (Reservierung, Bewerbung, Bewertungsanzeige). Vor Veröffentlichung bitte rechtlich prüfen lassen, besonders Speicherfristen und die mit [[FEHLT]] markierten Stellen.</p>
 
-<style>
-  .legal { min-block-size: 70svh; padding-block: 8rem 4rem; }
-  .wrap { display: grid; gap: 1.25rem; justify-items: start; }
-</style>
+  <h2>1. Verantwortlicher</h2>
+  <address>
+    Yumini, Inhaber: <span class="fehlt">[[FEHLT: Name des Inhabers]]</span><br />
+    Viktoriastraße 43 bis 45, 44787 Bochum<br />
+    Telefon: <a href="tel:+4923492726123">0234 927 26 123</a><br />
+    E-Mail: <a href="mailto:bochum@yumini.de">bochum@yumini.de</a>
+  </address>
+  <p>Einen Datenschutzbeauftragten haben wir nicht benannt, da die gesetzlichen Voraussetzungen dafür nicht vorliegen.</p>
+
+  <h2>2. Überblick</h2>
+  <p>Wir verarbeiten personenbezogene Daten nur, soweit es für den Betrieb dieser Website, für Reservierungen und für Bewerbungen nötig ist. Wir setzen derzeit keine Analyse-, Werbe- oder Tracking-Dienste ein und setzen keine Cookies, die eine Einwilligung erfordern. Schriften und Bilder liefern wir von unserem eigenen Server aus, es werden dafür keine Daten an Schriftendienste übertragen.</p>
+
+  <h2>3. Hosting und Server-Logfiles</h2>
+  <p>Die Website wird bei Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA) betrieben. Beim Aufruf verarbeitet Cloudflare technisch notwendige Verbindungsdaten, insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browsertyp und Betriebssystem. Das dient der Auslieferung, der Sicherheit und der Abwehr von Angriffen.</p>
+  <ul>
+    <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und stabilen Betrieb).</li>
+    <li>Mit Cloudflare besteht ein Vertrag zur Auftragsverarbeitung. Eine Übermittlung in die USA stützt sich auf den Angemessenheitsbeschluss zum EU-US Data Privacy Framework, an dem Cloudflare teilnimmt, und ergänzend auf Standardvertragsklauseln.</li>
+    <li>Logdaten werden nur so lange gespeichert, wie es für den genannten Zweck erforderlich ist.</li>
+  </ul>
+
+  <h2>4. Kontaktaufnahme</h2>
+  <p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) oder lit. f DSGVO. Wir löschen die Daten, sobald die Anfrage erledigt ist und keine Aufbewahrungspflichten entgegenstehen.</p>
+
+  <h2>5. Tischreservierung und Feieranfrage</h2>
+  <p>Für eine Reservierung oder Feieranfrage verarbeiten wir die Angaben, die Sie im Formular machen: Standort, Datum, Uhrzeit, Personenzahl, Name, Telefonnummer und gegebenenfalls Ihre E-Mail-Adresse und Ihre Nachricht. Wir nutzen sie, um Ihren Tisch zu führen, Rückfragen zu klären und Sie bei Änderungen zu erreichen. Der Standort, bei dem Sie reservieren, erhält nur seine eigenen Reservierungen.</p>
+  <ul>
+    <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.</li>
+    <li>Speicherdauer: <span class="fehlt">[[BESTÄTIGEN: 30 Tage]]</span> nach dem Besuchstermin, danach löschen wir die Daten, soweit keine gesetzlichen Aufbewahrungspflichten bestehen.</li>
+    <li>Die Daten werden in einer Datenbank bei Cloudflare gespeichert. Es werden dabei keine IP-Adressen gespeichert.</li>
+    <li>Bestätigungs- und Erinnerungsmails versenden wir über den Dienstleister Resend (Resend, Inc., USA). Mit Resend besteht ein Vertrag zur Auftragsverarbeitung, die Übermittlung stützt sich auf Standardvertragsklauseln.</li>
+  </ul>
+
+  <h2>6. Bewerbung über unsere Karriereseite</h2>
+  <p>Wenn Sie sich bewerben, verarbeiten wir die von Ihnen eingegebenen Angaben (Standort, Bereich, Erfahrung, gewünschter Eintritt, Name und Kontaktdaten) zur Durchführung des Bewerbungsverfahrens.</p>
+  <ul>
+    <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO in Verbindung mit § 26 BDSG.</li>
+    <li>Speicherdauer: Bei einer Absage löschen wir die Daten spätestens <span class="fehlt">[[BESTÄTIGEN: 6 Monate]]</span> nach Abschluss des Verfahrens. Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) können wir Sie länger in unserem Talentpool führen. Die Einwilligung können Sie jederzeit widerrufen.</li>
+    <li>Die Bewerbung wird an den Standort weitergeleitet, für den Sie sich interessieren.</li>
+  </ul>
+
+  <h2>7. Spamschutz mit Cloudflare Turnstile</h2>
+  <p>Unsere Formulare schützen wir mit Cloudflare Turnstile vor automatisierten Eingaben. Dabei werden technische Merkmale Ihres Browsers und Ihres Geräts sowie Ihre IP-Adresse an Cloudflare übermittelt und ausgewertet, um zwischen Menschen und Bots zu unterscheiden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (Schutz vor Missbrauch und Spam). Hinweise von Cloudflare finden Sie unter cloudflare.com/privacypolicy.</p>
+
+  <h2>8. Google Bewertungen</h2>
+  <p>Die angezeigten Bewertungen rufen wir serverseitig über die Google Places API ab und speichern sie kurzzeitig zwischen. Ihr Browser baut dafür keine Verbindung zu Google auf, es werden keine Daten von Ihnen an Google übertragen. Die angezeigten Bewertungstexte stammen von Nutzern von Google und enthalten deren öffentlich sichtbaren Namen.</p>
+
+  <h2>9. Externe Links</h2>
+  <p>Links zu Google Maps (Routenplanung), zu Bewertungsplattformen und zu Social-Media-Profilen sind einfache Verknüpfungen. Erst wenn Sie diese anklicken, werden Daten an den jeweiligen Anbieter übertragen. Für dessen Datenverarbeitung gelten dessen Datenschutzhinweise.</p>
+
+  <h2>10. Cookies und lokale Speicherung</h2>
+  <p>Diese Website verwendet keine Cookies zur Reichweitenmessung oder Werbung. Technisch notwendige Speicherungen im Browser (zum Beispiel für die Darstellung) benötigen nach § 25 Abs. 2 TDDDG keine Einwilligung. Sollten wir künftig Dienste einsetzen, die eine Einwilligung erfordern, holen wir sie vorher über einen Einwilligungsdialog ein.</p>
+
+  <h2>11. Ihre Rechte</h2>
+  <p>Sie haben gegenüber uns folgende Rechte in Bezug auf Ihre personenbezogenen Daten:</p>
+  <ul>
+    <li>Auskunft (Art. 15 DSGVO)</li>
+    <li>Berichtigung (Art. 16 DSGVO)</li>
+    <li>Löschung (Art. 17 DSGVO)</li>
+    <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+    <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+    <li>Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO)</li>
+    <li>Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+  </ul>
+  <p>Schreiben Sie dazu an <a href="mailto:bochum@yumini.de">bochum@yumini.de</a>. Außerdem haben Sie das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren, zum Beispiel bei der Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen, Kavalleriestraße 2 bis 4, 40213 Düsseldorf.</p>
+
+  <h2>12. Sicherheit</h2>
+  <p>Die Übertragung auf dieser Website ist per TLS verschlüsselt. Zugriffe auf Reservierungs- und Bewerbungsdaten sind auf die berechtigten Mitarbeitenden des jeweiligen Standorts beschränkt.</p>
+
+  <h2>13. Änderungen</h2>
+  <p>Wir passen diese Erklärung an, wenn sich die Website, unsere Dienste oder die Rechtslage ändern. Es gilt die jeweils hier veröffentlichte Fassung.</p>
+</Rechtsseite>

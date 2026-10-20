@@ -135,7 +135,7 @@ Regelwerk dazu: höchstens eine kleine Zeile über einer Überschrift (Eyebrow) 
 
 ## 8. Reservierungssystem mit Tischplan und Dashboard
 
-Eigenbau, kein fremder Dienst. Daten liegen in Cloudflare D1, die Logik in Cloudflare Pages Functions (wie bei Lumexx, ohne Workers Adapter), Mails über Resend.
+Eigenbau, kein fremder Dienst. Daten liegen in Cloudflare D1, die Logik in Astro Serverrouten auf einem Cloudflare Worker mit Assets (Adapter `@astrojs/cloudflare`, siehe `docs/cloudflare.md`), Mails über Resend.
 
 ### Ablauf für den Gast
 

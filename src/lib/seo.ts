@@ -67,6 +67,10 @@ export const faqLd = (fragen: { q: string; a: string }[]) => ({
   mainEntity: fragen.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 });
 
+// Suchbegriffe je Seite. Sie stehen in <meta name="keywords"> und im Schema, vor allem aber im sichtbaren Text.
+export const KEYWORDS_BASIS = ['Yumini', 'Sushi all you can eat', 'All you can eat NRW', 'Sushi Restaurant', 'Japanisches Restaurant', 'Teppanyaki', 'Sushi Grill', 'Tisch reservieren'];
+export const keywordsOrt = (n: string) => [`Sushi ${n}`, `All you can eat ${n}`, `Sushi all you can eat ${n}`, `Japanisches Restaurant ${n}`, `Sushi Restaurant ${n}`, `Teppanyaki ${n}`, `Tisch reservieren ${n}`, `Yumini ${n}`];
+
 export const websiteLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
