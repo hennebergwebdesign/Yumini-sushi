@@ -1,35 +1,25 @@
 ---
+import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import { fotos, gerichte } from '../../lib/bilder';
 ---
 <section class="hero" aria-labelledby="hero-title">
-  <div class="art" aria-hidden="true">
-    <svg viewBox="0 0 640 640" role="presentation">
-      <defs>
-        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stop-color="#d92129" stop-opacity="0.55" />
-          <stop offset="0.7" stop-color="#d92129" stop-opacity="0.22" />
-          <stop offset="1" stop-color="#d92129" stop-opacity="0.08" />
-        </radialGradient>
-        <radialGradient id="plate" cx="50%" cy="42%" r="60%">
-          <stop offset="0" stop-color="#1b2420" />
-          <stop offset="1" stop-color="#0a0f0d" />
-        </radialGradient>
-      </defs>
-      <circle cx="320" cy="320" r="300" fill="url(#glow)" />
-      <circle class="ring" cx="320" cy="320" r="300" fill="none" stroke="#ff8f86" stroke-opacity="0.55" stroke-width="1.5" />
-      <g class="plate">
-        <ellipse cx="320" cy="470" rx="250" ry="28" fill="#000" opacity="0.45" />
-        <circle cx="320" cy="320" r="214" fill="url(#plate)" stroke="#2a3530" stroke-width="3" />
-        <circle cx="320" cy="320" r="176" fill="none" stroke="#2a3530" stroke-width="1.5" />
-        <use href="#maki" x="196" y="186" width="116" height="116" />
-        <use href="#maki" x="318" y="170" width="116" height="116" />
-        <use href="#maki" x="256" y="292" width="116" height="116" />
-        <use href="#nigiri" x="150" y="330" width="150" height="96" transform="rotate(-8 225 378)" />
-        <use href="#nigiri" x="352" y="320" width="150" height="96" transform="rotate(10 427 368)" />
-        <use href="#ginger" x="420" y="236" width="70" height="44" />
-        <use href="#wasabi" x="186" y="288" width="44" height="44" />
-      </g>
-    </svg>
+  <div class="art">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="ring" aria-hidden="true"></div>
+    <div class="disc">
+      <Image
+        src={fotos.sushiPlatte}
+        alt="Nigiri mit Lachs, Garnele, Aal und Rogen auf einer Schieferplatte"
+        widths={[480, 720, 960]}
+        sizes="(max-width: 52rem) 90vw, 46vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <Image class="fl f1" src={gerichte.sake} alt="" aria-hidden="true" widths={[160, 320]} sizes="12rem" loading="eager" />
+    <Image class="fl f2" src={gerichte.ikura} alt="" aria-hidden="true" widths={[120, 240]} sizes="8rem" loading="eager" />
+    <Image class="fl f3" src={gerichte['tempura-california']} alt="" aria-hidden="true" widths={[160, 320]} sizes="11rem" loading="eager" />
   </div>
 
   <div class="wrap grid">
@@ -38,7 +28,7 @@ import Button from '../ui/Button.astro';
         <span class="o">Yumini</span>
         <span class="l">Japanese Sushi <span class="amp">&amp;</span> Grill</span>
       </h1>
-      <p class="lead">All you can eat an fünf Standorten in Nordrhein-Westfalen. Zwei Stunden Sushi und Grill, so viel Sie möchten.</p>
+      <p class="lead">All you can eat in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Über 100 warme und kalte Speisen, bestellt per Tablet.</p>
       <div class="actions">
         <Button href="/reservieren/" variant="primary" size="lg">Tisch reservieren</Button>
         <Button href="/speisekarte/" variant="outline" size="lg">Speisekarte ansehen</Button>
@@ -46,7 +36,7 @@ import Button from '../ui/Button.astro';
     </div>
   </div>
 
-  <a class="scroll" href="#vertrauen" aria-label="Weiter zu den Bewertungen"><span></span></a>
+  <a class="scroll" href="#vertrauen" aria-label="Weiter nach unten"><span></span></a>
 </section>
 
 <style>
@@ -57,13 +47,11 @@ import Button from '../ui/Button.astro';
     align-items: center;
     padding-block: 8rem 5rem;
     overflow: clip;
-    background:
-      radial-gradient(60% 50% at 78% 50%, rgb(217 33 41 / 0.14), transparent 70%),
-      var(--black);
+    background: var(--black);
   }
   .grid {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
   .copy {
     max-inline-size: 52rem;
@@ -75,9 +63,7 @@ import Button from '../ui/Button.astro';
     font-size: clamp(2.5rem, 4.9vw, 4.25rem);
     line-height: 1.02;
   }
-  .o {
-    font-weight: 500;
-  }
+  .o { font-weight: 500; }
   .l {
     font-weight: 300;
     letter-spacing: -0.025em;
@@ -87,38 +73,64 @@ import Button from '../ui/Button.astro';
     color: var(--coral-soft);
     font-weight: 500;
   }
-  .lead {
-    max-inline-size: 30rem;
-  }
+  .lead { max-inline-size: 30rem; }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
+
   .art {
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-end: clamp(-7rem, -4vw, -1rem);
-    inline-size: min(46vw, 44rem);
+    inset-inline-end: clamp(-4rem, 3vw, 4rem);
+    inline-size: min(41vw, 40rem);
     aspect-ratio: 1;
     translate: 0 -50%;
-    pointer-events: none;
+    z-index: 1;
+  }
+  .glow {
+    position: absolute;
+    inset: -22%;
+    background: radial-gradient(closest-side, rgb(217 33 41 / 0.42), rgb(217 33 41 / 0.12) 60%, transparent);
   }
   .ring {
-    transform-origin: 320px 320px;
-    animation: spin 90s linear infinite;
-    stroke-dasharray: 3 9;
+    position: absolute;
+    inset: -7%;
+    border-radius: 50%;
+    border: 1.5px dashed rgb(255 143 134 / 0.55);
+    animation: spin 120s linear infinite;
   }
-  .plate {
-    transform-origin: 320px 320px;
-    animation: float 9s ease-in-out infinite;
+  .disc {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: clip;
+    border: 2px solid rgb(255 255 255 / 0.12);
+    box-shadow: 0 40px 80px -30px #000;
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  .disc :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 38% 55%;
+    scale: 1.08;
+    animation: slow 24s ease-in-out infinite alternate;
   }
-  @keyframes float {
-    50% { transform: translateY(-8px) rotate(1.2deg); }
+  .art :global(.fl) {
+    position: absolute;
+    block-size: auto;
+    filter: drop-shadow(0 18px 20px rgb(0 0 0 / 0.6));
+    animation: float 7s ease-in-out infinite;
   }
+  .art :global(.f1) { inline-size: 30%; inset-block-end: 4%; inset-inline-start: -12%; rotate: -8deg; }
+  .art :global(.f2) { inline-size: 17%; inset-block-start: 2%; inset-inline-start: 6%; rotate: 10deg; animation-delay: -2s; }
+  .art :global(.f3) { inline-size: 28%; inset-block-end: -6%; inset-inline-end: 4%; rotate: 6deg; animation-delay: -4s; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes slow { to { scale: 1.16; } }
+  @keyframes float { 50% { translate: 0 -10px; } }
+
   .scroll {
     position: absolute;
     inset-block-end: 1.75rem;
@@ -131,7 +143,7 @@ import Button from '../ui/Button.astro';
     display: grid;
     justify-items: center;
     padding-block-start: 0.5rem;
-    z-index: 1;
+    z-index: 3;
   }
   .scroll span {
     inline-size: 4px;
@@ -149,24 +161,16 @@ import Button from '../ui/Button.astro';
   @media (max-width: 52rem) {
     .hero {
       align-items: end;
-      padding-block: 7rem 5.5rem;
-      background: var(--black);
+      padding-block: 6.5rem 5.5rem;
     }
     .art {
-      inset-block: 4.5rem auto;
+      inset-block-start: 6.5rem;
       inset-inline: 50% auto;
       translate: -50% 0;
-      inline-size: min(110vw, 30rem);
-      opacity: 0.9;
+      inline-size: min(78vw, 22rem);
     }
-    .copy {
-      padding-block-start: min(78vw, 26rem);
-    }
-    .l {
-      white-space: normal;
-    }
-    .actions :global(.btn) {
-      flex: 1 1 100%;
-    }
+    .copy { padding-block-start: min(92vw, 27rem); }
+    .l { white-space: normal; }
+    .actions :global(.btn) { flex: 1 1 100%; }
   }
 </style>

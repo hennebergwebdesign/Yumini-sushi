@@ -6,7 +6,7 @@ import { standorte } from '../lib/standorte';
   <div class="wrap">
     <div class="top">
       <div class="intro">
-        <Logo />
+        <Logo hoehe={44} />
         <p class="sig"><span class="o">Yumini</span><span class="l">Japanese Sushi &amp; Grill</span></p>
         <p class="muted small">All you can eat an fünf Standorten in Nordrhein-Westfalen.</p>
       </div>
@@ -20,7 +20,10 @@ import { standorte } from '../lib/standorte';
               {s.hinweis && <><br /><span class="muted">{s.hinweis}</span></>}
             </address>
             <p><a href={`tel:${s.tel}`}>{s.telefon}</a><br /><a href={`mailto:${s.mail}`}>{s.mail}</a></p>
-            <p class="muted small">Öffnungszeiten <span class="fehlt">[[FEHLT]]</span></p>
+            <p class="muted small">
+              {s.lunch && <>Mittag {s.lunch.zeit}<br /></>}Abend {s.dinner.zeit}
+              {s.ruhetag && <><br />{s.ruhetag}</>}
+            </p>
           </li>
         ))}
       </ul>

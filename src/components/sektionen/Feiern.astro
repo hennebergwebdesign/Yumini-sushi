@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import { gerichte } from '../../lib/bilder';
 const anlaesse = [
-  { t: 'Geburtstag', x: 'Bildplatz und Text vom Inhaber' },
-  { t: 'Firmenfeier', x: 'Bildplatz und Text vom Inhaber' },
+  { t: 'Geburtstag', x: '' },
+  { t: 'Firmenfeier', x: '' },
   { t: 'Gruppen ab 16 Personen', x: 'Anfrage geht direkt an den gewählten Standort' },
 ];
 ---
@@ -10,9 +12,9 @@ const anlaesse = [
   <div class="wrap grid">
     <div class="visual" aria-hidden="true">
       <div class="disc"></div>
-      <svg viewBox="0 0 100 100" class="a"><use href="#maki" width="100" height="100" /></svg>
-      <svg viewBox="0 0 140 90" class="b"><use href="#nigiri" width="140" height="90" /></svg>
-      <svg viewBox="0 0 100 100" class="c"><use href="#maki" width="100" height="100" /></svg>
+      <Image class="a" src={gerichte['sake-aburi']} alt="" widths={[200, 400]} sizes="12rem" />
+      <Image class="b" src={gerichte['tekka-maki']} alt="" widths={[200, 400]} sizes="14rem" />
+      <Image class="c" src={gerichte['ebi-tempura']} alt="" widths={[200, 400]} sizes="12rem" />
       <span class="fehlt cap">Foto Feier [[FEHLT]]</span>
     </div>
 
@@ -23,7 +25,7 @@ const anlaesse = [
         {anlaesse.map((a) => (
           <li>
             <h3>{a.t}</h3>
-            <p class="muted">{a.x}</p>
+            <p class="muted">{a.x || <span class="fehlt">[[FEHLT: Beschreibung vom Inhaber]]</span>}</p>
           </li>
         ))}
       </ul>
@@ -79,13 +81,14 @@ const anlaesse = [
     border: 1.5px solid var(--coral-soft);
     background: radial-gradient(circle, rgb(217 33 41 / 0.28), rgb(217 33 41 / 0.06) 70%);
   }
-  .visual svg {
+  .visual :global(img) {
     position: absolute;
-    filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.5));
+    block-size: auto;
+    filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.55));
   }
-  .a { inline-size: 34%; inset-block-start: 22%; inset-inline-start: 18%; rotate: -10deg; }
-  .b { inline-size: 42%; inset-block-start: 46%; inset-inline-start: 40%; rotate: 8deg; }
-  .c { inline-size: 28%; inset-block-start: 16%; inset-inline-start: 54%; rotate: 14deg; }
+  .visual :global(.a) { inline-size: 46%; inset-block-start: 20%; inset-inline-start: 12%; rotate: -10deg; }
+  .visual :global(.b) { inline-size: 44%; inset-block-start: 52%; inset-inline-start: 38%; rotate: 6deg; }
+  .visual :global(.c) { inline-size: 42%; inset-block-start: 14%; inset-inline-start: 48%; rotate: 12deg; }
   .cap {
     position: absolute;
     inset-block-end: 0;

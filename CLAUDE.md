@@ -30,8 +30,10 @@ ohne CSS Framework und ohne Skript. Schrift IBM Plex Sans über `@fontsource`, i
 | `src/components/sektionen/` | eine Datei je Abschnitt der Startseite, Reihenfolge in `src/pages/index.astro` |
 | `src/components/ReservierungsTool.astro` | Vorschau des Tools mit Beispieldaten, nur Auswahl per Radiofelder, ohne Funktion |
 | `src/components/ui/Sprite.astro` | gezeichnete Sushi Elemente als Platzhalter bis zum Shooting |
-| `src/components/ui/Logo.astro` | **Platzhalter**, nicht das Original Logo (liegt nicht vor) |
-| `src/lib/standorte.ts` | Adressen und Telefon aus der Bestandsseite |
+| `src/components/ui/Logo.astro` | Original `public/images/logo.svg` von yumini.de, nur auf dunklem Grund |
+| `src/lib/bilder.ts` | alle Fotos zentral, über `astro:assets` optimiert (`src/assets/`) |
+| `docs/quellen/` | Infopaket vom 20.10.2026 (Standorte, Texte, Marke der Bestandsseite), `src/data/menu/*.csv` Speisekarten je Standort |
+| `src/lib/standorte.ts` | Adressen, Zeiten, Preise, Kinderpreise, Parken je Standort aus dem Infopaket |
 
 Entscheidungen mit Grund:
 
@@ -46,6 +48,19 @@ Entscheidungen mit Grund:
 5. Die NRW Karte ist eine grobe Skizze, kein exakter Grenzverlauf, und im Bild so beschriftet.
 6. Lumexx (`KatalogMockup.astro`, `Flipbook.astro`) ist privat und aus der Cloud Umgebung nicht lesbar. Das Mockup
    ist nach Beschreibung neu gezeichnet, das Flipbook (Phase 3) steht noch aus.
+
+Bilder: Fotos und Gerichte stammen von yumini.de (Rechte beim Betreiber, Nutzung vom Inhaber freigegeben).
+Restaurant, Gäste und Team gibt es noch nicht, sie bleiben `[[FEHLT]]`. Die Dekor Gerichte auf den Standortkarten
+sind keine Fotos der Restaurants.
+
+**Widersprüche zu klären (Daten der Bestandsseite gegen Entscheidungen vom 20.10.2026):**
+
+1. Preise sind nicht an allen Standorten gleich (Abend Mo bis Do: 28,90 € bis 31,90 €, Lunch Fr bis So: 19,90 € bis 21,90 €).
+2. Zeit am Tisch: Dortmund 2,5 Stunden, alle anderen 2 Stunden.
+3. Gelsenkirchen hat Montag Ruhetag, Lüdenscheid mittags Mo bis Do geschlossen.
+4. Bestandsseite: Sushi Menüs mit „Jetzt Bestellen" in Lüdenscheid und Siegen, Ziel unbekannt.
+5. Gerichtenummern der Speisekarte unterscheiden sich je Standort wie erwartet, die Zahl der Gerichte auch (136 bis 138).
+6. Marke: Logo SVG und Plan nennen `#d92129`, die Bestandsseite nutzt für Buttons `#DF5157`. Hier gilt `#d92129`.
 
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
@@ -126,7 +141,9 @@ Rechtstexte, 404.
 1. Antworten auf die 17 Fragen in `docs/plan.md`, Abschnitt 17.
 2. Referenzen freigeben (Tor 1).
 3. Inventar der Bestandsseite, sobald ein Zugang oder Export besteht.
-4. Logo für hellen Grund und Signet einzeln beim Kunden anfragen.
+4. Logo für hellen Grund und Signet einzeln beim Kunden anfragen (Original SVG für dunklen Grund liegt vor).
+6. Bewertungen: keine belegten Werte, Google Place IDs und Profile fehlen.
+7. Awards Recherche: Awwwards, Behance, Lapa Ninja sind aus der Cloud Umgebung nicht erreichbar, die Chrome Erweiterung läuft nur auf dem Rechner des Nutzers. Screenshots oder Links kommen vom Nutzer.
 5. Speisekarte als PDF aus Claude Design für das Flipbook.
 
 ## Änderungsverlauf
@@ -138,3 +155,7 @@ Rechtstexte, 404.
 3. **20.10.2026** Prototyp der Startseite in Astro gebaut (14 Abschnitte, Tablet mit Reservierungsvorschau,
    Standortkarten mit NRW Skizze). Geprüft: Build grün, Chromium Durchlauf auf 1440 und 390 px, keine Konsolenfehler,
    kein horizontales Scrollen. Weitere Referenzen noch nicht erfasst.
+4. **20.10.2026** Infopaket der Bestandsseite eingearbeitet: echte Preise, Zeiten, Kinderpreise, Parken, Original Logo,
+   echte Fotos (Nigiri Platte, Kategorien, freigestellte Gerichte). Held mit Foto im Kreis, Preise je Standort als Tabs,
+   Speisekarten Favoriten, Auswahl Kacheln statt erfundener Angebote, FAQ mit belegten Antworten. Geprüft: Build grün,
+   Chromium auf 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
