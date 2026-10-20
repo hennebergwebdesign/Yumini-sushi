@@ -91,7 +91,7 @@ Rechtstexte, 404.
 ## Offene Punkte
 
 1. Antworten auf die 17 Fragen in `docs/plan.md`, Abschnitt 17.
-2. Referenzen freigeben (Tor 1).
+2. Referenzen freigeben (Tor 1): 14 Kandidaten am 20.10.2026 vorgelegt (`ref-01` bis `ref-14` im Register), keiner freigegeben. Die Galerien und Kandidatenseiten sind aus der Cloud Umgebung nicht erreichbar (DNS gesperrt), die Kandidaten stammen aus Suchergebnissen. Nach der Freigabe Erfassung per Screenshot vom Inhaber oder mit freigeschaltetem Netz.
 3. Inventar der Bestandsseite, sobald ein Zugang oder Export besteht.
 4. Logo für hellen Grund und Signet einzeln beim Kunden anfragen.
 5. Speisekarte als PDF aus Claude Design für das Flipbook.
@@ -101,4 +101,4 @@ Rechtstexte, 404.
 1. **20.10.2026** Projekt angelegt, Designsystem gelesen, erste Fassung des Plans im Chat vorgelegt.
 2. **20.10.2026** Antworten des Inhabers eingearbeitet, Plan als `docs/plan.md` angelegt,
    `.gitignore` mit den Arbeitsordnern der Agenturwerkzeuge, Designrecherche-Brief angelegt,
-   Referenzkandidaten werden vorgelegt.
+   14 Referenzkandidaten im Register angelegt und vorgelegt (Tor 1), nichts abgerufen.
