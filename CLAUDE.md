@@ -105,6 +105,8 @@ Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV
 
 **Stand 8 (20.10.2026): SEO, Conversion Texte, Tablet, Kopfzeile.** Tablet ohne Logo, Titel und „Vorschau" Hinweis, ruhigere Abstände. Kopfzeile: Logo scrollt mit der Seite, die Menüpille blendet beim Runterscrollen aus und beim Hochscrollen ein (Skript in `Header.astro`, bleibt bei offenem Menü und Tastaturfokus). SEO: Titel und Meta je Seite mit Suchbegriffen (Sushi, All you can eat, Stadt), `twitter:*` und `og:image:*`, JSON LD `WebSite`, `Organization`, `Restaurant` mit `ReserveAction`, `FAQPage` auch auf der Startseite (Quelle `src/lib/faq.ts`), `BreadcrumbList` auf allen Unterseiten, Alttexte und Titel an allen inhaltlichen Bildern, Footer Links zu allen Speisekarten, tote Links behoben (`/reservieren/`, `/speisekarte/blaettern/`), Seiten 404, Impressum und Datenschutz (Platzhalter, `noindex`). `robots.txt` bleibt bis `PUBLIC_INDEXIEREN=true` komplett gesperrt. Keine `aggregateRating` Auszeichnung, solange die Bewertungswerte nicht belegt sind.
 
+**Stand 9 (20.10.2026): Cloudflare Worker, Keywords, Rechtstexte.** Das Projekt läuft im Dashboard als Worker nur mit statischen Assets, dort ließen sich keine Variablen, Secrets und Bindings anlegen. Jetzt Adapter `@astrojs/cloudflare` (Ausgabe in `dist/client` und `dist/server`), `wrangler.jsonc` mit KV `CACHE`, Variablen `PLACE_ID_*` und `TURNSTILE_SITE_KEY`, Secrets `GOOGLE_PLACES_KEY`, `TURNSTILE_SECRET`, `RESEND_API_KEY` (`docs/cloudflare.md`, `.dev.vars.example`). Route `/api/bewertungen/` holt Google Bewertungen je Standort über die Places API mit 24 h KV Cache, liefert ohne Key 503 und ist noch nicht in die Seite eingebaut. Der Workername `yumini-sushi` ist geraten und muss dem Projektnamen in Cloudflare entsprechen. Meta Keywords und Suchbegriffe je Seite (`KEYWORDS_BASIS`, `keywordsOrt` in `seo.ts`). Footer ohne Sprungliste. Impressum (Daten der Bestandsseite, Inhabername fehlt) und Datenschutzerklärung als Entwurf, beide `noindex`, rechtlich zu prüfen. Die Steuernummer der Bestandsseite steht bewusst nicht im Impressum (nicht vorgeschrieben).
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
@@ -139,8 +141,8 @@ Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tasta
 
 ## Stack (geplant)
 
-Astro auf Cloudflare Pages, Serverlogik als Pages Functions (wie bei Lumexx, ohne Workers
-Adapter), Reservierungen in Cloudflare D1, Mails über Resend, Spamschutz Turnstile. Zeitgesteuerte
+Astro als Cloudflare Worker mit statischen Assets (Adapter `@astrojs/cloudflare`, `wrangler.jsonc`, Details in
+`docs/cloudflare.md`), Serverlogik als Astro Serverrouten in `src/pages/api/`, Reservierungen in Cloudflare D1, Mails über Resend, Spamschutz Turnstile. Zeitgesteuerte
 Aufgaben (Erinnerungsmails, Löschung) brauchen einen kleinen eigenen Worker, weil Pages keine
 geplanten Aufträge kann.
 

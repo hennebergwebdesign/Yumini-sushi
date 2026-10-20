@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobilLeiste from '../components/MobilLeiste.astro';
 import { INDEXIEREN, SITE } from '../lib/config';
+import { KEYWORDS_BASIS } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -14,9 +15,10 @@ interface Props {
   mobilLeiste?: boolean;
   autoReveal?: boolean;
   noindex?: boolean;
+  keywords?: string[];
   bildAlt?: string;
 }
-const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true, noindex = false, bildAlt = 'Sushi Auswahl bei Yumini Japanese Sushi & Grill' } = Astro.props;
+const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true, noindex = false, keywords = KEYWORDS_BASIS, bildAlt = 'Sushi Auswahl bei Yumini Japanese Sushi & Grill' } = Astro.props;
 const url = new URL(pfad, SITE).href;
 ---
 <!doctype html>
@@ -27,6 +29,7 @@ const url = new URL(pfad, SITE).href;
     <script is:inline>document.documentElement.classList.add('js')</script>
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(', ')} />
     <meta name="theme-color" content="#030504" />
     {INDEXIEREN && !noindex ? <meta name="robots" content="index, follow, max-image-preview:large" /> : <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={url} />

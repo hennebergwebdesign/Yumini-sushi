@@ -36,6 +36,7 @@ const ld = {
   title={`Sushi Speisekarte ${s.name} | Yumini mit ${alle.length} Gerichten`}
   description={`Speisekarte von Yumini ${s.name}: ${alle.length} Gerichte mit Foto, Nummer und Beschreibung. Sushi, Teppanyaki, Suppen, Salate, Dessert, ${abends} nur abends.`}
   pfad={`/speisekarte/${s.id}/`}
+  keywords={[`Speisekarte ${s.name}`, `Sushi Speisekarte ${s.name}`, `Yumini Speisekarte ${s.name}`, `Sushi ${s.name}`, 'Sushi Speisekarte mit Fotos', 'Dinner Only', 'Teppanyaki']}
   ld={[ld, breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: 'Speisekarte', pfad: '/speisekarte/' }, { name: s.name, pfad: `/speisekarte/${s.id}/` }])]}
 >
   <section class="kopf" aria-labelledby="k-title">

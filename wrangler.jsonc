@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Muss exakt dem Namen des Projekts in Cloudflare (Workers & Pages) entsprechen.
+  "name": "yumini-sushi",
+  // main und assets setzt der Astro Adapter beim Build (dist/server/wrangler.json)
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "observability": { "enabled": true },
+
+  // Bindings: ohne "id" legt Wrangler den KV Namespace beim ersten Deploy selbst an.
+  "kv_namespaces": [
+    { "binding": "CACHE" }
+  ],
+
+  // Öffentliche Variablen (nicht geheim). Place IDs der Google Unternehmensprofile hier eintragen.
+  // Geheimes (GOOGLE_PLACES_KEY, TURNSTILE_SECRET, RESEND_API_KEY) kommt NICHT hierhin, siehe docs/cloudflare.md.
+  "vars": {
+    "PLACE_ID_BOCHUM": "",
+    "PLACE_ID_DORTMUND": "",
+    "PLACE_ID_GELSENKIRCHEN": "",
+    "PLACE_ID_LUEDENSCHEID": "",
+    "PLACE_ID_SIEGEN": "",
+    "TURNSTILE_SITE_KEY": ""
+  }
+}

@@ -8,7 +8,7 @@ import PreisPanel from '../components/PreisPanel.astro';
 import { standorte, ab, routeUrl, type Standort } from '../lib/standorte';
 import { gerichte, fotos, type GerichtId } from '../lib/bilder';
 import { nummer } from '../lib/speisekarte';
-import { restaurantLd, faqLd, breadcrumbLd } from '../lib/seo';
+import { restaurantLd, faqLd, breadcrumbLd, keywordsOrt } from '../lib/seo';
 
 export function getStaticPaths() {
   return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
@@ -52,6 +52,7 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
   title={titel}
   description={beschreibung}
   pfad={`/${s.id}/`}
+  keywords={keywordsOrt(s.name)}
   ld={[restaurantLd(s), faqLd(fragen), breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: `Yumini ${s.name}`, pfad: `/${s.id}/` }])]}
 >
   <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="ort-title">

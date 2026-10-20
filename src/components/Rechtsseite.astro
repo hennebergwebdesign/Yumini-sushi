@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface Props { titel: string; beschreibung: string; pfad: string; stand: string }
+const { titel, beschreibung, pfad, stand } = Astro.props;
+---
+<Base title={`${titel} | Yumini Japanese Sushi & Grill`} description={beschreibung} pfad={pfad} noindex mobilLeiste={false} autoReveal={false}>
+  <section class="recht" aria-labelledby="r-title">
+    <div class="wrap">
+      <h1 id="r-title" class="display">{titel}</h1>
+      <p class="muted stand">Stand: {stand}</p>
+      <div class="prose"><slot /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .recht { padding-block: clamp(7rem, 12vw, 10rem) clamp(3rem, 6vw, 5rem); }
+  .wrap { display: grid; gap: 1rem; max-inline-size: 52rem; }
+  h1 { font-size: var(--fs-h2); }
+  .stand { font-size: 0.9rem; }
+  .prose { display: grid; gap: 1rem; line-height: 1.65; }
+  .prose :global(h2) { margin-block-start: 1.75rem; font-size: 1.3rem; font-weight: 600; }
+  .prose :global(h3) { margin-block-start: 0.5rem; font-size: 1.05rem; font-weight: 600; }
+  .prose :global(ul) { display: grid; gap: 0.4rem; padding-inline-start: 1.25rem; list-style: disc; }
+  .prose :global(a) { text-decoration: underline; text-underline-offset: 0.2em; }
+  .prose :global(address) { font-style: normal; }
+  .prose :global(.hinweis) { padding: 0.9rem 1.1rem; border: 1px dashed var(--border); border-radius: var(--r2); font-size: 0.9rem; color: var(--text-muted); }
+</style>
