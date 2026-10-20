@@ -6,6 +6,7 @@ import Txt from '../../components/ui/Txt.astro';
 import KarriereIcon from '../../components/ui/KarriereIcon.astro';
 import { standorte } from '../../lib/standorte';
 import { kategorien, raeume } from '../../lib/bilder';
+import { breadcrumbLd } from '../../lib/seo';
 import { bereiche, stellen, vorteile, tag, ablauf, fragen } from '../../lib/karriere';
 
 const hg = (src: ImageMetadata) => getImage({ src, width: 1600, format: 'webp' }).then((b) => `--bg:url(${b.src})`);
@@ -46,9 +47,10 @@ const eintritt = [
 ];
 ---
 <Base
-  title="Karriere bei Yumini | Jobs in Küche, Sushi, Grill und Service"
-  description="Jobs bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen: Sushi, Küche, Grill, Service, Theke und Aushilfe. In 2 Minuten bewerben, ohne Lebenslauf."
+  title="Jobs bei Yumini: Sushi, Küche, Grill & Service in NRW"
+  description="Jobs bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen: Sushi, Küche, Grill, Service, Theke. In 2 Minuten bewerben, ohne Lebenslauf."
   pfad="/karriere/"
+  ld={[breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: 'Karriere', pfad: '/karriere/' }])]}
   mobilLeiste={false}
   autoReveal={false}
 >

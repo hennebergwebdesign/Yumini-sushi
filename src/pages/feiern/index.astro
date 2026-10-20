@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Button from '../../components/ui/Button.astro';
 import { standorte } from '../../lib/standorte';
 import { fotos } from '../../lib/bilder';
+import { breadcrumbLd } from '../../lib/seo';
 
 // Platzhaltertexte, vom Inhaber zu bestätigen. Keine Preise, Räume oder Leistungen erfunden.
 const bg = await getImage({ src: fotos.sushiPlatte, width: 1800, format: 'webp' });
@@ -13,7 +14,7 @@ const anlaesse = [
   { id: 'gruppe', t: 'Gruppen ab 16 Personen', x: 'Ab 16 Personen geht Ihre Anfrage direkt an den gewählten Standort, der sich bei Ihnen meldet und mit Ihnen Datum, Uhrzeit und Sitzordnung abstimmt.' },
 ];
 ---
-<Base title="Feiern bei Yumini | Geburtstag und Firmenfeier mit All you can eat" description="Geburtstag, Firmenfeier oder Gruppe: Feiern Sie bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid oder Siegen. Anfrage in zwei Minuten." pfad="/feiern/">
+<Base title="Geburtstag & Firmenfeier mit Sushi feiern | Yumini" description="Geburtstag, Firmenfeier oder Gruppe: feiern Sie bei Yumini in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid oder Siegen. Jetzt Feier unverbindlich anfragen." pfad="/feiern/" ld={[breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: 'Feiern', pfad: '/feiern/' }])]}>
   <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="f-title">
     <div class="wrap copy">
       <p class="eyebrow">Feiern und Gruppen</p>

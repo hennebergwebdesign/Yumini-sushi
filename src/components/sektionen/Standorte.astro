@@ -33,7 +33,7 @@ pfad += 'Z';
 <section id="standorte" class="section dunkel" aria-labelledby="standorte-title">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow">Fünf Standorte</p>
+      <p class="eyebrow">Fünf Standorte in NRW</p>
       <h2 id="standorte-title" class="h2">Ein Tisch in Ihrer Nähe.</h2>
       <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wählen Sie Ihren Standort und reservieren Sie direkt. <span class="fehlt">Fotos der Restaurants [[FEHLT]]</span></p>
     </div>
@@ -42,8 +42,8 @@ pfad += 'Z';
       <ul class="cards">
         {standorte.map((s) => (
           <li class="card" data-id={s.id}>
-            <div class="photo" aria-hidden="true">
-              <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[240, 480]} sizes="14rem" />
+            <div class="photo">
+              <Image src={gerichte[s.gericht as GerichtId]} alt={`Sushi aus dem All you can eat bei Yumini ${s.name}`} title={`Yumini ${s.name}`} widths={[240, 480]} sizes="14rem" />
             </div>
             <div class="info">
               <h3>{s.name}</h3>
@@ -58,8 +58,8 @@ pfad += 'Z';
               <p class="small price">All you can eat ab {ab(s)}</p>
               <p class="small"><a href={`tel:${s.tel}`}>{s.telefon}</a></p>
               <div class="act">
-                <Button href={`/reservieren/?standort=${s.id}`} variant="outline">Hier reservieren</Button>
-                <Button href={`/${s.id}/`} variant="ghost">Mehr</Button>
+                <Button href={`/${s.id}/#reservieren`} variant="outline">Tisch reservieren</Button>
+                <Button href={`/${s.id}/`} variant="ghost">Infos zu {s.name}</Button>
               </div>
             </div>
           </li>

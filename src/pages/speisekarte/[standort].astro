@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { standorte, type Standort } from '../../lib/standorte';
 import { karte, kategorien, bildUrl } from '../../lib/speisekarte';
 import { SITE } from '../../lib/config';
+import { breadcrumbLd } from '../../lib/seo';
 
 export function getStaticPaths() {
   return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
@@ -32,10 +33,10 @@ const ld = {
 };
 ---
 <Base
-  title={`Speisekarte Yumini ${s.name}: ${alle.length} Gerichte mit Foto und Nummer`}
-  description={`Alle ${alle.length} Gerichte von Yumini ${s.name} mit Foto, Nummer und Beschreibung. Sushi, Teppanyaki, Suppen, Salate und Dessert im All you can eat, ${abends} Gerichte nur abends.`}
+  title={`Sushi Speisekarte ${s.name} | Yumini mit ${alle.length} Gerichten`}
+  description={`Speisekarte von Yumini ${s.name}: ${alle.length} Gerichte mit Foto, Nummer und Beschreibung. Sushi, Teppanyaki, Suppen, Salate, Dessert, ${abends} nur abends.`}
   pfad={`/speisekarte/${s.id}/`}
-  ld={[ld]}
+  ld={[ld, breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: 'Speisekarte', pfad: '/speisekarte/' }, { name: s.name, pfad: `/speisekarte/${s.id}/` }])]}
 >
   <section class="kopf" aria-labelledby="k-title">
     <div class="wrap">
@@ -72,7 +73,7 @@ const ld = {
           return (
             <li class="card" data-kat={g.kat} data-d={g.abends ? '1' : '0'}>
               <div class="pic">
-                {u ? <img src={u} alt={g.name} width="420" height="420" loading="lazy" decoding="async" /> : <span class="leer" aria-hidden="true"></span>}
+                {u ? <img src={u} alt={`${g.name}${g.desc ? `, ${g.desc}` : ''} bei Yumini ${s.name}`} title={g.name} width="420" height="420" loading="lazy" decoding="async" /> : <span class="leer" aria-hidden="true"></span>}
                 <span class="nr">{g.nr}</span>
                 {g.abends && <span class="tag">Dinner Only</span>}
               </div>

@@ -10,7 +10,7 @@ const nav = [
   { href: '/karriere/', label: 'Karriere' },
 ];
 ---
-<header class="bar">
+<header class="bar" data-kopf>
   <a class="brand" href="/" aria-label="Yumini, zur Startseite"><Logo hoehe={64} /></a>
 
   <div class="pill">
@@ -53,7 +53,7 @@ const nav = [
 
 <style>
   .bar {
-    position: fixed;
+    position: absolute;
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 50;
@@ -81,7 +81,13 @@ const nav = [
   }
   .pill {
     pointer-events: auto;
-    position: relative;
+    position: fixed;
+    inset-block-start: clamp(0.6rem, 1.6svh, 1rem);
+    inset-inline: 0;
+    inline-size: max-content;
+    margin-inline: auto;
+    z-index: 50;
+    transition: translate 0.35s var(--ease), opacity 0.25s var(--ease);
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -91,6 +97,15 @@ const nav = [
     background: rgb(3 5 4 / 0.82);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+  /* Beim Runterscrollen ausgeblendet, beim Hochscrollen wieder da */
+  :global(html.kopf-weg) .pill {
+    translate: 0 calc(-100% - 1.5rem);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pill { transition: opacity 0.01s; }
   }
   .desk > ul {
     display: flex;
@@ -232,7 +247,29 @@ const nav = [
     }
     .pill {
       padding: 0.3rem;
-      justify-self: end;
+      inset-inline: auto var(--gutter);
+      margin-inline: 0;
     }
   }
 </style>
+
+<script>
+  // Hide on Scroll: nach unten weg, nach oben (oder ganz oben) wieder da. Offenes Menü und Tastaturfokus halten sie sichtbar.
+  const root = document.documentElement;
+  const pille = document.querySelector<HTMLElement>('[data-kopf] .pill');
+  const menue = document.querySelector<HTMLDetailsElement>('[data-kopf] details.mob');
+  let letzte = window.scrollY;
+  let wartet = false;
+  const pruefen = () => {
+    wartet = false;
+    const y = Math.max(0, window.scrollY);
+    const delta = y - letzte;
+    const gehalten = !!pille && (pille.matches(':focus-within') || !!menue?.open);
+    if (y < 80 || delta < -6 || gehalten) root.classList.remove('kopf-weg');
+    else if (delta > 6) root.classList.add('kopf-weg');
+    if (Math.abs(delta) > 6) letzte = y;
+  };
+  window.addEventListener('scroll', () => { if (!wartet) { wartet = true; requestAnimationFrame(pruefen); } }, { passive: true });
+  // Sprungmarken (#reservieren) scrollen nach unten: Pille bleibt dann weg, bis man hochscrollt
+  pille?.addEventListener('focusin', () => root.classList.remove('kopf-weg'));
+</script>

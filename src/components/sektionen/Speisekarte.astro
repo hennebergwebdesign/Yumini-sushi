@@ -13,7 +13,7 @@ const favoriten = namen.map((n) => bochum.find((g) => g.name === n)).filter((g):
     <div class="head">
       <div class="txt">
         <p class="eyebrow">Speisekarte</p>
-        <h2 id="karte-title" class="h2">Über 100 Speisen mit Foto.</h2>
+        <h2 id="karte-title" class="h2">Sushi Speisekarte: über 100 Speisen mit Foto.</h2>
         <p class="lead muted">Sushi, Nigiri, Maki, Teppanyaki, warme Gerichte, Suppen und Salate. Gerichte mit „Dinner Only“ gibt es nur abends.</p>
       </div>
 
@@ -25,7 +25,7 @@ const favoriten = namen.map((n) => bochum.find((g) => g.name === n)).filter((g):
         <li class="fav">
           <div class="pic">
             <span class="halo" aria-hidden="true"></span>
-            <img src={bildUrl(f)!} alt={`${f.name}, ${f.desc}`} width="420" height="420" loading="lazy" decoding="async" />
+            <img src={bildUrl(f)!} alt={`${f.name} (${f.desc}) bei Yumini`} title={f.name} width="420" height="420" loading="lazy" decoding="async" />
           </div>
           <h3>{f.name}</h3>
           <p class="muted">{f.desc}</p>
@@ -36,7 +36,7 @@ const favoriten = namen.map((n) => bochum.find((g) => g.name === n)).filter((g):
 
     <div class="act">
       <Button href="/speisekarte/" variant="primary">Alle Gerichte mit Foto ansehen</Button>
-      <Button href="/speisekarte/blaettern/" variant="outline">Karte durchblättern</Button>
+      <Button href="/#reservieren" variant="outline">Tisch reservieren</Button>
     </div>
   </div>
 </section>

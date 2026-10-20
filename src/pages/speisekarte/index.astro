@@ -5,13 +5,15 @@ import Button from '../../components/ui/Button.astro';
 import { standorte } from '../../lib/standorte';
 import { karte } from '../../lib/speisekarte';
 import { gerichte, type GerichtId } from '../../lib/bilder';
+import { breadcrumbLd } from '../../lib/seo';
 
 const mitZahl = standorte.map((s) => ({ s, n: karte(s.id).length, d: karte(s.id).filter((g) => g.abends).length }));
 ---
 <Base
-  title="Speisekarte Yumini: über 100 Gerichte mit Fotos"
-  description="Die Speisekarte von Yumini Japanese Sushi & Grill mit Fotos aller Gerichte. Wählen Sie Ihren Standort, die Karten unterscheiden sich in Nummern und Gerichten."
+  title="Sushi Speisekarte mit Fotos | Yumini Sushi & Grill"
+  description="Die Speisekarte von Yumini mit über 100 Gerichten und Fotos: Sushi, Teppanyaki, Suppen und Dessert. Wählen Sie Ihren Standort, die Nummern unterscheiden sich."
   pfad="/speisekarte/"
+  ld={[breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: 'Speisekarte', pfad: '/speisekarte/' }])]}
 >
   <section class="kopf" aria-labelledby="sk-title">
     <div class="wrap">

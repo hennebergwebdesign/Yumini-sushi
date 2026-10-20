@@ -21,10 +21,10 @@ const orbit = [
         <span class="kicker">Yumini Japanese Sushi <span class="amp">&amp;</span> Grill</span>
         <span class="big display">All you<br />can eat</span>
       </h1>
-      <p class="lead">Über 100 warme und kalte Speisen, bestellt per Tablet. In Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen.</p>
+      <p class="lead">All you can eat Sushi und Grill mit über 100 warmen und kalten Speisen, bestellt per Tablet. In Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen.</p>
       <div class="actions">
         <Button href="/#reservieren" variant="primary" size="lg">Tisch reservieren</Button>
-        <Button href="/speisekarte/" variant="outline" size="lg">Speisekarte ansehen</Button>
+        <Button href="/speisekarte/" variant="outline" size="lg">Sushi Speisekarte ansehen</Button>
       </div>
 
       <ul class="trust" aria-label="Bewertungen unserer Gäste">
@@ -45,12 +45,12 @@ const orbit = [
       </ul>
     </div>
 
-    <div class="turn" aria-hidden="true">
+    <div class="turn">
       <div class="ring"></div>
       <div class="plate">
-        <Image src={fotos.schieferRund} alt="" widths={[480, 720, 960]} sizes="(max-width: 52rem) 80vw, 42vw" loading="eager" fetchpriority="high" />
+        <Image src={fotos.schieferRund} alt="Nigiri und Sushi auf einer Schieferplatte, serviert bei Yumini" title="All you can eat Sushi bei Yumini" widths={[480, 720, 960]} sizes="(max-width: 52rem) 80vw, 42vw" loading="eager" fetchpriority="high" />
       </div>
-      <ul class="orbit">
+      <ul class="orbit" aria-hidden="true">
         {orbit.map((o, i) => (
           <li style={`--i:${i}`}>
             <span class="bowl"><Image src={o.bild} alt="" widths={[120, 240]} sizes="6rem" /></span>
