@@ -1,75 +1,87 @@
 ---
+import { getImage } from 'astro:assets';
 import ReservierungsTool from '../ReservierungsTool.astro';
+import { fotos } from '../../lib/bilder';
+
+const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
 ---
-<section id="reservieren" class="section paper" aria-labelledby="res-title">
+<section id="reservieren" class="res" aria-labelledby="res-title" style={`--bg:url(${bg.src})`}>
   <div class="wrap">
     <div class="head">
       <p class="eyebrow">Online reservieren</p>
       <h2 id="res-title" class="h2">Ihr Tisch in unter einer Minute.</h2>
-      <p class="lead muted">Standort, Datum, Personen und Uhrzeit wählen. Sie sehen sofort, welche Zeiten noch frei sind, und bekommen die Bestätigung per Mail.</p>
     </div>
 
     <div class="device">
       <div class="tablet">
         <span class="cam" aria-hidden="true"></span>
+        <span class="btn" aria-hidden="true"></span>
         <div class="screen">
-          <ReservierungsTool uid="t" />
+          <ReservierungsTool ort="bochum" />
         </div>
       </div>
-      <div class="shadow" aria-hidden="true"></div>
     </div>
   </div>
 </section>
 
 <style>
+  .res {
+    position: relative;
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    background: var(--black) var(--bg) center / cover no-repeat;
+    isolation: isolate;
+  }
+  .res::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgb(3 5 4 / 0.9);
+  }
   .head {
     display: grid;
-    gap: 1rem;
+    gap: 0.75rem;
     justify-items: center;
     text-align: center;
-    margin-inline: auto;
-    margin-block-end: clamp(2.5rem, 5vw, 4rem);
-    max-inline-size: 44rem;
+    margin-block-end: clamp(2rem, 4vw, 3rem);
   }
   .device {
-    position: relative;
     display: grid;
     justify-items: center;
   }
   .tablet {
     position: relative;
-    inline-size: min(100%, 62rem);
-    padding: clamp(0.9rem, 2vw, 1.6rem);
+    inline-size: min(100%, 64rem);
+    padding: clamp(0.7rem, 1.6vw, 1.3rem);
     border-radius: clamp(1.25rem, 3vw, 2.25rem);
-    background: linear-gradient(145deg, #1d2420, #070a09);
-    box-shadow:
-      0 0 0 1.5px #313b36,
-      0 40px 80px -30px rgb(17 21 19 / 0.55);
+    background: #1a201e;
+    box-shadow: 0 0 0 2px #2f3834, 0 40px 80px -30px #000;
   }
   .cam {
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-start: 0.55rem;
+    inset-inline-start: clamp(0.25rem, 0.6vw, 0.5rem);
     inline-size: 6px;
     block-size: 6px;
     border-radius: 50%;
-    background: #0e1311;
+    background: #05080a;
     box-shadow: inset 0 0 0 1px #3a4540;
   }
-  .screen {
-    border-radius: clamp(0.5rem, 1.2vw, 0.9rem);
-    background: var(--black);
-    padding: clamp(1rem, 2.6vw, 2rem);
+  .btn {
+    position: absolute;
+    inset-block-start: 1.5rem;
+    inset-inline-end: -4px;
+    inline-size: 4px;
+    block-size: 3.2rem;
+    border-radius: 0 3px 3px 0;
+    background: #2f3834;
   }
-  .shadow {
-    inline-size: 60%;
-    block-size: 1.5rem;
-    margin-block-start: -0.5rem;
-    background: radial-gradient(closest-side, rgb(17 21 19 / 0.25), transparent);
-    filter: blur(4px);
+  .screen {
+    overflow: clip;
+    border-radius: clamp(0.6rem, 1.4vw, 1.1rem);
+    background: #0a0d0c;
   }
 
-  /* Auf dem Handy fällt der Rahmen weg, das Tool nimmt die volle Breite */
   @media (max-width: 52rem) {
     .tablet {
       padding: 0;
@@ -77,12 +89,12 @@ import ReservierungsTool from '../ReservierungsTool.astro';
       box-shadow: none;
     }
     .cam,
-    .shadow {
+    .btn {
       display: none;
     }
     .screen {
       border-radius: var(--r4);
-      padding: 1.25rem;
+      border: 1px solid var(--border);
     }
   }
 </style>

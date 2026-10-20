@@ -14,7 +14,7 @@ import { standorte } from '../lib/standorte';
       <ul class="locs">
         {standorte.map((s) => (
           <li>
-            <h3>{s.name}</h3>
+            <h3><a href={`/${s.id}/`}>{s.name}</a></h3>
             <address>
               {s.strasse}<br />{s.ort}
               {s.hinweis && <><br /><span class="muted">{s.hinweis}</span></>}
@@ -79,7 +79,11 @@ import { standorte } from '../lib/standorte';
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   }
   .locs h3 {
-    font-size: 1.125rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    font-size: 1rem;
     margin-block-end: 0.6rem;
   }
   address {

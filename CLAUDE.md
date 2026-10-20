@@ -62,6 +62,26 @@ sind keine Fotos der Restaurants.
 5. Gerichtenummern der Speisekarte unterscheiden sich je Standort wie erwartet, die Zahl der Gerichte auch (136 bis 138).
 6. Marke: Logo SVG und Plan nennen `#d92129`, die Bestandsseite nutzt für Buttons `#DF5157`. Hier gilt `#d92129`.
 
+**Stand 2 (20.10.2026, nach Rückmeldung des Inhabers):**
+
+1. Kopfzeile: Logo groß links frei stehend, schmale Menüpille in der Mitte.
+2. Held: „All you can eat" in Archivo, Drehteller mit dem Brett der Bestandsseite im roten Ring, fünf Schalen kreisen und bleiben aufrecht,
+   darunter drei Bewertungs Widgets (Google, Trustpilot, Kolibri) mit Umriss Sternen. Werte fehlen, es gibt keinen eigenen Vertrauensabschnitt mehr.
+3. Direkt unter dem Held das interaktive Tablet (`ReservierungsTool.astro`, Skript im selben Bauteil): Standort, Kalender (Gelsenkirchen Montag zu),
+   Personen 1 bis 15 und „Mehr", Uhrzeit als Dropdown mit allen Zeiten (Mittag und Abend, Raster 15 Minuten), Bestätigung. Die Verfügbarkeit
+   ist simuliert (`src/lib/zeiten.ts`), letzte Reservierung = Schluss minus Buffetdauer ist eine Annahme.
+4. Standortseiten `/bochum/`, `/dortmund/`, `/gelsenkirchen/`, `/luedenscheid/`, `/siegen/` über `src/pages/[standort].astro`: eigener Held, Tablet mit
+   vorgewähltem Standort, Preise, Speisekartennummern dieses Standorts (aus `src/data/menu/*.csv`), Anfahrt und Parken, FAQ, Links zu den anderen Orten.
+5. SEO: `Restaurant` (mit Öffnungszeiten), `FAQPage`, `BreadcrumbList`, `Organization`, Canonical, Open Graph, Sitemap (`@astrojs/sitemap`), `robots.txt`.
+   Solange der Prototyp läuft, steht alles auf `noindex`. Zum Livegang `PUBLIC_INDEXIEREN=true` setzen, dann öffnet sich auch `robots.txt`.
+6. Keine Verläufe mehr (Wunsch des Inhabers). Bildhintergründe mit flacher Abdunklung, Schrift mit Foto Füllung (Abschnitte Einblicke und Abschluss).
+   Weiße Abschnitte nur Preise und Fragen.
+7. Speisekarte als Design in Claude Design: Artifact `https://claude.ai/artifact/HohNQPai61Gn3r9ze8MFZy` mit Umschlag, drei Doppelseiten (alle 136 Gerichte
+   der Karte Bochum), Mockup für die Startseite. Offene Tippfehler der Bestandsseite wurden dort stillschweigend korrigiert (Garnelen statt Schrimps,
+   Heilbutt, Spinat mit, Gebackene Klößchen). „Süßwasserschrimps" steht noch im Original. Allergene fehlen.
+8. Nicht erreichbar von hier: Awwwards, Behance, Lapa Ninja, Unsplash (Bot Schutz). Referenzen dieser Runde: haven-annecy.fr (Wortmarke mit Foto Füllung),
+   mrspringmrsfresh.com (Markenschrift, Stempel). Nur Aufbau und Idee übernommen, nichts kopiert.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
@@ -112,7 +132,7 @@ Quelle ist das Designsystem „Yumini" in Claude Design (Artifact `6PyPFBPNPzZGq
 | Theme | dunkel primär (`black` #030504), hell für Inhaltssektionen |
 | Aktion | `brand-red` #d92129, Hover `red-deep` #b81b22, ein rotes Flächenelement je Bildschirm |
 | Akzent | `coral-soft` auf dunkel, `brand-red` auf hell |
-| Schrift | IBM Plex Sans, selbst gehostet, Schnitte 300, 400, 500, 600 |
+| Schrift | IBM Plex Sans, selbst gehostet, Schnitte 300, 400, 500, 600. Überschriften in Archivo Expanded 800 bis 900 (nahe an der Wortmarke), auf Wunsch des Inhabers (20.10.2026) |
 | Signatur | Standortname in 500, darunter „Japanese Sushi & Grill" in 300, gleiche Größe |
 | Logo | Original SVG, nur auf dunklem Grund. Helle Variante und Signet einzeln fehlen |
 | Logoelement | roter Kreis hinter dem M als Motiv: Held, Zwei Stunden Ring, Kartenpunkte, Auswahl im Tool |
@@ -159,3 +179,6 @@ Rechtstexte, 404.
    echte Fotos (Nigiri Platte, Kategorien, freigestellte Gerichte). Held mit Foto im Kreis, Preise je Standort als Tabs,
    Speisekarten Favoriten, Auswahl Kacheln statt erfundener Angebote, FAQ mit belegten Antworten. Geprüft: Build grün,
    Chromium auf 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
+5. **20.10.2026** Zweite Runde: Kopfzeile, Drehteller Held, interaktives Tablet, Standortseiten mit SEO, Archivo Überschriften, keine Verläufe,
+   Speisekarte in Claude Design. Geprüft: Build grün (6 Seiten), Chromium auf 1440 und 390 px, Tablet Durchlauf mit Eingaben,
+   keine Konsolenfehler, kein horizontales Scrollen.

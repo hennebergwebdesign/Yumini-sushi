@@ -1,0 +1,19 @@
+---
+// Stempel im Stil eines Hanko: roter Kreis wie hinter dem M der Wortmarke, Text läuft im Kreis.
+interface Props { text?: string; zeichen?: string }
+const { text = 'All you can eat · 5 Standorte · Sushi & Grill · ', zeichen = '2' } = Astro.props;
+const id = `st-${Math.random().toString(36).slice(2, 7)}`;
+---
+<svg class="stempel" viewBox="0 0 200 200" role="img" aria-label={text.replace(/·/g, ',')}>
+  <circle cx="100" cy="100" r="98" fill="#d92129" />
+  <circle cx="100" cy="100" r="64" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="1.5" />
+  <defs><path id={id} d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0" /></defs>
+  <text class="ring" fill="#fff"><textPath href={`#${id}`} startOffset="0" textLength="495" lengthAdjust="spacing">{text}</textPath></text>
+  <text x="100" y="124" text-anchor="middle" class="mid" fill="#fff">{zeichen}</text>
+</svg>
+
+<style>
+  .stempel { inline-size: 100%; block-size: auto; }
+  .ring { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 13px; letter-spacing: 0; text-transform: uppercase; }
+  .mid { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 64px; }
+</style>

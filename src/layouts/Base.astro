@@ -3,12 +3,18 @@ import '../styles/global.css';
 import Sprite from '../components/ui/Sprite.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import MobilLeiste from '../components/MobilLeiste.astro';
+import { INDEXIEREN, SITE } from '../lib/config';
 
 interface Props {
   title: string;
   description: string;
+  pfad?: string;
+  ld?: object[];
+  mobilLeiste?: boolean;
 }
-const { title, description } = Astro.props;
+const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true } = Astro.props;
+const url = new URL(pfad, SITE).href;
 ---
 <!doctype html>
 <html lang="de">
@@ -18,9 +24,19 @@ const { title, description } = Astro.props;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#030504" />
-    <!-- Prototyp: noch nicht indexieren -->
-    <meta name="robots" content="noindex, nofollow" />
+    {INDEXIEREN ? <meta name="robots" content="index, follow, max-image-preview:large" /> : <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Yumini Japanese Sushi & Grill" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${SITE}/images/og.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
   </head>
   <body>
     <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -28,5 +44,6 @@ const { title, description } = Astro.props;
     <Header />
     <main id="main"><slot /></main>
     <Footer />
+    {mobilLeiste && <MobilLeiste />}
   </body>
 </html>

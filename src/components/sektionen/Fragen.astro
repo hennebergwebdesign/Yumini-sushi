@@ -7,11 +7,11 @@ const fragen = [
   },
   {
     q: 'Wie lange darf ich am Tisch bleiben?',
-    a: 'In Bochum, Gelsenkirchen, Lüdenscheid und Siegen haben Sie 2 Stunden Zeit, in Dortmund 2,5 Stunden. Sie bestellen in dieser Zeit in mehreren Runden per Tablet, pro Runde und Person bis zu 6 Speisen mittags und 5 Speisen abends.',
+    a: 'In Bochum, Gelsenkirchen, Lüdenscheid und Siegen haben Sie 2 Stunden Zeit, in Dortmund 2,5 Stunden. Pro Bestellrunde und Person bestellen Sie bis zu 6 Speisen mittags und 5 Speisen abends.',
   },
   {
     q: 'Was kosten Kinder?',
-    a: 'In Bochum und Dortmund essen Kinder bis 4 Jahre frei, bis 12 Jahre zahlen sie 10,90 € mittags und abends 15,90 € (Bochum) beziehungsweise 16,90 € (Dortmund). In Gelsenkirchen, Lüdenscheid und Siegen essen Kinder bis 3 Jahre frei, bis 11 Jahre zahlen sie den halben Preis.',
+    a: 'Bis 3 Jahre (in Bochum und Dortmund bis 4 Jahre) essen Kinder frei. Danach zahlen sie in Bochum und Dortmund bis 12 Jahre einen Kinderpreis, in Gelsenkirchen, Lüdenscheid und Siegen bis 11 Jahre den halben Preis. Die genauen Preise stehen bei Ihrem Standort.',
   },
   {
     q: 'Was gilt bei „Dinner Only“?',
@@ -21,18 +21,6 @@ const fragen = [
     q: 'Was passiert, wenn ich Speisen übrig lasse?',
     a: 'Bitte bestellen Sie nur so viel, wie Sie essen können. Für Reste berechnen wir 1,00 € je Stück Sushi und Salat und 2,00 € je warmes Gericht. Der Erlös wird für wohltätige Zwecke gespendet.',
   },
-  {
-    q: 'Gibt es Parkplätze?',
-    a: 'In Lüdenscheid haben wir über 30 eigene Parkplätze, kostenlos in der Nähe. In Bochum, Dortmund, Gelsenkirchen und Siegen parken Sie in Parkhäusern und auf Parkplätzen in der Nähe, die genauen Adressen stehen bei den Standorten.',
-  },
-  {
-    q: 'Welche Preise gelten an Feiertagen?',
-    a: 'An Feiertagen gelten die Preise von Freitag bis Sonntag. In Dortmund, Lüdenscheid und Siegen gilt das auch an Valentinstag und Silvester.',
-  },
-  { q: 'Welche Allergene sind enthalten?', a: null },
-  { q: 'Gibt es vegetarische Gerichte?', a: null },
-  { q: 'Muss ich reservieren?', a: null },
-  { q: 'Wie funktionieren Gruppen ab 16 Personen?', a: null },
 ];
 ---
 <section id="fragen" class="section paper" aria-labelledby="fragen-title">
@@ -40,7 +28,7 @@ const fragen = [
     <div class="intro">
       <p class="eyebrow">Fragen</p>
       <h2 id="fragen-title" class="h2">Gut zu wissen.</h2>
-      <p class="muted lead">Etwas anderes? Rufen Sie den Standort an, die Nummern stehen im Fuß der Seite.</p>
+      <p class="muted lead">Etwas anderes? Rufen Sie Ihren Standort an, die Nummern stehen im Fuß der Seite.</p>
     </div>
 
     <div class="list">

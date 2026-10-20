@@ -58,14 +58,14 @@ const favoriten: { id: GerichtId; name: string; text: string; abends?: boolean }
 </section>
 
 <style>
-  .slate { background: #161c1d; overflow: clip; }
+  .slate { background: #11161a; overflow: clip; }
   .head { display: grid; gap: 3rem; align-items: center; margin-block-end: clamp(2.5rem, 5vw, 4rem); }
   .txt { display: grid; gap: 1rem; max-inline-size: 36rem; }
   .mock { display: grid; place-items: center; perspective: 1400px; }
   .book { position: relative; inline-size: min(100%, 32rem); aspect-ratio: 1.45; display: grid; grid-template-columns: 1fr 1fr; transform: rotateX(8deg); filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
   .page { display: grid; align-content: center; gap: 0.7rem; padding: 12% 11%; }
-  .page.l { border-radius: 6px 0 0 6px; background: linear-gradient(90deg, #f5f1ec 85%, #ddd5c9); }
-  .page.r { border-radius: 0 6px 6px 0; background: linear-gradient(270deg, #f5f1ec 85%, #ddd5c9); }
+  .page.l { border-radius: 6px 0 0 6px; background: #f5f1ec; border-inline-end: 2px solid #ddd5c9; }
+  .page.r { border-radius: 0 6px 6px 0; background: #f5f1ec; border-inline-start: 2px solid #ddd5c9; }
   .page i { display: block; block-size: 0.55rem; border-radius: 2px; background: #cfc7ba; }
   .page i:nth-child(odd) { inline-size: 80%; }
   .page i.s { inline-size: 55%; }
@@ -112,7 +112,7 @@ const favoriten: { id: GerichtId; name: string; text: string; abends?: boolean }
     position: absolute;
     inset: 12%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgb(217 33 41 / 0.3), transparent 68%);
+    background: rgb(217 33 41 / 0.22);
     opacity: 0;
     transition: opacity 0.4s var(--ease);
   }

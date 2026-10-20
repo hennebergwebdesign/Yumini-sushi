@@ -35,7 +35,7 @@ pfad += 'Z';
     <div class="head">
       <p class="eyebrow">Fünf Standorte</p>
       <h2 id="standorte-title" class="h2">Ein Tisch in Ihrer Nähe.</h2>
-      <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wählen Sie Ihren Standort und reservieren Sie direkt.</p>
+      <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wählen Sie Ihren Standort und reservieren Sie direkt. <span class="fehlt">Fotos der Restaurants [[FEHLT]]</span></p>
     </div>
 
     <div class="stage">
@@ -44,7 +44,6 @@ pfad += 'Z';
           <li class="card" data-id={s.id}>
             <div class="photo" aria-hidden="true">
               <Image src={gerichte[s.gericht as GerichtId]} alt="" widths={[240, 480]} sizes="14rem" />
-              <span class="fehlt">Foto des Restaurants [[FEHLT]]</span>
             </div>
             <div class="info">
               <h3>{s.name}</h3>
@@ -127,9 +126,7 @@ pfad += 'Z';
     display: grid;
     place-items: center;
     aspect-ratio: 16 / 9;
-    background:
-      radial-gradient(circle at 50% 120%, rgb(217 33 41 / 0.35), transparent 60%),
-      var(--surface-2);
+    background: var(--surface-2);
   }
   .photo :global(img) {
     inline-size: 46%;

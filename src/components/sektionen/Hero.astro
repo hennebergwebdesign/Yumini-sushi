@@ -1,42 +1,66 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
-import { fotos, gerichte } from '../../lib/bilder';
+import { fotos, kategorien } from '../../lib/bilder';
+
+// Bewertungswerte liegen noch nicht vor (docs/quellen/bewertungen: keine belegten Zahlen).
+// Sterne bleiben als Umriss, bis echte Werte aus Google, Trustpilot und Kolibri kommen.
+const plattformen = ['Google', 'Trustpilot', 'Kolibri'];
+const orbit = [
+  { bild: kategorien.sushi, name: 'Sushi' },
+  { bild: kategorien.grill, name: 'Grill' },
+  { bild: kategorien.salad, name: 'Reis' },
+  { bild: kategorien.dinner, name: 'Dinner' },
+  { bild: kategorien.dessert, name: 'Dessert' },
+];
 ---
 <section class="hero" aria-labelledby="hero-title">
-  <div class="art">
-    <div class="glow" aria-hidden="true"></div>
-    <div class="ring" aria-hidden="true"></div>
-    <div class="disc">
-      <Image
-        src={fotos.sushiPlatte}
-        alt="Nigiri mit Lachs, Garnele, Aal und Rogen auf einer Schieferplatte"
-        widths={[480, 720, 960]}
-        sizes="(max-width: 52rem) 90vw, 46vw"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-    <Image class="fl f1" src={gerichte.sake} alt="" aria-hidden="true" widths={[160, 320]} sizes="12rem" loading="eager" />
-    <Image class="fl f2" src={gerichte.ikura} alt="" aria-hidden="true" widths={[120, 240]} sizes="8rem" loading="eager" />
-    <Image class="fl f3" src={gerichte['tempura-california']} alt="" aria-hidden="true" widths={[160, 320]} sizes="11rem" loading="eager" />
-  </div>
-
   <div class="wrap grid">
     <div class="copy">
       <h1 id="hero-title">
-        <span class="o">Yumini</span>
-        <span class="l">Japanese Sushi <span class="amp">&amp;</span> Grill</span>
+        <span class="kicker">Yumini Japanese Sushi <span class="amp">&amp;</span> Grill</span>
+        <span class="big display">All you<br />can eat</span>
       </h1>
-      <p class="lead">All you can eat in Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Über 100 warme und kalte Speisen, bestellt per Tablet.</p>
+      <p class="lead">Über 100 warme und kalte Speisen, bestellt per Tablet. In Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen.</p>
       <div class="actions">
-        <Button href="/reservieren/" variant="primary" size="lg">Tisch reservieren</Button>
+        <Button href="/#reservieren" variant="primary" size="lg">Tisch reservieren</Button>
         <Button href="/speisekarte/" variant="outline" size="lg">Speisekarte ansehen</Button>
       </div>
+
+      <ul class="trust" aria-label="Bewertungen unserer Gäste">
+        {plattformen.map((p) => (
+          <li>
+            <a href="#bewertungen" class="widget">
+              <span class="logo" aria-hidden="true">{p[0]}</span>
+              <span class="meta">
+                <b>{p}</b>
+                <span class="stars" aria-hidden="true">
+                  {[0, 1, 2, 3, 4].map(() => (
+                    <svg viewBox="0 0 20 20"><path d="M10 1.8l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L10 14.3 5 17l1.2-5.6L2 7.6l5.6-.6z" /></svg>
+                  ))}
+                </span>
+              </span>
+              <span class="val"><span class="fehlt">[[FEHLT]]</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="turn" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="plate">
+        <Image src={fotos.schieferRund} alt="" widths={[480, 720, 960]} sizes="(max-width: 52rem) 80vw, 42vw" loading="eager" fetchpriority="high" />
+      </div>
+      <ul class="orbit">
+        {orbit.map((o, i) => (
+          <li style={`--i:${i}`}>
+            <span class="bowl"><Image src={o.bild} alt="" widths={[120, 240]} sizes="6rem" /></span>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
-
-  <a class="scroll" href="#vertrauen" aria-label="Weiter nach unten"><span></span></a>
 </section>
 
 <style>
@@ -45,132 +69,189 @@ import { fotos, gerichte } from '../../lib/bilder';
     min-block-size: 100svh;
     display: grid;
     align-items: center;
-    padding-block: 8rem 5rem;
+    padding-block: 7.5rem 3rem;
     overflow: clip;
     background: var(--black);
   }
   .grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .copy {
+    display: grid;
+    gap: 1.3rem;
+    max-inline-size: 38rem;
     position: relative;
     z-index: 2;
   }
-  .copy {
-    max-inline-size: 52rem;
-    display: grid;
-    gap: 1.75rem;
-  }
   h1 {
     display: grid;
-    font-size: clamp(2.5rem, 4.9vw, 4.25rem);
-    line-height: 1.02;
+    gap: 0.9rem;
   }
-  .o { font-weight: 500; }
-  .l {
+  .kicker {
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
     font-weight: 300;
-    letter-spacing: -0.025em;
-    white-space: nowrap;
+    letter-spacing: 0;
   }
   .amp {
     color: var(--coral-soft);
     font-weight: 500;
   }
-  .lead { max-inline-size: 30rem; }
+  .big {
+    font-size: clamp(2.6rem, 5.4vw, 4.9rem);
+  }
+  .lead {
+    max-inline-size: 30rem;
+  }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 
-  .art {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-end: clamp(-4rem, 3vw, 4rem);
-    inline-size: min(41vw, 40rem);
-    aspect-ratio: 1;
-    translate: 0 -50%;
-    z-index: 1;
+  .trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-start: 0.5rem;
   }
-  .glow {
-    position: absolute;
-    inset: -22%;
-    background: radial-gradient(closest-side, rgb(217 33 41 / 0.42), rgb(217 33 41 / 0.12) 60%, transparent);
+  .widget {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.8rem 0.45rem 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.04);
+    text-decoration: none;
+    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+  }
+  .widget:hover {
+    border-color: var(--coral-soft);
+    background: rgb(255 255 255 / 0.08);
+  }
+  .logo {
+    display: grid;
+    place-items: center;
+    inline-size: 1.9rem;
+    block-size: 1.9rem;
+    border-radius: 50%;
+    border: 1px dashed var(--border);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .meta {
+    display: grid;
+    line-height: 1.1;
+  }
+  .meta b {
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .stars {
+    display: flex;
+    gap: 1px;
+  }
+  .stars svg {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    fill: none;
+    stroke: var(--coral-soft);
+    stroke-width: 1.4;
+  }
+  .val .fehlt {
+    font-size: 0.65rem;
+    padding: 0 0.35em;
+  }
+
+  /* Drehteller: das Brett dreht sich langsam, kleine Schalen kreisen darum, jede bleibt aufrecht */
+  .turn {
+    position: relative;
+    inline-size: min(88vw, 34rem);
+    aspect-ratio: 1;
+    margin-inline: auto;
   }
   .ring {
     position: absolute;
-    inset: -7%;
+    inset: -3%;
     border-radius: 50%;
-    border: 1.5px dashed rgb(255 143 134 / 0.55);
-    animation: spin 120s linear infinite;
+    border: 2px solid var(--brand-red);
   }
-  .disc {
+  .plate {
     position: absolute;
     inset: 0;
     border-radius: 50%;
     overflow: clip;
-    border: 2px solid rgb(255 255 255 / 0.12);
-    box-shadow: 0 40px 80px -30px #000;
+    animation: turn 70s linear infinite;
   }
-  .disc :global(img) {
+  .plate :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    object-position: 38% 55%;
-    scale: 1.08;
-    animation: slow 24s ease-in-out infinite alternate;
   }
-  .art :global(.fl) {
+  .orbit {
     position: absolute;
-    block-size: auto;
-    filter: drop-shadow(0 18px 20px rgb(0 0 0 / 0.6));
-    animation: float 7s ease-in-out infinite;
+    inset: -17%;
+    animation: turn 110s linear infinite reverse;
   }
-  .art :global(.f1) { inline-size: 30%; inset-block-end: 4%; inset-inline-start: -12%; rotate: -8deg; }
-  .art :global(.f2) { inline-size: 17%; inset-block-start: 2%; inset-inline-start: 6%; rotate: 10deg; animation-delay: -2s; }
-  .art :global(.f3) { inline-size: 28%; inset-block-end: -6%; inset-inline-end: 4%; rotate: 6deg; animation-delay: -4s; }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes slow { to { scale: 1.16; } }
-  @keyframes float { 50% { translate: 0 -10px; } }
-
-  .scroll {
+  .orbit li {
     position: absolute;
-    inset-block-end: 1.75rem;
+    inset: 0;
+    rotate: calc(var(--i) * 72deg);
+  }
+  .bowl {
+    position: absolute;
+    inset-block-start: 0;
     inset-inline-start: 50%;
     translate: -50% 0;
-    inline-size: 1.75rem;
-    block-size: 2.75rem;
-    border: 1.5px solid var(--border);
-    border-radius: 999px;
-    display: grid;
-    justify-items: center;
-    padding-block-start: 0.5rem;
-    z-index: 3;
+    inline-size: clamp(3.2rem, 8vw, 5.2rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: clip;
+    border: 3px solid var(--black);
+    outline: 1.5px solid var(--border);
+    animation: untwist 110s linear infinite;
+    rotate: calc(var(--i) * -72deg);
   }
-  .scroll span {
-    inline-size: 4px;
-    block-size: 8px;
-    border-radius: 2px;
-    background: var(--text);
-    animation: drip 2s var(--ease) infinite;
+  .bowl :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
   }
-  @keyframes drip {
-    0% { opacity: 0; translate: 0 -2px; }
-    40% { opacity: 1; }
-    100% { opacity: 0; translate: 0 12px; }
-  }
+  @keyframes turn { to { rotate: 360deg; } }
+  @keyframes untwist { to { rotate: calc(var(--i) * -72deg + 360deg); } }
 
+  @media (min-width: 62rem) {
+    .grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+    .turn {
+      inline-size: min(40vw, 38rem);
+    }
+  }
   @media (max-width: 52rem) {
     .hero {
-      align-items: end;
-      padding-block: 6.5rem 5.5rem;
+      padding-block: 7rem 3rem;
     }
-    .art {
-      inset-block-start: 6.5rem;
-      inset-inline: 50% auto;
-      translate: -50% 0;
-      inline-size: min(78vw, 22rem);
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.4rem;
     }
-    .copy { padding-block-start: min(92vw, 27rem); }
-    .l { white-space: normal; }
-    .actions :global(.btn) { flex: 1 1 100%; }
+    .widget {
+      flex-direction: column;
+      gap: 0.3rem;
+      padding: 0.6rem 0.3rem;
+      border-radius: var(--r3);
+      text-align: center;
+    }
+    .meta { justify-items: center; }
+    .stars svg { inline-size: 0.62rem; block-size: 0.62rem; }
+    .actions :global(.btn) {
+      flex: 1 1 100%;
+    }
   }
 </style>

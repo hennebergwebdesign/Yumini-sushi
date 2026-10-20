@@ -1,53 +1,35 @@
 ---
+import { getImage } from 'astro:assets';
 import { standorte } from '../../lib/standorte';
 import Button from '../ui/Button.astro';
+import { fotos } from '../../lib/bilder';
+
+const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
+const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp' });
 ---
-<section id="abschluss" class="end" aria-labelledby="end-title">
-  <div class="disc" aria-hidden="true"></div>
+<section id="abschluss" class="end" aria-labelledby="end-title" style={`--bg:url(${bg.src});--fill:url(${fill.src})`}>
   <div class="wrap inner">
-    <h2 id="end-title" class="h2">Ihr Tisch wartet.</h2>
+    <h2 id="end-title" class="mega">Ihr Tisch wartet</h2>
     <p class="lead">Wählen Sie Ihren Standort und reservieren Sie in unter einer Minute.</p>
     <ul class="locs">
       {standorte.map((s) => (
-        <li><Button href={`/reservieren/?standort=${s.id}`} variant="outline">{s.name}</Button></li>
+        <li><Button href={`/${s.id}/#reservieren`} variant="outline">{s.name}</Button></li>
       ))}
     </ul>
-    <Button href="/reservieren/" variant="primary" size="lg">Tisch reservieren</Button>
+    <Button href="/#reservieren" variant="primary" size="lg">Tisch reservieren</Button>
   </div>
 </section>
 
 <style>
-  .end {
-    position: relative;
-    overflow: clip;
-    padding-block: clamp(5rem, 11vw, 9rem);
-    background: var(--black);
-    text-align: center;
+  .end { position: relative; isolation: isolate; overflow: clip; padding-block: clamp(5rem, 11vw, 9rem); background: var(--black) var(--bg) center / cover no-repeat; text-align: center; }
+  .end::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.86); }
+  .inner { display: grid; gap: 1.5rem; justify-items: center; }
+  .mega {
+    font-family: var(--display); font-weight: 900; font-stretch: 125%; text-transform: uppercase;
+    font-size: clamp(3rem, 12.5vw, 11rem); line-height: 0.9; letter-spacing: -0.02em; color: var(--coral-soft);
   }
-  .disc {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    inline-size: min(110vw, 52rem);
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    border-radius: 50%;
-    border: 1.5px solid rgb(255 143 134 / 0.5);
-    background: radial-gradient(circle, rgb(217 33 41 / 0.32), rgb(217 33 41 / 0.04) 70%);
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .mega { color: transparent; background: var(--fill) center 64% / 130% no-repeat; -webkit-background-clip: text; background-clip: text; -webkit-text-stroke: 1px rgb(255 255 255 / 0.3); }
   }
-  .inner {
-    position: relative;
-    display: grid;
-    gap: 1.5rem;
-    justify-items: center;
-  }
-  .h2 {
-    font-size: clamp(2.5rem, 7vw, 5rem);
-  }
-  .locs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-  }
+  .locs { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
 </style>

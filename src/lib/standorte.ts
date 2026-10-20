@@ -22,6 +22,8 @@ export type Standort = {
   parken: string[];
   parkHinweis?: string;
   feiertag?: string;
+  maps?: string;
+  facebook?: string;
   gericht: string; // Bild für die Karte, Dekor und kein Foto des Restaurants
   lon: number;
   lat: number;
@@ -55,6 +57,8 @@ export const standorte: Standort[] = [
     kinder: 'Bis 4 Jahre frei. Bis 12 Jahre 10,90 € mittags und 15,90 € abends.',
     dauer: '2 Stunden',
     parken: ['P2 Dr.-Ruer-Platz, Viktoriastraße 10', 'P8 Konrad-Adenauer-Platz'],
+    maps: 'https://goo.gl/maps/BwyAvCov1obF6MTQ8',
+    facebook: 'https://www.facebook.com/yumini.bochum',
     gericht: 'sake',
     lon: 7.216,
     lat: 51.481,
@@ -87,6 +91,7 @@ export const standorte: Standort[] = [
     dauer: '2,5 Stunden',
     feiertag: 'An Valentinstag und Silvester gelten die Preise vom Feiertag.',
     parken: ['Parkhaus Kuckelke, Kuckelke 3', 'Konzerthaus Tiefgarage, Burgwall 8'],
+    facebook: 'https://www.facebook.com/yumini.dortmund',
     gericht: 'maguro',
     lon: 7.466,
     lat: 51.514,
@@ -119,6 +124,7 @@ export const standorte: Standort[] = [
     kinder: 'Bis 3 Jahre frei. Von 4 bis 11 Jahren der halbe Preis.',
     dauer: '2 Stunden',
     parken: ['Parkplatz Veltins-Arena, Berni-Klodt-Weg', 'Schalke Parkplatz, Adenauerallee 110'],
+    facebook: 'https://www.facebook.com/YUMINI-Gelsenkirchen-1005684199518313',
     gericht: 'ebi',
     lon: 7.1,
     lat: 51.517,
@@ -150,6 +156,7 @@ export const standorte: Standort[] = [
     feiertag: 'An Valentinstag und Silvester gelten die Preise vom Feiertag.',
     parken: ['Über 30 eigene Parkplätze in der Nähe, kostenlos'],
     parkHinweis: 'Eigene Parkplätze',
+    maps: 'https://maps.app.goo.gl/nR6XHMopZt86XWEZ6',
     gericht: 'unagi',
     lon: 7.627,
     lat: 51.219,
@@ -182,6 +189,8 @@ export const standorte: Standort[] = [
     dauer: '2 Stunden',
     feiertag: 'An Valentinstag und Silvester gelten die Preise vom Feiertag.',
     parken: ['APCOA Parkhaus Apollotheater, Morleystraße', 'CONTIPARK Tiefgarage Unteres Schloss, Obergraben 30'],
+    maps: 'https://goo.gl/maps/ajrJF478tBnTkFB8A',
+    facebook: 'https://www.facebook.com/yumini.siegen',
     gericht: 'ikura',
     lon: 8.024,
     lat: 50.875,
@@ -192,3 +201,6 @@ export const ab = (s: Standort) => {
   const alle = [...(s.lunch?.preise ?? []), ...s.dinner.preise].map((p) => parseFloat(p.wert.replace(',', '.')));
   return Math.min(...alle).toFixed(2).replace('.', ',') + ' €';
 };
+
+export const routeUrl = (s: Standort) =>
+  s.maps ?? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${s.strasse}, ${s.ort}`)}`;
