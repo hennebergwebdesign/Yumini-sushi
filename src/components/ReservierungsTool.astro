@@ -57,11 +57,10 @@ const { ort = 'bochum' } = Astro.props;
 
         <section class="block" aria-labelledby="t-zeit">
           <h4 id="t-zeit"><span class="n">4</span>Uhrzeit</h4>
-          <label class="sel">
-            <span class="vh">Uhrzeit wählen</span>
-            <select data-zeit></select>
-          </label>
-          <ul class="quick" data-quick aria-label="Nächste freie Zeiten"></ul>
+          <div class="dd" data-dd>
+            <button type="button" class="ddbtn" data-ddbtn aria-haspopup="listbox" aria-expanded="false" aria-labelledby="t-zeit"><span data-ddlabel>Bitte Datum wählen</span></button>
+            <ul class="ddlist" role="listbox" aria-labelledby="t-zeit" data-ddlist hidden></ul>
+          </div>
           <p class="info" data-info></p>
         </section>
 
@@ -104,7 +103,21 @@ const { ort = 'bochum' } = Astro.props;
   document.querySelectorAll<HTMLElement>('[data-res]').forEach((root) => {
     const $ = <T extends HTMLElement>(s: string) => root.querySelector<T>(s)!;
     const grid = $('[data-grid]');
-    const sel = $<HTMLSelectElement>('[data-zeit]');
+    const dd = $('[data-dd]');
+    const ddBtn = $<HTMLButtonElement>('[data-ddbtn]');
+    const ddLabel = $('[data-ddlabel]');
+    const ddList = $('[data-ddlist]');
+    const ddZu = () => {
+      ddList.hidden = true;
+      ddBtn.setAttribute('aria-expanded', 'false');
+    };
+    const ddAuf = () => {
+      ddList.hidden = false;
+      ddBtn.setAttribute('aria-expanded', 'true');
+      const ziel = ddList.querySelector<HTMLElement>('[aria-selected="true"]') ?? ddList.querySelector<HTMLElement>('[data-opt]:not([aria-disabled="true"])');
+      ziel?.focus();
+      ziel?.scrollIntoView({ block: 'nearest' });
+    };
     const heute = new Date();
     heute.setHours(0, 0, 0, 0);
     const ende = new Date(heute);
@@ -157,38 +170,30 @@ const { ort = 'bochum' } = Astro.props;
 
     function renderZeiten() {
       const d = st.datum;
-      const quick = $('[data-quick]');
       const info = $('[data-info]');
-      if (!d || st.pers > 15) {
-        sel.innerHTML = '<option value="">Bitte Datum wählen</option>';
-        quick.innerHTML = '';
-        info.textContent = '';
+      ddZu();
+      const leer = (text: string, meldung = '') => {
+        ddList.innerHTML = '';
+        ddLabel.textContent = text;
+        ddBtn.disabled = true;
+        info.textContent = meldung;
         st.zeit = '';
-        return;
-      }
+      };
+      if (!d || st.pers > 15) return leer('Bitte Datum wählen');
       const alle = slots(standort(), d, st.pers);
-      if (!alle.length) {
-        sel.innerHTML = '<option value="">Geschlossen</option>';
-        quick.innerHTML = '';
-        info.textContent = `${standort().name} hat an diesem Tag geschlossen.`;
-        st.zeit = '';
-        return;
-      }
-      const gruppen = ['Mittag', 'Abend'] as const;
-      let html = '<option value="">Uhrzeit wählen</option>';
-      for (const g of gruppen) {
+      if (!alle.length) return leer('Geschlossen', `${standort().name} hat an diesem Tag geschlossen.`);
+      let html = '';
+      for (const g of ['Mittag', 'Abend'] as const) {
         const teil = alle.filter((x) => x.gruppe === g);
         if (!teil.length) continue;
-        html += `<optgroup label="${g}">` + teil.map((x) => `<option value="${x.t}" ${x.frei ? '' : 'disabled'}>${x.t} Uhr${x.frei ? '' : ' (ausgebucht)'}</option>`).join('') + '</optgroup>';
+        html += `<li class="grp" role="presentation">${g}</li>` + teil.map((x) => `<li role="option" tabindex="-1" data-opt data-t="${x.t}" aria-selected="false" ${x.frei ? '' : 'aria-disabled="true"'}>${x.t} Uhr${x.frei ? '' : ' (ausgebucht)'}</li>`).join('');
       }
-      sel.innerHTML = html;
+      ddList.innerHTML = html;
       const frei = alle.filter((x) => x.frei);
       if (!frei.some((x) => x.t === st.zeit)) st.zeit = frei[0]?.t ?? '';
-      sel.value = st.zeit;
-      quick.innerHTML = frei
-        .slice(0, 4)
-        .map((x) => `<li><button type="button" data-t="${x.t}" class="${x.t === st.zeit ? 'on' : ''}">${x.t}</button></li>`)
-        .join('');
+      ddList.querySelector(`[data-t="${st.zeit}"]`)?.setAttribute('aria-selected', 'true');
+      ddBtn.disabled = !frei.length;
+      ddLabel.textContent = st.zeit ? `${st.zeit} Uhr` : 'Nichts mehr frei';
       info.textContent = frei.length ? '' : 'An diesem Tag ist leider nichts mehr frei. Bitte anderes Datum wählen.';
     }
 
@@ -234,11 +239,45 @@ const { ort = 'bochum' } = Astro.props;
         if (!st.datum || !geoeffnet(standort(), st.datum)) st.datum = naechsterOffenerTag();
         st.monat = new Date(st.datum.getFullYear(), st.datum.getMonth(), 1);
         alles();
-      } else if (t === sel) {
-        st.zeit = sel.value;
-        renderZeiten();
-        renderSumme();
       }
+    });
+
+    const waehle = (li: HTMLElement) => {
+      if (li.getAttribute('aria-disabled') === 'true') return;
+      st.zeit = li.dataset.t!;
+      renderZeiten();
+      renderSumme();
+      ddBtn.focus();
+    };
+    ddBtn.addEventListener('click', () => (ddList.hidden ? ddAuf() : ddZu()));
+    ddBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        ddAuf();
+      }
+    });
+    ddList.addEventListener('click', (e) => {
+      const li = (e.target as HTMLElement).closest<HTMLElement>('[data-opt]');
+      if (li) waehle(li);
+    });
+    ddList.addEventListener('keydown', (e) => {
+      const opts = [...ddList.querySelectorAll<HTMLElement>('[data-opt]:not([aria-disabled="true"])')];
+      const i = opts.indexOf(document.activeElement as HTMLElement);
+      if (e.key === 'ArrowDown') opts[Math.min(opts.length - 1, i + 1)]?.focus();
+      else if (e.key === 'ArrowUp') opts[Math.max(0, i - 1)]?.focus();
+      else if (e.key === 'Home') opts[0]?.focus();
+      else if (e.key === 'End') opts[opts.length - 1]?.focus();
+      else if (e.key === 'Enter' || e.key === ' ') {
+        if (i >= 0) waehle(opts[i]);
+      } else if (e.key === 'Escape' || e.key === 'Tab') {
+        if (e.key === 'Escape') ddBtn.focus();
+        ddZu();
+        return;
+      } else return;
+      e.preventDefault();
+    });
+    document.addEventListener('click', (e) => {
+      if (!dd.contains(e.target as Node)) ddZu();
     });
 
     root.addEventListener('click', (e) => {
@@ -248,10 +287,6 @@ const { ort = 'bochum' } = Astro.props;
         const [y, mo, da] = b.dataset.d.split('-').map(Number);
         st.datum = new Date(y, mo - 1, da);
         alles();
-      } else if (b.dataset.t) {
-        st.zeit = b.dataset.t;
-        renderZeiten();
-        renderSumme();
       } else if (b.hasAttribute('data-prev')) {
         st.monat = new Date(st.monat.getFullYear(), st.monat.getMonth() - 1, 1);
         renderKalender();
@@ -350,6 +385,23 @@ const { ort = 'bochum' } = Astro.props;
     display: grid;
     gap: 1.35rem;
     align-content: start;
+  }
+  .col:first-child {
+    grid-template-rows: auto 1fr;
+    gap: 1.1rem;
+  }
+  .col:first-child .block:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .cal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .cal .grid {
+    flex: 1;
+    align-content: space-around;
   }
   h4 {
     display: flex;
@@ -510,65 +562,96 @@ const { ort = 'bochum' } = Astro.props;
     color: var(--coral-soft);
     font-size: 0.875rem;
   }
-  .sel {
+  .dd {
     position: relative;
-    display: block;
   }
-  select {
+  .ddbtn {
     inline-size: 100%;
-    min-block-size: 3rem;
+    min-block-size: 2.75rem;
     padding-inline: 0.9rem 2.6rem;
     border-radius: var(--r2);
     border: 1px solid var(--t-line);
     background: rgb(255 255 255 / 0.04);
     color: var(--text);
     font: inherit;
-    font-size: 1.0625rem;
-    appearance: none;
+    text-align: start;
     cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s;
   }
-  select option,
-  select optgroup {
-    background: #11161a;
-    color: var(--text);
+  .ddbtn:hover:not(:disabled),
+  .ddbtn[aria-expanded='true'] {
+    border-color: var(--text-muted);
   }
-  select option:disabled {
-    color: #7b8480;
+  .ddbtn:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
-  .sel::after {
+  .ddbtn::after {
     content: '';
     position: absolute;
     inset-block-start: 50%;
     inset-inline-end: 1.1rem;
-    inline-size: 0.55rem;
-    block-size: 0.55rem;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
     border-inline-end: 2px solid var(--text);
     border-block-end: 2px solid var(--text);
     rotate: 45deg;
     translate: 0 -75%;
-    pointer-events: none;
+    transition: rotate 0.2s;
   }
-  .quick {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-block-start: 0.5rem;
+  .ddbtn[aria-expanded='true']::after {
+    rotate: 225deg;
+    translate: 0 -25%;
   }
-  .quick :global(button) {
-    min-block-size: 2.25rem;
-    padding-inline: 0.8rem;
-    border-radius: 999px;
+  .ddlist {
+    position: absolute;
+    z-index: 5;
+    inset-inline: 0;
+    inset-block-start: calc(100% + 0.3rem);
+    max-block-size: 10.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.3rem;
+    border-radius: var(--r2);
     border: 1px solid var(--t-line);
-    background: none;
+    background: #11161a;
+    box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.55);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.3) transparent;
+  }
+  .ddlist[hidden] {
+    display: none;
+  }
+  .ddlist :global(.grp) {
+    padding: 0.35rem 0.6rem 0.15rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .ddlist :global([data-opt]) {
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    color: #fff;
+    font-size: 0.9375rem;
     cursor: pointer;
-    transition: border-color 0.2s, background-color 0.2s;
+    outline: none;
   }
-  .quick :global(button:hover) {
-    border-color: var(--text);
+  .ddlist :global([data-opt]:hover:not([aria-disabled='true'])),
+  .ddlist :global([data-opt]:focus-visible) {
+    background: var(--brand-red);
   }
-  .quick :global(button.on) {
-    border-color: var(--coral-soft);
-    background: rgb(217 33 41 / 0.25);
+  .ddlist :global([data-opt][aria-selected='true']) {
+    background: rgb(217 33 41 / 0.35);
+    font-weight: 500;
+  }
+  .ddlist :global([data-opt][aria-selected='true']:hover) {
+    background: var(--brand-red);
+  }
+  .ddlist :global([data-opt][aria-disabled='true']) {
+    color: #7b8480;
+    cursor: default;
   }
   .info {
     margin-block-start: 0.4rem;
@@ -704,12 +787,12 @@ const { ort = 'bochum' } = Astro.props;
     .bar { display: none; }
     .app { padding-block: 1.1rem 1.1rem; gap: 0.6rem; }
     .col { gap: 0.9rem; }
+    .col:first-child { gap: 0.8rem; }
     .body { gap: 0.9rem 2rem; }
     h4 { margin-block-end: 0.35rem; }
     .cal { padding: 0.5rem; }
     .step button { inline-size: 2.6rem; block-size: 2.6rem; }
     .step output { font-size: 1.6rem; }
-    .quick { margin-block-start: 0.35rem; }
     .sum { padding: 0.55rem 0.8rem; }
     .go { min-block-size: 2.9rem; }
   }
