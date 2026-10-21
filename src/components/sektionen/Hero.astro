@@ -166,14 +166,11 @@ const orbit = [
   }
   @media (max-width: 52rem) {
     .copy { gap: 1rem; }
-    .actions { flex-wrap: nowrap; }
+    /* Mobil untereinander: zuerst Tisch reservieren, darunter die Speisekarte */
+    .actions { flex-direction: column; gap: 0.6rem; }
     .actions :global(.btn) {
-      flex: 1 1 0;
-      min-inline-size: 0;
-      padding-inline: 0.5rem;
-      white-space: normal;
+      inline-size: 100%;
       text-align: center;
-      font-size: 0.9375rem;
       min-block-size: 3.25rem;
     }
   }

@@ -111,6 +111,8 @@ Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV
 
 **Stand 11 (21.10.2026): Bewertungs Widgets entfernt.** Auf Wunsch des Inhabers keine Plattform Widgets mehr (Google und Tripadvisor) im Held und im Abschnitt Bewertungen. Das durchlaufende Band mit den einzelnen Stimmen bleibt, der Button „Tisch reservieren" steht mittig darunter. `src/lib/bewertungen.ts` (Gesamtwerte und Logos) wird damit nirgends mehr genutzt und bleibt für eine spätere Rückkehr liegen. Geprüft: Build grün, Chromium 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
 
+**Stand 12 (21.10.2026): Mobile Fassung.** Das mobile Menü ist ein Off Canvas über die ganze Seite (`<dialog>` mit `showModal` in `Header.astro`, gilt ab der Umschaltung bei 68 rem): oben Logo und Schließen, darunter Startseite, Speisekarte, Standorte als Aufklapper mit allen fünf Orten, Preise, Feiern, Karriere, unten der rote Button „Tisch reservieren“. Esc und Schließen laufen animiert, Links schließen sofort, die Seite dahinter scrollt nicht. Held mobil mit Buttons untereinander (Reservieren oben). Das Tablet hat unter 40 rem Breite (Containerabfrage, also Handy) eine kompakte Fassung: Standort als Auswahlfeld, Datum zum Eintippen (TT.MM.JJJJ, Punkte setzt das Feld selbst) mit Kalendersymbol, der Kalender klappt erst darüber auf und schließt nach der Wahl eines Tages. Getippte Tage werden gegen Vergangenheit, 90 Tage Grenze und Ruhetage geprüft. Uhrzeit war schon ein Dropdown. Die NRW Kartenskizze bei den Standorten ist mobil (unter 52 rem) ausgeblendet. Geprüft: Build grün, Chromium 390, 820, 1000 und 1440 px, Menü, Sprungmarke aus dem Menü, Tippen und Kalender durchgespielt, keine Konsolenfehler, kein horizontales Scrollen. Lokal ohne Tische in D1 zeigt die Uhrzeit „Nichts mehr frei“, das ist bekannt (Stand 10). Nicht geprüft: Safari und echte Handys.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
@@ -213,3 +215,4 @@ Rechtstexte, 404.
    keine Konsolenfehler, kein horizontales Scrollen.
 6. **20.10.2026** Dritte Runde: Speisekarten Mockup, Karriereseite mit Funnel, Feiern Seite, Symbolbilder Gastraum, Bewertungen Google und Trustpilot. Geprüft: Build grün (14 Seiten), Chromium 1440 und 390 px, Funnel durchgespielt, keine Konsolenfehler, kein horizontales Scrollen.
 7. **21.10.2026** Bewertungs Widgets (Google, Tripadvisor) im Held und im Abschnitt Bewertungen entfernt, Button unter dem Bewertungsband mittig.
+8. **21.10.2026** Mobile Fassung: Off Canvas Menü, Held Buttons untereinander, kompaktes Reservierungstool (Standort Auswahlfeld, Datum tippen mit aufklappbarem Kalender), Kartenskizze mobil ausgeblendet.

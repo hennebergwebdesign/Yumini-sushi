@@ -5,6 +5,8 @@ import { standorte } from '../lib/standorte';
 // Verfügbarkeit ist simuliert, es wird nichts gespeichert und keine Mail versendet (Bauphase 5).
 interface Props { ort?: string }
 const { ort = 'bochum' } = Astro.props;
+// eindeutige Kennung, falls das Tool mehrfach auf einer Seite steht
+const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
 ---
 <div class="tool" data-res data-ort={ort}>
   <div class="status" aria-hidden="true">
@@ -28,11 +30,25 @@ const { ort = 'bochum' } = Astro.props;
               </label>
             ))}
           </div>
+          <!-- Mobil: dieselbe Auswahl als Auswahlfeld, kompakter als die Knöpfe -->
+          <div class="selwrap">
+            <select class="ortsel" data-ortsel aria-labelledby="t-ort">
+              {standorte.map((s) => <option value={s.id} selected={s.id === ort}>{s.name}</option>)}
+            </select>
+          </div>
         </section>
 
         <section class="block" aria-labelledby="t-datum">
           <h4 id="t-datum"><span class="n">2</span>Datum</h4>
-          <div class="cal">
+          <!-- Mobil: Datum eintippen, der Kalender klappt über das Symbol auf -->
+          <div class="dfeld">
+            <input data-dinput type="text" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="TT.MM.JJJJ" aria-labelledby="t-datum" aria-describedby={`${uid}-dinfo`} />
+            <button type="button" class="dtoggle" data-dtoggle aria-expanded="false" aria-controls={`${uid}-cal`} aria-label="Kalender öffnen">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
+            </button>
+          </div>
+          <p class="info dinfo" id={`${uid}-dinfo`} data-dinfo aria-live="polite"></p>
+          <div class="cal" id={`${uid}-cal`}>
             <div class="calhead">
               <button type="button" data-prev aria-label="Vorheriger Monat">‹</button>
               <strong data-monat>November 2026</strong>
@@ -187,6 +203,55 @@ const { ort = 'bochum' } = Astro.props;
       if (n === st.folge) st.zeiten = z;
     }
 
+    const dInput = $<HTMLInputElement>('[data-dinput]');
+    const dToggle = $<HTMLButtonElement>('[data-dtoggle]');
+    const dInfo = $('[data-dinfo]');
+    const ortSel = $<HTMLSelectElement>('[data-ortsel]');
+    const zwei = (n: number) => String(n).padStart(2, '0');
+    const fmt = (d: Date) => `${zwei(d.getDate())}.${zwei(d.getMonth() + 1)}.${d.getFullYear()}`;
+    const kalender = (auf: boolean) => {
+      root.classList.toggle('cal-auf', auf);
+      dToggle.setAttribute('aria-expanded', String(auf));
+      dToggle.setAttribute('aria-label', auf ? 'Kalender schließen' : 'Kalender öffnen');
+    };
+    // Eingabe TT.MM.JJJJ, auch TT.MM.JJ oder nur Ziffern (241026, 24102026)
+    const lies = (v: string) => {
+      const t = v.trim();
+      const m = t.match(/^(\d{1,2})[./\- ](\d{1,2})[./\- ](\d{2}|\d{4})$/) ?? t.match(/^(\d{2})(\d{2})(\d{2}|\d{4})$/);
+      if (!m) return null;
+      const [tag, mon] = [Number(m[1]), Number(m[2])];
+      const jahr = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+      const d = new Date(jahr, mon - 1, tag);
+      return d.getMonth() === mon - 1 && d.getDate() === tag ? d : null;
+    };
+    const uebernehme = () => {
+      if (!dInput.value.trim()) return;
+      const d = lies(dInput.value);
+      let meldung = '';
+      if (!d) meldung = 'Bitte das Datum als TT.MM.JJJJ eingeben.';
+      else if (d < heute) meldung = 'Dieses Datum liegt in der Vergangenheit.';
+      else if (d > ende) meldung = `Reservierungen sind bis ${fmt(ende)} möglich.`;
+      else if (!offen(d)) meldung = `${standort().name} hat an diesem Tag geschlossen.`;
+      dInfo.textContent = meldung;
+      dInput.setAttribute('aria-invalid', String(!!meldung));
+      if (meldung || !d) return;
+      st.datum = d;
+      st.monat = new Date(d.getFullYear(), d.getMonth(), 1);
+      dInput.value = fmt(d);
+      alles();
+    };
+    dInput.addEventListener('input', (e) => {
+      // Punkte setzt das Feld selbst, auf dem Ziffernblock des Handys gibt es oft keinen
+      if ((e as InputEvent).inputType?.startsWith('delete')) return;
+      const z = dInput.value.replace(/\D/g, '').slice(0, 8);
+      dInput.value = z.length > 4 ? `${z.slice(0, 2)}.${z.slice(2, 4)}.${z.slice(4)}` : z.length > 2 ? `${z.slice(0, 2)}.${z.slice(2)}` : z;
+      if (z.length === 8) uebernehme();
+    });
+    dInput.addEventListener('change', uebernehme);
+    dInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); uebernehme(); }
+    });
+
     const naechsterOffenerTag = () => {
       const d = new Date(heute);
       for (let i = 0; i < 14; i++) {
@@ -268,6 +333,11 @@ const { ort = 'bochum' } = Astro.props;
     }
 
     async function alles() {
+      if (document.activeElement !== dInput) {
+        dInput.value = st.datum ? fmt(st.datum) : '';
+        dInfo.textContent = '';
+        dInput.removeAttribute('aria-invalid');
+      }
       renderKalender();
       renderPersonen();
       await ladeZeiten();
@@ -284,8 +354,10 @@ const { ort = 'bochum' } = Astro.props;
 
     root.addEventListener('change', async (e) => {
       const t = e.target as HTMLInputElement;
-      if (t.name === 't-ort') {
+      if (t.name === 't-ort' || t === (ortSel as unknown as HTMLInputElement)) {
         st.ort = t.value;
+        ortSel.value = t.value;
+        root.querySelectorAll<HTMLInputElement>('input[name="t-ort"]').forEach((r) => (r.checked = r.value === t.value));
         await ladeKonfig();
         if (!st.datum || !offen(st.datum)) st.datum = naechsterOffenerTag();
         st.monat = new Date(st.datum.getFullYear(), st.datum.getMonth(), 1);
@@ -337,7 +409,10 @@ const { ort = 'bochum' } = Astro.props;
       if (b.dataset.d) {
         const [y, mo, da] = b.dataset.d.split('-').map(Number);
         st.datum = new Date(y, mo - 1, da);
+        kalender(false);
         alles();
+      } else if (b.hasAttribute('data-dtoggle')) {
+        kalender(!root.classList.contains('cal-auf'));
       } else if (b.hasAttribute('data-prev')) {
         st.monat = new Date(st.monat.getFullYear(), st.monat.getMonth() - 1, 1);
         renderKalender();
@@ -846,8 +921,106 @@ const { ort = 'bochum' } = Astro.props;
     border-color: var(--text);
   }
 
+  /* Nur in der kompakten Fassung sichtbar */
+  .selwrap,
+  .dfeld {
+    display: none;
+  }
+  .selwrap {
+    position: relative;
+  }
+  .ortsel {
+    appearance: none;
+    -webkit-appearance: none;
+    inline-size: 100%;
+    min-block-size: 2.75rem;
+    padding-inline: 0.9rem 2.6rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+  }
+  .ortsel option {
+    background: #11161a;
+    color: #fff;
+  }
+  .ortsel:focus-visible,
+  .dfeld input:focus-visible,
+  .dtoggle:focus-visible {
+    outline: 3px solid var(--coral-soft);
+    outline-offset: 2px;
+  }
+  .selwrap::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 1.1rem;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-inline-end: 2px solid var(--text);
+    border-block-end: 2px solid var(--text);
+    rotate: 45deg;
+    translate: 0 -75%;
+    pointer-events: none;
+  }
+  .dfeld {
+    gap: 0.4rem;
+  }
+  .dfeld input {
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: 2.75rem;
+    padding-inline: 0.9rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--text);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+  .dfeld input::placeholder {
+    color: rgb(255 255 255 / 0.38);
+  }
+  .dfeld input[aria-invalid='true'] {
+    border-color: var(--coral-soft);
+  }
+  .dtoggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .dtoggle:hover,
+  .dtoggle[aria-expanded='true'] {
+    border-color: var(--text-muted);
+  }
+  .dtoggle[aria-expanded='true'] {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .dinfo:empty {
+    display: none;
+  }
+
   @container (max-width: 34rem) {
     .fields { grid-template-columns: 1fr; }
+  }
+  /* Kompakte Fassung (Handy): Standort als Auswahlfeld, Datum zum Eintippen, Kalender nur aufgeklappt */
+  @container (max-width: 40rem) {
+    .seg { display: none; }
+    .selwrap { display: block; }
+    .dfeld { display: flex; }
+    .cal { display: none; margin-block-start: 0.5rem; }
+    .tool.cal-auf .cal { display: flex; }
+    .col:first-child { grid-template-rows: auto; }
   }
   @container (min-width: 46rem) {
     .body {
