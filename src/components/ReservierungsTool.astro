@@ -68,6 +68,11 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
             <button type="button" data-plus aria-label="Eine Person mehr">+</button>
             <span class="unit" data-pers-label>Personen</span>
           </div>
+          <!-- Mobil: Zahl direkt eintippen statt vieler Klicks auf Plus und Minus -->
+          <label class="pfeld">
+            <input data-pinput type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="2" autocomplete="off" enterkeyhint="done" aria-labelledby="t-pers" />
+            <span class="unit" data-plabel>Personen</span>
+          </label>
           <p class="more" data-mehr hidden>Für Gruppen über 15 Personen bitte eine <a href="/feiern/">Feier anfragen</a>.</p>
         </section>
 
@@ -208,6 +213,23 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
     const dToggle = $<HTMLButtonElement>('[data-dtoggle]');
     const dInfo = $('[data-dinfo]');
     const ortSel = $<HTMLSelectElement>('[data-ortsel]');
+    const pInput = $<HTMLInputElement>('[data-pinput]');
+    // Beim Antippen alles markieren, damit die neue Zahl die alte ersetzt (Safari braucht den Aufschub)
+    pInput.addEventListener('focus', () => {
+      const v0 = pInput.value;
+      pInput.select();
+      setTimeout(() => pInput.value === v0 && pInput.select(), 0);
+    });
+    pInput.addEventListener('input', () => {
+      const v = pInput.value.replace(/\D/g, '').slice(0, 2);
+      pInput.value = v;
+      const n = parseInt(v, 10);
+      if (n >= 1) {
+        st.pers = n;
+        alles();
+      }
+    });
+    pInput.addEventListener('blur', () => (pInput.value = String(st.pers)));
     const zwei = (n: number) => String(n).padStart(2, '0');
     const fmt = (d: Date) => `${zwei(d.getDate())}.${zwei(d.getMonth() + 1)}.${d.getFullYear()}`;
     const kalender = (auf: boolean) => {
@@ -326,6 +348,8 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
     function renderPersonen() {
       $('[data-pers]').textContent = String(st.pers);
       $('[data-pers-label]').textContent = st.pers === 1 ? 'Person' : 'Personen';
+      $('[data-plabel]').textContent = st.pers === 1 ? 'Person' : 'Personen';
+      if (document.activeElement !== pInput) pInput.value = String(st.pers);
       ($('[data-minus]') as HTMLButtonElement).disabled = st.pers <= 1;
       ($('[data-plus]') as HTMLButtonElement).disabled = st.pers >= 16;
       $('[data-pers]').textContent = st.pers > 15 ? '15+' : String(st.pers);
@@ -924,8 +948,35 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
 
   /* Nur in der kompakten Fassung sichtbar */
   .selwrap,
-  .dfeld {
+  .dfeld,
+  .pfeld {
     display: none;
+  }
+  .pfeld {
+    align-items: center;
+    gap: 0.6rem;
+    min-block-size: 2.75rem;
+    padding-inline: 0.9rem;
+    border-radius: var(--r2);
+    border: 1px solid var(--t-line);
+    background: rgb(255 255 255 / 0.04);
+    cursor: text;
+  }
+  .pfeld:focus-within {
+    outline: 3px solid var(--coral-soft);
+    outline-offset: 2px;
+  }
+  .pfeld input {
+    inline-size: 2.6ch;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    font-size: 1.125rem;
+    font-variant-numeric: tabular-nums;
+    outline: none;
   }
   .selwrap {
     position: relative;
@@ -1019,6 +1070,8 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
     .seg { display: none; }
     .selwrap { display: block; }
     .dfeld { display: flex; }
+    .step { display: none; }
+    .pfeld { display: flex; }
     .cal { display: none; margin-block-start: 0.5rem; }
     .tool.cal-auf .cal { display: flex; }
     .col:first-child { grid-template-rows: auto; }
