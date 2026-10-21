@@ -4,19 +4,24 @@ import Sterne from '../ui/Sterne.astro';
 import { standorte } from '../../lib/standorte';
 import { bewertungen, komma } from '../../lib/bewertungen';
 import daten from '../../data/google-bewertungen.json';
+import ta from '../../data/tripadvisor-bewertungen.json';
 
 // Positive Google Bewertungen aller Standorte, kombiniert in einem durchlaufenden Band.
 // Es stehen nur echte Stimmen im Band (data/google-bewertungen.json). Standorte ohne Stimme zeigen einen sichtbaren Platzhalter.
 const google = bewertungen.find((b) => b.id === 'google')!;
-const name = (id: string) => standorte.find((s) => s.id === id)?.name ?? id;
-const monat = (iso: string) => new Date(iso).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
-const stimmen = daten.bewertungen as { standort: string; name?: string; sterne?: number; datum?: string; text?: string; fehlt?: boolean }[];
+const name = (id: string | null) => (id ? standorte.find((s) => s.id === id)?.name ?? id : '');
+type Stimme = { quelle: string; standort: string | null; name?: string; sterne?: number; datum?: string; text?: string; fehlt?: boolean };
+// Tripadvisor Stimmen (data/tripadvisor-bewertungen.json) und Google Stimmen in einem Band, Tripadvisor zuerst.
+const stimmen: Stimme[] = [
+  ...(ta.bewertungen as Omit<Stimme, 'quelle'>[]).map((b) => ({ ...b, quelle: 'Tripadvisor' })),
+  ...(daten.bewertungen as Omit<Stimme, 'quelle'>[]).map((b) => ({ ...b, quelle: 'Google' })),
+];
 ---
 <section id="bewertungen" class="bew" aria-labelledby="bew-title">
   <div class="wrap">
     <div class="head">
       <div class="titel">
-        <p class="eyebrow">Google Bewertungen</p>
+        <p class="eyebrow">Bewertungen</p>
         <h2 id="bew-title" class="h2">Stimmen unserer Gäste.</h2>
       </div>
       <a class="gesamt" href="#bewertungen" aria-label={`Google: ${komma(google.wert!)} von 5 Sternen aus ${google.anzahl!.toLocaleString('de-DE')} Bewertungen`}>
@@ -27,7 +32,7 @@ const stimmen = daten.bewertungen as { standort: string; name?: string; sterne?:
     </div>
   </div>
 
-  <div class="marquee" role="region" aria-label="Positive Google Bewertungen aller Standorte">
+  <div class="marquee" role="region" aria-label="Positive Bewertungen unserer Gäste">
     <div class="track">
       {[0, 1].map((kopie) => (
         <ul class="gruppe" aria-hidden={kopie === 1 ? 'true' : undefined}>
@@ -43,7 +48,7 @@ const stimmen = daten.bewertungen as { standort: string; name?: string; sterne?:
                 <>
                   <Sterne wert={b.sterne ?? 5} groesse="1rem" />
                   <p class="zitat">„{b.text}“</p>
-                  <p class="wer"><b>{b.name}</b><span>Google, Yumini {name(b.standort)}, {monat(b.datum!)}</span></p>
+                  <p class="wer"><b>{b.name}</b><span>{b.quelle}, Yumini{b.standort ? ` ${name(b.standort)}` : ''}</span></p>
                 </>
               )}
             </li>
@@ -54,7 +59,7 @@ const stimmen = daten.bewertungen as { standort: string; name?: string; sterne?:
   </div>
 
   <div class="wrap fuss">
-    <p class="muted klein">Auswahl positiver Google Bewertungen. Bisher liegen nur Stimmen aus Bochum vor (Stand 2023), die übrigen Standorte folgen mit der Anbindung an Google.</p>
+    <p class="muted klein">Auswahl positiver Bewertungen von Tripadvisor und Google. Weitere Stimmen folgen.</p>
     <Button href="/#reservieren" variant="outline">Tisch reservieren</Button>
   </div>
 </section>
