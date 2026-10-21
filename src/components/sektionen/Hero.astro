@@ -10,8 +10,9 @@ const orbit = [
   { bild: kategorien.dinner, name: 'Dinner' },
   { bild: kategorien.dessert, name: 'Dessert' },
 ];
+// no-reveal: Der Held steht sofort, die Buttons werden nie erst eingeblendet (Wunsch des Inhabers, 21.10.2026)
 ---
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero no-reveal" aria-labelledby="hero-title">
   <div class="wrap grid">
     <div class="copy">
       <h1 id="hero-title">
@@ -166,6 +167,9 @@ const orbit = [
   }
   @media (max-width: 52rem) {
     .copy { gap: 1rem; }
+    /* Mobil: Überschrift, dann die beiden Buttons, dann der Text. So stehen die Buttons im ersten Bildschirm */
+    .lead { order: 1; }
+    .turn { inline-size: min(58vw, 30svh); margin-block: clamp(1rem, 3svh, 2rem); }
     /* Mobil untereinander: zuerst Tisch reservieren, darunter die Speisekarte */
     .actions { flex-direction: column; gap: 0.6rem; }
     .actions :global(.btn) {
