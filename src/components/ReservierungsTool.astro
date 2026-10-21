@@ -100,7 +100,8 @@ const uid = `res-${Math.random().toString(36).slice(2, 8)}`;
       <span class="check" aria-hidden="true">✓</span>
       <h3>Tisch reserviert</h3>
       <p data-done-text></p>
-      <p class="muted small" data-live-note>Ihre Reservierungsnummer: <b data-code></b>. Eine Bestätigung per Mail ist noch nicht eingerichtet, bitte notieren Sie sich die Nummer.</p>
+      <p class="muted small" data-live-note>Ihre Reservierungsnummer: <b data-code></b>. Bitte notieren Sie sich die Nummer.</p>
+      {/* [[FEHLT: Bestätigungsmail nach der Reservierung (Resend)]] */}
       <p class="muted small" data-demo hidden>Beispiel: Es wurde nichts gespeichert und keine Mail versendet.</p>
       <button type="button" class="again" data-again>Neue Reservierung</button>
     </div>

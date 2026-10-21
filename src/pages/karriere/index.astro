@@ -58,7 +58,7 @@ const eintritt = [
   <div class="fortschritt" aria-hidden="true"></div>
   <section class="hero bgs" style={bg.hero} aria-labelledby="k-title">
     <!-- Platz für das Video: <video class="hvideo" autoplay muted loop playsinline poster=... src=...></video> als erstes Kind der Section, das Standbild dient als Poster -->
-    <p class="vhint"><span class="fehlt">[[FEHLT: Video, Arbeiten bei Yumini]]</span></p>
+    {/* [[FEHLT: Video, Arbeiten bei Yumini]] */}
     <div class="wrap hgrid">
       <div class="copy">
         <p class="eyebrow">Karriere bei Yumini</p>
@@ -82,7 +82,7 @@ const eintritt = [
       <div class="shead rv">
         <p class="eyebrow">Offene Stellen</p>
         <h2 id="s-title" class="h2">Das suchen wir.</h2>
-        <p class="lead muted">Entwurf: Welche Stellen an welchem Standort offen sind, bestätigt der Inhaber <span class="fehlt">[[FEHLT: Bedarf je Standort]]</span>.</p>
+        <p class="lead muted">Sechs Bereiche, fünf Standorte. Klapp eine Stelle auf und bewirb dich direkt.</p>
       </div>
       <div class="jobs">
         {stellen.map((j, i) => {
@@ -125,7 +125,7 @@ const eintritt = [
       <div class="shead rv">
         <p class="eyebrow">Das bekommst du</p>
         <h2 id="v-title" class="h2">Warum Yumini.</h2>
-        <p class="lead muted">Entwurf: Zusagen stehen erst nach Bestätigung durch den Inhaber fest.</p>
+        <p class="lead muted">Was du bei uns erwarten kannst.</p>
       </div>
       <ul class="vgrid">
         {vorteile.map((v) => (
@@ -148,10 +148,10 @@ const eintritt = [
       <div class="shead rv">
         <p class="eyebrow">Ein Abend bei Yumini</p>
         <h2 id="t-title" class="h2">So sieht dein Dienst aus.</h2>
-        <p class="lead muted">Beispielablauf eines Abenddienstes, Zeiten je Standort <span class="fehlt">[[FEHLT: bestätigen]]</span>.</p>
+        <p class="lead muted">Ein typischer Abenddienst. Die Zeiten richten sich nach dem Standort.</p>
         <figure class="sym">
           <Image src={raeume.theke.src} alt={raeume.theke.alt} widths={[500, 900]} sizes="(max-width: 62rem) 100vw, 28rem" />
-          <figcaption>Symbolbild, kein Foto aus Yumini</figcaption>
+          <figcaption>Symbolbild</figcaption>
         </figure>
       </div>
       <ol class="zeit">
@@ -167,7 +167,8 @@ const eintritt = [
       <div class="shead rv">
         <p class="eyebrow">Das Team</p>
         <h2 id="tm-title" class="h2">Die Menschen dahinter.</h2>
-        <p class="lead muted">Echte Kolleginnen und Kollegen mit Namen zeigen wir, sobald wir sie fotografieren dürfen. Bis dahin steht hier das Bild des Bereichs, bewusst kein Stockfoto von Personen.</p>
+        {/* Bewusst keine Stockfotos von Personen. [[FEHLT: Namen und Fotos des Teams nach dem Shooting]] */}
+        <p class="lead muted">Sushi, Küche, Grill, Service und Theke arbeiten an jedem Standort Hand in Hand.</p>
       </div>
       <ul class="tiles">
         {team.map((m) => (
@@ -177,7 +178,6 @@ const eintritt = [
             </figure>
             <div class="tt">
               <b>{m.bereich}</b>
-              <span class="fehlt">Name und Foto [[FEHLT]]</span>
             </div>
           </li>
         ))}
@@ -279,7 +279,7 @@ const eintritt = [
             <label>Telefon oder WhatsApp<input name="telefon" type="tel" autocomplete="tel" inputmode="tel" required /></label>
             <label>E-Mail <small>(optional)</small><input name="mail" type="email" autocomplete="email" /></label>
           </div>
-          <label class="check"><input type="checkbox" name="datenschutz" required /><span>Ich habe den <a href="/datenschutz/">Datenschutzhinweis für Bewerber</a> gelesen <span class="fehlt">[[FEHLT: Text]]</span>.</span></label>
+          <label class="check"><input type="checkbox" name="datenschutz" required /><span>Ich habe den <a href="/datenschutz/">Datenschutzhinweis für Bewerber</a> gelesen.</span></label>
           <p class="err" data-err role="alert" hidden></p>
         </fieldset>
 
@@ -292,7 +292,7 @@ const eintritt = [
         <div class="done" data-done hidden tabindex="-1">
           <h3 class="display">Geschafft.</h3>
           <p data-summary></p>
-          <p class="proto"><span class="fehlt">Prototyp: Die Bewerbung wird noch nicht übertragen.</span> Zum Livegang geht sie per Mail an den gewählten Standort.</p>
+          {/* [[FEHLT: Versand der Bewerbung per Mail an den gewählten Standort, bisher wird nichts übertragen]] */}
         </div>
       </form>
     </div>
@@ -427,7 +427,6 @@ const eintritt = [
   /* Held */
   .hero { min-block-size: 100svh; display: grid; align-items: center; padding-block: 8rem 5rem; overflow: clip; }
   .hvideo { position: absolute; inset: 0; z-index: -2; inline-size: 100%; block-size: 100%; object-fit: cover; }
-  .vhint { position: absolute; inset: auto var(--gutter) 1.5rem auto; font-size: 0.8125rem; }
   .hgrid { display: grid; gap: 2.5rem; align-items: center; }
   .copy { container-type: inline-size; display: grid; gap: 1.4rem; max-inline-size: 42rem; }
   .big { font-size: clamp(2rem, 11cqw, 4.75rem); line-height: 0.98; }
@@ -529,7 +528,6 @@ const eintritt = [
   .tile img { inline-size: 100%; block-size: 100%; object-fit: cover; }
   .tt { display: grid; gap: 0.25rem; padding: 0.9rem 1rem 1.1rem; }
   .tt b { font-size: 1.125rem; font-weight: 500; }
-  .tt .fehlt { font-size: 0.75rem; white-space: normal; justify-self: start; }
   @media (min-width: 52rem) { .tiles { grid-template-columns: repeat(4, 1fr); gap: 1rem; } .tile:nth-child(even) { margin-block-start: 2.5rem; } }
 
   /* Ablauf: helle Fläche, die Linie verbindet nur die Punkte (1 bis 4) und füllt sich beim Scrollen */
@@ -600,5 +598,4 @@ const eintritt = [
   .nav [hidden], .funnel:not(.js) .nav button:not(.send) { display: none; }
   .funnel:not(.js) .nav .send { display: inline-flex; align-items: center; }
   .done h3 { font-size: clamp(1.75rem, 4vw, 2.5rem); margin-block-end: 1rem; }
-  .done .proto { margin-block-start: 1rem; color: var(--text-muted); }
 </style>

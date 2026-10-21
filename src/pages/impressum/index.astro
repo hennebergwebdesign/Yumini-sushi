@@ -3,12 +3,13 @@ import Rechtsseite from '../../components/Rechtsseite.astro';
 import { standorte } from '../../lib/standorte';
 ---
 <Rechtsseite titel="Impressum" beschreibung="Impressum von Yumini Japanese Sushi & Grill, Viktoriastraße 43 bis 45, 44787 Bochum." pfad="/impressum/" stand="20. Oktober 2026">
-  <p class="hinweis">Entwurf. Die Angaben stammen von der bisherigen Website. Vor dem Livegang bitte vollständig prüfen, besonders die mit [[FEHLT]] markierten Stellen.</p>
+  {/* Angaben von der bisherigen Website, vor dem Livegang vollständig prüfen.
+      [[FEHLT: Vor- und Nachname des Inhabers, Pflichtangabe nach § 5 DDG]]
+      [[FEHLT: Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV, Name und Anschrift]] */}
 
   <h2>Angaben gemäß § 5 DDG</h2>
   <address>
     <strong>Yumini</strong><br />
-    Inhaber: <span class="fehlt">[[FEHLT: Vor- und Nachname des Inhabers]]</span><br />
     Viktoriastraße 43 bis 45<br />
     44787 Bochum
   </address>
@@ -22,9 +23,6 @@ import { standorte } from '../../lib/standorte';
 
   <h2>Umsatzsteuer</h2>
   <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE304572836</p>
-
-  <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
-  <p><span class="fehlt">[[FEHLT: Name und Anschrift, in der Regel der Inhaber]]</span></p>
 
   <h2>Standorte</h2>
   <ul>

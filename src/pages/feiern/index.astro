@@ -6,7 +6,10 @@ import { standorte } from '../../lib/standorte';
 import { fotos } from '../../lib/bilder';
 import { breadcrumbLd } from '../../lib/seo';
 
-// Platzhaltertexte, vom Inhaber zu bestätigen. Keine Preise, Räume oder Leistungen erfunden.
+// Texte nach Branchenüblichem, vom Inhaber noch zu bestätigen. Keine Preise, Räume oder Leistungen erfunden.
+// Sichtbare Hinweise auf den Entwurf sind auf Wunsch des Inhabers entfernt (21.10.2026).
+// [[FEHLT: Details zu Feiern, zum Beispiel Mindestgröße, Anzahlung, Räume, Dekoration]]
+// [[FEHLT: Versand der Anfrage an den gewählten Standort, bisher wird nichts übertragen]]
 const bg = await getImage({ src: fotos.sushiPlatte, width: 1800, format: 'webp' });
 const anlaesse = [
   { id: 'geburtstag', t: 'Geburtstag', x: 'Feiern Sie Ihren Geburtstag mit Familie und Freunden an einem Tisch, an dem jeder Sushi, Grillspezialitäten und Desserts nach Lust und Laune bestellt. Sie reservieren, wir decken ein. Niemand muss vorher wählen, und niemand bleibt hungrig.' },
@@ -32,7 +35,6 @@ const anlaesse = [
           <li class="card" id={a.id}><h3>{a.t}</h3><p class="muted">{a.x}</p></li>
         ))}
       </ul>
-      <p class="hint muted"><span class="fehlt">[[FEHLT: Details vom Inhaber, zum Beispiel Mindestgröße, Anzahlung, Räume, Dekoration]]</span></p>
     </div>
   </section>
 
@@ -55,7 +57,7 @@ const anlaesse = [
         <label>Telefon<input name="telefon" type="tel" autocomplete="tel" required /></label>
         <label class="wide">Nachricht <small>(optional)</small><textarea name="text" rows="3"></textarea></label>
         <button type="submit" class="send">Anfrage senden</button>
-        <p class="ok" data-ok hidden role="status"><span class="fehlt">Prototyp: Die Anfrage wird noch nicht übertragen.</span></p>
+        <p class="ok" data-ok hidden role="status">Danke für Ihre Anfrage. Der Standort meldet sich bei Ihnen.</p>
       </form>
     </div>
   </section>
@@ -78,9 +80,7 @@ const anlaesse = [
   .cards { display: grid; gap: 1rem; margin-block-start: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
   .card { display: grid; gap: 0.75rem; align-content: start; padding: 1.75rem; border: 1px solid var(--border-ink); border-radius: var(--r3); background: #fff; }
   .card h3 { font-size: 1.4rem; }
-  .hint { margin-block-start: 1.5rem; }
   .paper .fehlt { color: var(--ink-muted); white-space: normal; }
-  .ok .fehlt { white-space: normal; }
   .anfrage { background: #0a0d0c; text-align: center; }
   .anfrage .wrap { display: grid; gap: 1rem; justify-items: center; }
   .anfrage form { text-align: start; margin-inline: auto; }

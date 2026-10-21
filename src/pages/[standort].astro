@@ -60,7 +60,7 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
       <div class="copy">
         <p class="eyebrow">Willkommen bei</p>
         <h1 id="ort-title">
-          <span class="big display">Yumini<br />{s.name}</span>
+          <span class="big display" style={`--len:${Math.max(s.name.length, 6)}`}><span>Yumini</span><span>{s.name}</span></span>
           <span class="sub">Japanese Sushi <span class="amp">&amp;</span> Grill</span>
         </h1>
         <address>{s.strasse}, {s.ort}{s.parkHinweis && <> · {s.parkHinweis}</>}</address>
@@ -176,9 +176,10 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
   .hero { position: relative; isolation: isolate; min-block-size: 100vh; min-block-size: 100svh; display: grid; align-items: center; padding-block: var(--kopf) clamp(2rem, 6svh, 4rem); background: var(--black) var(--bg) center / cover no-repeat; overflow: clip; }
   .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.82); }
   .grid { display: grid; gap: 2rem; align-items: center; }
-  .copy { display: grid; gap: 1.25rem; max-inline-size: 52rem; }
+  .copy { display: grid; gap: 1.25rem; max-inline-size: 60rem; container-type: inline-size; }
   h1 { display: grid; gap: 0.8rem; }
-  .big { font-size: clamp(2.3rem, 5.2vw, 4.6rem); overflow-wrap: anywhere; }
+  /* Ortsname nie trennen: jede Zeile bleibt ganz, die Größe richtet sich nach der Breite und der Länge des Namens */
+  .big { display: grid; font-size: min(clamp(2.3rem, 5.2vw, 4.6rem), calc(100cqi / (var(--len) * 0.9))); white-space: nowrap; overflow-wrap: normal; hyphens: none; }
   .sub { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 300; }
   .amp { color: var(--coral-soft); font-weight: 500; }
   address { font-style: normal; color: var(--text-muted); font-size: 1.0625rem; }
@@ -198,6 +199,8 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
 
   .shead { display: grid; gap: 0.8rem; justify-items: start; margin-block-end: 2rem; }
   .karte { padding-block: var(--space-section); background: var(--black); }
+  /* Langer Ortsname im Button: auf schmalen Handys umbrechen statt über den Rand zu laufen */
+  .karte :global(.btn) { white-space: normal; text-align: center; }
   .favs { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block-end: 2rem; }
   .fav { display: grid; gap: 0.2rem; justify-items: start; padding: 1rem; border: 1px solid var(--border); border-radius: var(--r3); background: #11161a; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
   .fav:hover { transform: translateY(-5px); border-color: var(--coral-soft); }
