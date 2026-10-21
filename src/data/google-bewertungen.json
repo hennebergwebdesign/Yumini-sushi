@@ -1,5 +1,5 @@
 {
-  "quelle": "Google Bewertungen laut reviewhero.io/yumini-67bb, abgerufen am 20.10.2026. Nur Standort Bochum, die neuesten dort angezeigten Bewertungen stammen aus Mai und Juni 2023. Nicht gegen die Google Unternehmensprofile geprüft. Zum Livegang durch die Places API aller fünf Standorte ersetzen (docs/plan.md, Abschnitt 11). Ergänzt am 20.10.2026 um fünf Screenshots von Google Maps (vom Inhaber geliefert). Dort stehen nur relative Angaben (vor 2 bis 4 Monaten), das Datum ist auf den Monat geschätzt. Emojis aus den Texten entfernt. Neuere Einträge ohne Datum, die Seite zeigt keine Zeitangabe mehr (Wunsch des Inhabers). Teils gekürzt auf einzelne Sätze, Eintrag „Google Gast“: Name im Screenshot abgeschnitten.",
+  "quelle": "Google Bewertungen laut reviewhero.io/yumini-67bb, abgerufen am 20.10.2026. Nur Standort Bochum, die neuesten dort angezeigten Bewertungen stammen aus Mai und Juni 2023. Nicht gegen die Google Unternehmensprofile geprüft. Zum Livegang durch die Places API aller fünf Standorte ersetzen (docs/plan.md, Abschnitt 11). Ergänzt am 20.10.2026 um fünf Screenshots von Google Maps (vom Inhaber geliefert). Dort stehen nur relative Angaben (vor 2 bis 4 Monaten), das Datum ist auf den Monat geschätzt. Emojis aus den Texten entfernt. Neuere Einträge ohne Datum, die Seite zeigt keine Zeitangabe mehr (Wunsch des Inhabers). Teils gekürzt auf einzelne Sätze, Eintrag „Google Gast“: Name im Screenshot abgeschnitten. Es erscheinen nur Stimmen mit mindestens 140 Zeichen (Filter in Bewertungen.astro). Nicht gezeigt: Riku, Bariline, Katrin, Sven Panzer, Roba Jaber (Vergleich mit anderen Standorten, Servicekritik, nicht belegte Regeln, unsichere Abschrift).",
   "bewertungen": [
     {
       "standort": "bochum",
@@ -41,7 +41,7 @@
       "name": "Epic Mind Tricks",
       "sterne": 5,
       "datum": "2026-08-20",
-      "text": "Meiner Erfahrung nach bietet YUMINI ein rundum beeindruckendes Gesamterlebnis. Die Kombination aus exzellentem Essen, extrem flinker Küche, entspanntem Ambiente und einem unvergleichlich freundlichen Service machte den Restaurantbesuch aus meiner Perspektive zu einer klaren Empfehlung."
+      "text": "Aus meiner Sicht war das Essen bei YUMINI schlichtweg perfekt und wurde nach der Bestellung erstaunlich schnell serviert. Nach meinem Empfinden hat der Service alle Erwartungen übertroffen. Das Personal war durchweg außerordentlich höflich, aufmerksam und zuvorkommend. Als besonders nette Aufmerksamkeit des Hauses wurde uns am Ende sogar noch ein Kaffee angeboten, was den hervorragenden Eindruck noch einmal unterstrichen hat.\n\nNach unseren bisherigen Eindrücken überzeugt das Restaurant auch beim Raumgefühl auf ganzer Linie. Die Atmosphäre war angenehm ruhig und entspannt, sodass zu keinem Zeitpunkt Hektik oder eine zu laute Geräuschkulisse aufkam. Man kann sich ungestört unterhalten und das Essen in vollster Ruhe genießen.\n\nMeiner Erfahrung nach bietet YUMINI ein rundum beeindruckendes Gesamterlebnis. Die Kombination aus exzellentem Essen, extrem flinker Küche, entspanntem Ambiente und einem unvergleichlich freundlichen Service machte den Restaurantbesuch aus meiner Perspektive zu einer klaren Empfehlung."
     },
     {
       "standort": null,
@@ -81,13 +81,7 @@
       "standort": "bochum",
       "name": "Me Ra",
       "sterne": 5,
-      "text": "Wir waren bereits mehrfach im Bochumer Yumini und sind jedesmal pappsatt und glücklich, wenn wir wieder gehen."
-    },
-    {
-      "standort": null,
-      "name": "Sven Panzer",
-      "sterne": 4,
-      "text": "Alles in allem ein sehr gutes, wenn auch etwas hektisches kulinarisches Erlebnis. Der Service ist besonders hervorzuheben."
+      "text": "Wir waren bereits mehrfach im Bochumer Yumini und sind jedesmal pappsatt und glücklich, wenn wir wieder gehen. Bisher waren wir in Dortmund, Gelsenkirchen und Bochum."
     },
     {
       "standort": null,
@@ -96,34 +90,10 @@
       "text": "Das Essen war sehr lecker und die Auswahl hervorragend (Dinner). Sehr freundliches Personal. Schnelle Bedienung. Was will man mehr? Wir kommen auf jeden Fall wieder."
     },
     {
-      "standort": null,
-      "name": "Roba Jaber",
-      "sterne": 5,
-      "text": "Essen war wie immer brutal gut. War früher ständig hier und heute wiederzukommen war einfach die beste Entscheidung."
-    },
-    {
-      "standort": null,
-      "name": "Riku",
-      "sterne": 5,
-      "text": "Wir waren jetzt 2x hier (saßen 1x draußen und 1x drin) und waren beide male begeistert! Die Speisen sind lecker und qualitativ hochwertig."
-    },
-    {
       "standort": "bochum",
       "name": "Tatjana D.",
       "sterne": 4,
       "text": "Große Auswahl, viel zu entdecken und das Essen kam schnell, frisch zubereitet und war qualitativ wirklich top. Wir hatten viel Spaß dabei! Der Service war hervorragend und sehr aufmerksam."
-    },
-    {
-      "standort": null,
-      "name": "Bariline",
-      "sterne": 4,
-      "text": "Das Essen war super lecker und das Preis-Leistungs-Verhältnis stimmt absolut."
-    },
-    {
-      "standort": null,
-      "name": "Katrin",
-      "sterne": 5,
-      "text": "Das Yumini ist tatsächlich ein außergewöhnliches Sushi Restaurant. Bestellt wird mit einem ipad und das Essen wird dann nach kurzer Zeit, frisch zubereitet, an den Tisch gebracht. Was die veganen und vegetarischen Speisen angeht, bin ich hellauf begeistert. Selten gibt es so eine große Auswahl an veganen Sachen. Alles ist frisch und sieht toll aus"
     }
   ]
 }

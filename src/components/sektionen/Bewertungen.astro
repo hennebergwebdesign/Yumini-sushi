@@ -9,12 +9,14 @@ import ta from '../../data/tripadvisor-bewertungen.json';
 // Bewertungen von Tripadvisor und Google in einem durchlaufenden Band, dazu beide Plattform Siegel.
 // Nur echte Stimmen (data/tripadvisor-bewertungen.json, data/google-bewertungen.json), keine Platzhalter.
 const name = (id: string | null) => (id ? standorte.find((s) => s.id === id)?.name ?? id : '');
+// Nur ausführliche Stimmen, kurze Einzeiler wirken nicht glaubwürdig.
+const MIN_ZEICHEN = 140;
 type Stimme = { quelle: string; standort: string | null; name?: string; sterne?: number; text?: string };
 const von = (liste: unknown, quelle: string) => (liste as Omit<Stimme, 'quelle'>[]).map((b) => ({ ...b, quelle }));
 const tripadvisor = von(ta.bewertungen, 'Tripadvisor');
 const google = von(daten.bewertungen, 'Google');
 // abwechselnd, damit beide Quellen im Band gemischt laufen
-const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, google.length) }, (_, i) => [tripadvisor[i], google[i]]).flat().filter(Boolean);
+const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, google.length) }, (_, i) => [tripadvisor[i], google[i]]).flat().filter((b) => b && (b.text?.length ?? 0) >= MIN_ZEICHEN);
 ---
 <section id="bewertungen" class="bew" aria-labelledby="bew-title">
   <div class="wrap">
@@ -43,6 +45,7 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
             <li class="karte">
               <Sterne wert={b.sterne ?? 5} groesse="1rem" />
               <p class="zitat">„{b.text}“</p>
+              <button type="button" class="mehrlesen" aria-expanded="false" hidden>Ganze Bewertung lesen</button>
               <p class="wer"><b>{b.name}</b><span>{b.quelle}, Yumini{b.standort ? ` ${name(b.standort)}` : ''}</span></p>
             </li>
           ))}
@@ -55,6 +58,26 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
     <Button href="/#reservieren" variant="outline">Tisch reservieren</Button>
   </div>
 </section>
+
+<script>
+  // Zitat ausklappen, solange eine Karte offen ist, hält das Band an. Der Knopf erscheint nur bei gekürztem Text.
+  const karten = document.querySelectorAll<HTMLElement>('#bewertungen .karte');
+  const pruefen = () => karten.forEach((k) => {
+    const z = k.querySelector<HTMLElement>('.zitat')!;
+    const b = k.querySelector<HTMLButtonElement>('.mehrlesen')!;
+    b.hidden = !(k.classList.contains('offen') || z.scrollHeight > z.clientHeight + 1);
+  });
+  pruefen();
+  addEventListener('resize', pruefen);
+  document.querySelector('#bewertungen')?.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.mehrlesen');
+    if (!b) return;
+    const k = b.closest('.karte')!;
+    const auf = k.classList.toggle('offen');
+    b.setAttribute('aria-expanded', String(auf));
+    b.textContent = auf ? 'Weniger anzeigen' : 'Ganze Bewertung lesen';
+  });
+</script>
 
 <style>
   .bew {
@@ -102,6 +125,7 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
     inline-size: max-content;
     animation: lauf 190s linear infinite;
   }
+  .marquee:has(.offen) .track,
   .marquee:hover .track,
   .marquee:focus-within .track { animation-play-state: paused; }
   .gruppe {
@@ -134,6 +158,22 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  .zitat { white-space: pre-line; }
+  .karte.offen { align-self: start; }
+  .karte.offen .zitat { display: block; -webkit-line-clamp: unset; line-clamp: unset; overflow: visible; }
+  .mehrlesen {
+    justify-self: start;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--coral-soft);
+    font: inherit;
+    font-size: var(--fs-sm);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+  }
+  .mehrlesen[hidden] { display: none; }
   .wer { display: grid; gap: 0.1rem; margin-block-start: auto; font-size: var(--fs-sm); }
   .wer b { font-weight: 500; }
   .wer span { color: var(--text-muted); font-size: var(--fs-xs); }
