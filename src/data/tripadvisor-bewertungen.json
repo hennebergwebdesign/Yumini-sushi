@@ -1,5 +1,5 @@
 {
-  "quelle": "Tripadvisor Screenshots, vom Inhaber geliefert am 20.10.2026. Texte wörtlich. Standort nur gesetzt, wenn er aus der Bewertung hervorgeht (Titel nennt Dortmund). Der Wohnort der Schreibenden ist nicht der Standort. Weitere Bewertungen folgen.",
+  "quelle": "Tripadvisor Screenshots, vom Inhaber geliefert am 20.10.2026. Texte wörtlich. Standort nur gesetzt, wenn er aus der Bewertung hervorgeht (Titel nennt Dortmund). Der Wohnort der Schreibenden ist nicht der Standort. Weitere Bewertungen folgen. Teils auf einzelne Sätze gekürzt. Preisangaben aus alten Bewertungen sind weggelassen.",
   "bewertungen": [
     {
       "standort": null,
@@ -56,6 +56,38 @@
       "datum": "2018-12-28",
       "titel": "Tolles und frisches Sushi",
       "text": "Hier waren wir schon öfter und dieses Mal mit der ganzen Familie. Das tolle und sehr frische Sushi lockt uns zu recht nach Dortmund. Neben Sushi sind auch die warmen japanischen Köstlichkeiten zu empfehlen. Alles schnell mit IPad bestellt und quasi schon am Tisch. Tolles Personal sorgt für ein leckeres und passend kulinarisches Erlebnis. Gerne wieder"
+    },
+    {
+      "standort": null,
+      "name": "Luisa P",
+      "sterne": 5,
+      "datum": "2021-07-19",
+      "titel": "Leckeres Sushi, schneller Service!",
+      "text": "Das Sushi ist sehr lecker und wird frisch zubereitet. Die warmen Speisen waren schön heiß und alles wurde sehr schnell gebracht - wirklich toll!"
+    },
+    {
+      "standort": null,
+      "name": "Sarah S",
+      "sterne": 5,
+      "datum": "2019-10-24",
+      "titel": "Super Mittagsmenü",
+      "text": "Die Bestellung der Sushis und Getränke erfolgt übers Tablet. Meistens wird alles prompt geliefert. Neben den Sushis können diverse Beilagen bestellt werden. Ich esse nur die vegetarischen Sushis und finde die Auswahl hier super."
+    },
+    {
+      "standort": "dortmund",
+      "name": "Aykut1414",
+      "sterne": 4,
+      "datum": "2019-12-01",
+      "titel": "Schmeckt lecker, mehrere Besuche zu empfehlen",
+      "text": "War schon öfters dort und kann jedem ein Besuch empfehlen. Es schmeckt alles sehr gut und gibt vieles zu probieren, es ist also nicht nur auf Sushi beschränkt. Preise sind auch super."
+    },
+    {
+      "standort": "dortmund",
+      "name": "Matthias S",
+      "sterne": 4,
+      "datum": "2022-06-01",
+      "titel": "Sehr gute Auswahl an asiatischen Speisen",
+      "text": "Wir haben im Yumini einen sehr schönen Abend verbracht und sehr leckere Speisen gegessen. Das Konzept, per iPad am Platz zu bestellen, hat auch hier super geklappt und alle Speisen wurden zügig an den Tisch gebracht. Die Bedienung war ausnahmslos sehr freundlich."
     }
   ]
 }
