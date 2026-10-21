@@ -51,6 +51,27 @@
       "text": "Sehr leckeres Essen. Gehört mittlerweile zu meinen monatlichen Besuchen. Kann ich nur wärmstens weiterempfehlen. Das Personal ist sehr freundlich, das Essen kommt auch sehr zügig und hat unfassbar gute Qualität. Parken kann man auch hinter und neben dem Restaurant Eingang sehr gut."
     },
     {
+      "standort": null,
+      "name": "Alexander „Gipsl“ Brüning",
+      "sterne": 5,
+      "datum": "2026-08-21",
+      "text": "Nettes Personal und schneller Service. Das Essen war sehr lecker und schnell und frisch zubereitet. Die Bestellung über Tablet ist simpel und intuitiv. Alles auf der Karte auch mit Bildern hinterlegt. Reservierung über Google war kein Problem."
+    },
+    {
+      "standort": null,
+      "name": "Maria M",
+      "sterne": 5,
+      "datum": "2026-06-21",
+      "text": "Wunderschönes Restaurant mit einer großen Auswahl an Speisen und Getränken. Man kann dort sowohl mit der Familie als auch mit Freunden eine schöne Zeit verbringen"
+    },
+    {
+      "standort": null,
+      "name": "Ying Ying Su",
+      "sterne": 5,
+      "datum": "2025-12-21",
+      "text": "Wir waren mit der ganzen Familie da und uns hat es super gefallen! Man hat geschmeckt wie frisch und hochwertig die Zutaten sind, die verwendet werden. Absolut empfehlenswert! Getränke und Essen waren super schnell da. Ich leg euch ans Herz vorher nicht viel zu essen, damit man mehr von der Auswahl ausprobieren kann."
+    },
+    {
       "standort": "dortmund",
       "fehlt": true
     },
