@@ -21,7 +21,7 @@ const [a, b, c] = reihen[s.id].map((id) => raeume[id]);
         <p class="eyebrow">Im Lokal</p>
         <h2 id="lokal-title" class="h2">Ein Abend bei Yumini {s.name}</h2>
       </div>
-      <p class="muted hinweis">Symbolbilder. Aufnahmen aus dem Lokal in {s.name} folgen nach dem Fotoshooting.</p>
+      {/* [[FEHLT: Aufnahmen aus dem Lokal je Standort nach dem Fotoshooting]] */}
     </div>
     <ul class="bilder">
       <li class="gross"><Image src={a.src} alt={a.alt} widths={[700, 1100, 1600]} sizes="(max-width: 52rem) 100vw, 60vw" /><span class="sym">Symbolbild</span></li>
@@ -34,7 +34,6 @@ const [a, b, c] = reihen[s.id].map((id) => raeume[id]);
 <style>
   .lokal { padding-block: var(--space-section); background: #0a0d0c; }
   .kopf { display: flex; flex-wrap: wrap; gap: 1rem 3rem; align-items: end; justify-content: space-between; margin-block-end: 2rem; }
-  .hinweis { max-inline-size: 22rem; font-size: 0.9375rem; }
   .bilder { display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; grid-auto-rows: clamp(9rem, 30vw, 14rem); }
   .bilder li { position: relative; overflow: clip; border-radius: var(--r3); background: #11161a; }
   .bilder li :global(img) { inline-size: 100%; block-size: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
