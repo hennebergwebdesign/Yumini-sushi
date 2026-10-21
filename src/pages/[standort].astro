@@ -6,16 +6,22 @@ import ReservierungsTool from '../components/ReservierungsTool.astro';
 import Lokal from '../components/sektionen/Lokal.astro';
 import PreisPanel from '../components/PreisPanel.astro';
 import { standorte, ab, routeUrl, type Standort } from '../lib/standorte';
-import { gerichte, fotos, type GerichtId } from '../lib/bilder';
+import { gerichte, fotos, standortFotos, type GerichtId } from '../lib/bilder';
 import { nummer } from '../lib/speisekarte';
 import { restaurantLd, faqLd, breadcrumbLd, keywordsOrt } from '../lib/seo';
+import { SITE } from '../lib/config';
 
 export function getStaticPaths() {
   return standorte.map((s) => ({ params: { standort: s.id }, props: { s } }));
 }
 const { s } = Astro.props as { s: Standort };
 const andere = standorte.filter((x) => x.id !== s.id);
-const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
+// Held: echtes Foto des Restaurants, sonst die Nigiri Platte
+const titelFoto = standortFotos[s.id]?.[0];
+const bg = await getImage({ src: titelFoto?.src ?? fotos.nigiriSchiefer, width: 1600, quality: 60, format: 'webp' });
+// Vorschaubild für Teilen und Google, nur mit echtem Foto (sonst das allgemeine og.jpg)
+const og = titelFoto ? await getImage({ src: titelFoto.src, width: 1200, height: 630, fit: 'cover', format: 'jpg' }) : null;
+const ogUrl = og ? new URL(og.src, SITE).href : undefined;
 
 // Favoriten mit den Nummern dieses Standorts (die Nummern unterscheiden sich je Standort)
 const favoriten: { id: GerichtId; name: string; text: string; abends?: boolean }[] = [
@@ -53,9 +59,11 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
   description={beschreibung}
   pfad={`/${s.id}/`}
   keywords={keywordsOrt(s.name)}
-  ld={[restaurantLd(s), faqLd(fragen), breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: `Yumini ${s.name}`, pfad: `/${s.id}/` }])]}
+  bild={ogUrl}
+  bildAlt={titelFoto?.alt}
+  ld={[restaurantLd(s, ogUrl), faqLd(fragen), breadcrumbLd([{ name: 'Yumini', pfad: '/' }, { name: `Yumini ${s.name}`, pfad: `/${s.id}/` }])]}
 >
-  <section class="hero" style={`--bg:url(${bg.src})`} aria-labelledby="ort-title">
+  <section class:list={['hero', { foto: titelFoto }]} style={`--bg:url(${bg.src})`} aria-labelledby="ort-title">
     <div class="wrap grid">
       <div class="copy">
         <p class="eyebrow">Willkommen bei</p>
@@ -175,6 +183,8 @@ const beschreibung = `All you can eat Sushi & Grill in ${s.name}, ${s.strasse}: 
 <style>
   .hero { position: relative; isolation: isolate; min-block-size: 100vh; min-block-size: 100svh; display: grid; align-items: center; padding-block: var(--kopf) clamp(2rem, 6svh, 4rem); background: var(--black) var(--bg) center / cover no-repeat; overflow: clip; }
   .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(3 5 4 / 0.82); }
+  /* Mit echtem Foto weniger stark abgedunkelt, damit der Raum zu erkennen ist */
+  .hero.foto::before { background: rgb(3 5 4 / 0.66); }
   .grid { display: grid; gap: 2rem; align-items: center; }
   .copy { display: grid; gap: 1.25rem; max-inline-size: 60rem; container-type: inline-size; }
   h1 { display: grid; gap: 0.8rem; }

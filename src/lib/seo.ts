@@ -8,7 +8,7 @@ const tage = (label: string) => {
 };
 const zeiten = (z: string) => z.split(' bis ');
 
-export function restaurantLd(s: Standort) {
+export function restaurantLd(s: Standort, bild?: string) {
   const spec: object[] = [];
   const add = (m: { zeit: string; preise: { label: string }[] } | null) => {
     if (!m) return;
@@ -26,7 +26,7 @@ export function restaurantLd(s: Standort) {
     url: `${SITE}/${s.id}/`,
     telephone: s.tel,
     email: s.mail,
-    image: `${SITE}/images/og.jpg`,
+    image: bild ? [bild, `${SITE}/images/og.jpg`] : `${SITE}/images/og.jpg`,
     servesCuisine: ['Japanisch', 'Sushi', 'Teppanyaki', 'All you can eat'],
     priceRange: '€€',
     acceptsReservations: true,

@@ -17,8 +17,9 @@ interface Props {
   noindex?: boolean;
   keywords?: string[];
   bildAlt?: string;
+  bild?: string; // absolute Adresse eines Vorschaubilds 1200 x 630, Standard /images/og.jpg
 }
-const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true, noindex = false, keywords = KEYWORDS_BASIS, bildAlt = 'Sushi Auswahl bei Yumini Japanese Sushi & Grill' } = Astro.props;
+const { title, description, pfad = Astro.url.pathname, ld = [], mobilLeiste = true, autoReveal = true, noindex = false, keywords = KEYWORDS_BASIS, bildAlt = 'Sushi Auswahl bei Yumini Japanese Sushi & Grill', bild = `${SITE}/images/og.jpg` } = Astro.props;
 const url = new URL(pfad, SITE).href;
 ---
 <!doctype html>
@@ -41,14 +42,14 @@ const url = new URL(pfad, SITE).href;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${SITE}/images/og.jpg`} />
+    <meta property="og:image" content={bild} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={bildAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${SITE}/images/og.jpg`} />
+    <meta name="twitter:image" content={bild} />
     <meta name="twitter:image:alt" content={bildAlt} />
     <meta name="format-detection" content="telephone=yes" />
     {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
