@@ -38,3 +38,14 @@ import { fragen } from '../lib/faq';
   <Fragen />
   <Abschluss />
 </Base>
+
+<style is:global>
+  /* Abschnitte unter dem ersten Bildschirm werden erst gerechnet und gezeichnet, wenn sie in die Nähe kommen.
+     Das spart Style und Layout beim Laden und hält die Hintergrundfotos zurück. */
+  main > section:not(:first-child) {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto 48rem;
+  }
+  /* Vor einem Sprung zu einer Sprungmarke alles voll rechnen, sonst landet der Sprung wegen der geschätzten Höhen daneben */
+  .cv-aus main > section { content-visibility: visible; }
+</style>

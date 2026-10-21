@@ -7,7 +7,7 @@ import { fotos } from '../../lib/bilder';
 const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
 const fill = await getImage({ src: fotos.sushiPlatte, width: 1600, format: 'webp' });
 ---
-<section id="abschluss" class="end" aria-labelledby="end-title" style={`--bg:url(${bg.src});--fill:url(${fill.src})`}>
+<section id="abschluss" class="end" aria-labelledby="end-title" data-bg={bg.src} data-fill={fill.src}>
   <div class="wrap inner">
     <h2 id="end-title" class="mega">Ihr Tisch wartet</h2>
     <p class="lead">Wählen Sie Ihren Standort und reservieren Sie in unter einer Minute.</p>
