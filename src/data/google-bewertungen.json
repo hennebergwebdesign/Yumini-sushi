@@ -1,5 +1,5 @@
 {
-  "quelle": "Google Bewertungen laut reviewhero.io/yumini-67bb, abgerufen am 20.10.2026. Nur Standort Bochum, die neuesten dort angezeigten Bewertungen stammen aus Mai und Juni 2023. Nicht gegen die Google Unternehmensprofile geprüft. Zum Livegang durch die Places API aller fünf Standorte ersetzen (docs/plan.md, Abschnitt 11). Ergänzt am 20.10.2026 um fünf Screenshots von Google Maps (vom Inhaber geliefert). Dort stehen nur relative Angaben (vor 2 bis 4 Monaten), das Datum ist auf den Monat geschätzt. Emojis aus den Texten entfernt.",
+  "quelle": "Google Bewertungen laut reviewhero.io/yumini-67bb, abgerufen am 20.10.2026. Nur Standort Bochum, die neuesten dort angezeigten Bewertungen stammen aus Mai und Juni 2023. Nicht gegen die Google Unternehmensprofile geprüft. Zum Livegang durch die Places API aller fünf Standorte ersetzen (docs/plan.md, Abschnitt 11). Ergänzt am 20.10.2026 um fünf Screenshots von Google Maps (vom Inhaber geliefert). Dort stehen nur relative Angaben (vor 2 bis 4 Monaten), das Datum ist auf den Monat geschätzt. Emojis aus den Texten entfernt. Neuere Einträge ohne Datum, die Seite zeigt keine Zeitangabe mehr (Wunsch des Inhabers). Teils gekürzt auf einzelne Sätze, Eintrag „Google Gast“: Name im Screenshot abgeschnitten.",
   "bewertungen": [
     {
       "standort": "bochum",
@@ -70,6 +70,36 @@
       "sterne": 5,
       "datum": "2025-12-21",
       "text": "Wir waren mit der ganzen Familie da und uns hat es super gefallen! Man hat geschmeckt wie frisch und hochwertig die Zutaten sind, die verwendet werden. Absolut empfehlenswert! Getränke und Essen waren super schnell da. Ich leg euch ans Herz vorher nicht viel zu essen, damit man mehr von der Auswahl ausprobieren kann."
+    },
+    {
+      "standort": null,
+      "name": "Black Cube",
+      "sterne": 5,
+      "text": "Wär die asiatische Küche mag, muss hier essen gehen. Das bestellen mit dem Tablet geht Kinderleicht, die Bestellungen kommen sehr schnell, nur zu empfehlen! Insgesamt ein sehr gutes Restaurant mit einem tollen Ambiente."
+    },
+    {
+      "standort": "bochum",
+      "name": "Me Ra",
+      "sterne": 5,
+      "text": "Wir waren bereits mehrfach im Bochumer Yumini und sind jedesmal pappsatt und glücklich, wenn wir wieder gehen."
+    },
+    {
+      "standort": null,
+      "name": "Sven Panzer",
+      "sterne": 4,
+      "text": "Alles in allem ein sehr gutes, wenn auch etwas hektisches kulinarisches Erlebnis. Der Service ist besonders hervorzuheben."
+    },
+    {
+      "standort": null,
+      "name": "Google Gast",
+      "sterne": 5,
+      "text": "Das Essen war sehr lecker und die Auswahl hervorragend (Dinner). Sehr freundliches Personal. Schnelle Bedienung. Was will man mehr? Wir kommen auf jeden Fall wieder."
+    },
+    {
+      "standort": null,
+      "name": "Roba Jaber",
+      "sterne": 5,
+      "text": "Essen war wie immer brutal gut. War früher ständig hier und heute wiederzukommen war einfach die beste Entscheidung."
     },
     {
       "standort": "dortmund",

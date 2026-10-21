@@ -10,7 +10,6 @@ import ta from '../../data/tripadvisor-bewertungen.json';
 // Es stehen nur echte Stimmen im Band (data/google-bewertungen.json). Standorte ohne Stimme zeigen einen sichtbaren Platzhalter.
 const google = bewertungen.find((b) => b.id === 'google')!;
 const name = (id: string | null) => (id ? standorte.find((s) => s.id === id)?.name ?? id : '');
-const monat = (iso: string) => new Date(iso).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
 type Stimme = { quelle: string; standort: string | null; name?: string; sterne?: number; datum?: string; text?: string; fehlt?: boolean };
 // Tripadvisor Stimmen (data/tripadvisor-bewertungen.json) und Google Stimmen in einem Band, Tripadvisor zuerst.
 const stimmen: Stimme[] = [
@@ -49,7 +48,7 @@ const stimmen: Stimme[] = [
                 <>
                   <Sterne wert={b.sterne ?? 5} groesse="1rem" />
                   <p class="zitat">„{b.text}“</p>
-                  <p class="wer"><b>{b.name}</b><span>{b.quelle}, Yumini{b.standort ? ` ${name(b.standort)}` : ''}, {monat(b.datum!)}</span></p>
+                  <p class="wer"><b>{b.name}</b><span>{b.quelle}, Yumini{b.standort ? ` ${name(b.standort)}` : ''}</span></p>
                 </>
               )}
             </li>
