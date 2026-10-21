@@ -10,9 +10,7 @@ import grill from '../assets/kategorien/grill.jpg';
 import salad from '../assets/kategorien/salad.jpg';
 import dinner from '../assets/kategorien/dinner.jpg';
 import dessert from '../assets/kategorien/dessert.jpg';
-import laternen from '../assets/raeume/laternen.jpg';
 import halle from '../assets/raeume/halle.jpg';
-import theke from '../assets/raeume/theke.jpg';
 import gasse from '../assets/raeume/gasse.jpg';
 import sake from '../assets/gerichte/sake.png';
 import maguro from '../assets/gerichte/maguro.png';
@@ -38,19 +36,17 @@ export const gerichte = {
 } as const;
 export type GerichtId = keyof typeof gerichte;
 
-// Symbolbilder japanischer Restaurants (Unsplash Lizenz), KEINE Aufnahmen der Yumini Standorte.
-// Sie stehen nur bis zum Fotoshooting da und sind im Bild als Symbolbild beschriftet.
+// Bilder japanischer Restaurants (Unsplash Lizenz), KEINE Aufnahmen der Yumini Standorte.
+// Nur noch als abgedunkelte Hintergründe auf der Karriereseite (Vorteile, Team), sichtbar nie (Wunsch des Inhabers, 21.10.2026).
 export const raeume = {
-  laternen: { src: laternen, alt: 'Japanisch gestalteter Gastraum mit Papierlaternen und Kalligrafie an der Wand', von: 'Nastia Petruk' },
   halle: { src: halle, alt: 'Großer Gastraum mit Laternen, Theke und gedämpftem Licht', von: 'hiding ninja' },
-  theke: { src: theke, alt: 'Lange Holztheke mit Sushi Köchen und Pendelleuchten', von: 'Ryunosuke Kikuno' },
   gasse: { src: gasse, alt: 'Gasse mit großen Papierlaternen und Sitzplätzen', von: 'ayumi kubo' },
 } as const;
 export type RaumId = keyof typeof raeume;
 
 // Echte Aufnahmen der Restaurants, vom Inhaber geliefert (21.10.2026). Je Standort eine Liste:
 // das erste Bild ist das Titelbild (Standortkarte, Held, großes Bild im Abschnitt Im Lokal),
-// weitere Bilder einfach anhängen, sie ersetzen dann die Symbolbilder im Abschnitt Im Lokal.
+// weitere Bilder einfach anhängen, sie füllen dann die Platzhalter im Abschnitt Im Lokal (bis zu drei).
 // [[FEHLT: Fotos Bochum und Siegen, weitere Fotos je Standort]]
 export type LokalFoto = { src: ImageMetadata; alt: string };
 export const standortFotos: Partial<Record<Standort['id'], LokalFoto[]>> = {

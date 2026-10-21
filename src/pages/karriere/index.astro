@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button.astro';
 import Txt from '../../components/ui/Txt.astro';
 import KarriereIcon from '../../components/ui/KarriereIcon.astro';
 import { standorte } from '../../lib/standorte';
-import { kategorien, raeume } from '../../lib/bilder';
+import { kategorien, raeume, standortFotos } from '../../lib/bilder';
 import { breadcrumbLd } from '../../lib/seo';
 import { bereiche, stellen, vorteile, tag, ablauf, fragen } from '../../lib/karriere';
 
@@ -17,14 +17,16 @@ const bg = {
   bewerben: await hg(kategorien.sushi),
 };
 
-// Bild je Stelle. Raumbilder sind Symbolbilder von Unsplash, die Speisefotos stammen von yumini.de.
-const stellenBild: Record<string, { src: ImageMetadata; alt: string; symbol?: boolean }> = {
+// Bild je Stelle. Speisefotos von yumini.de, Gastraum Fotos vom Inhaber (echte Aufnahmen der Standorte).
+// Sichtbare Bilder nie als Symbolbild (Wunsch des Inhabers, 21.10.2026). Die Hintergründe Vorteile und Team sind noch Unsplash.
+const gast = (id: 'dortmund' | 'gelsenkirchen' | 'luedenscheid') => standortFotos[id]![0];
+const stellenBild: Record<string, { src: ImageMetadata; alt: string }> = {
   sushi: { src: kategorien.sushi, alt: 'Frisch zubereitete Sushi Platte' },
   kueche: { src: kategorien.dinner, alt: 'Warme Gerichte aus der Küche' },
   grill: { src: kategorien.grill, alt: 'Gegrilltes und Spieße' },
-  service: { src: raeume.laternen.src, alt: raeume.laternen.alt, symbol: true },
+  service: { src: gast('gelsenkirchen').src, alt: gast('gelsenkirchen').alt },
   theke: { src: kategorien.dessert, alt: 'Desserts und Eis von der Theke' },
-  aushilfe: { src: raeume.gasse.src, alt: raeume.gasse.alt, symbol: true },
+  aushilfe: { src: gast('luedenscheid').src, alt: gast('luedenscheid').alt },
 };
 
 // Das Team je Bereich. Bis zum Shooting steht hier das Speisefoto des Bereichs, bewusst kein Stockfoto von Personen.
@@ -92,7 +94,6 @@ const eintritt = [
               <summary>
                 <figure class="jimg">
                   <Image src={b.src} alt={b.alt} widths={[360, 640]} sizes="(max-width: 52rem) 100vw, 20rem" />
-                  {b.symbol && <figcaption>Symbolbild</figcaption>}
                 </figure>
                 <span class="jt">
                   <span class="chips"><span class="chip">{j.art}</span><span class="chip">Alle Standorte</span></span>
@@ -150,8 +151,7 @@ const eintritt = [
         <h2 id="t-title" class="h2">So sieht dein Dienst aus.</h2>
         <p class="lead muted">Ein typischer Abenddienst. Die Zeiten richten sich nach dem Standort.</p>
         <figure class="sym">
-          <Image src={raeume.theke.src} alt={raeume.theke.alt} widths={[500, 900]} sizes="(max-width: 62rem) 100vw, 28rem" />
-          <figcaption>Symbolbild</figcaption>
+          <Image src={gast('dortmund').src} alt={gast('dortmund').alt} widths={[500, 900]} sizes="(max-width: 62rem) 100vw, 28rem" />
         </figure>
       </div>
       <ol class="zeit">
@@ -467,10 +467,8 @@ const eintritt = [
   .jimg img { block-size: 100%; }
   .jimg img { inline-size: 100%; block-size: 100%; object-fit: cover; transition: scale 0.6s var(--ease); }
   .job:hover .jimg img { scale: 1.05; }
-  .jimg figcaption { position: absolute; inset: auto 0.6rem 0.6rem auto; padding: 0.15rem 0.6rem; border-radius: 999px; background: rgb(3 5 4 / 0.72); font-size: 0.6875rem; }
   .jt { display: grid; gap: 0.4rem; align-content: start; padding: 0; }
   .jt small { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .jimg figcaption { display: none; }
   .jt b { font-family: var(--display); font-weight: 800; font-stretch: 125%; text-transform: uppercase; font-size: clamp(1.15rem, 2.2vw, 1.6rem); line-height: 1.1; }
   .jt small { color: var(--text-muted); font-size: 1rem; font-weight: 300; max-inline-size: 36rem; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -492,7 +490,6 @@ const eintritt = [
     .cols { grid-template-columns: repeat(3, 1fr); }
     .job summary { grid-template-columns: 17rem 1fr auto; grid-template-areas: 'img jt mehr'; align-items: center; gap: 0 0.5rem; padding: 0.9rem; }
     .jimg { inline-size: 17rem; block-size: 10.5rem; aspect-ratio: auto; align-self: center; }
-    .jimg figcaption { display: block; }
     .jt { padding: 0.5rem 1rem; align-content: center; }
     .jt small { display: block; }
     .mehr { padding: 0 0.9rem 0 0; font-size: 0.9375rem; gap: 0.6rem; }
@@ -519,7 +516,6 @@ const eintritt = [
   .tg { display: grid; gap: 2.5rem; }
   .sym { position: relative; inline-size: 100%; max-inline-size: 28rem; border-radius: var(--r3); overflow: clip; }
   .sym img { inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover; }
-  .sym figcaption { position: absolute; inset: auto 0.6rem 0.6rem auto; padding: 0.15rem 0.6rem; border-radius: 999px; background: rgb(3 5 4 / 0.72); font-size: 0.6875rem; }
   .zeit { display: grid; align-content: start; }
   .zeit li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 1.25rem; padding-block: 1.25rem; border-block-start: 1px solid var(--border); }
   .zeit li:last-child { border-block-end: 1px solid var(--border); }
