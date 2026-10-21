@@ -33,22 +33,39 @@ const nav = [
     </nav>
     <a class="res" href="/#reservieren">Tisch reservieren</a>
 
-    <details class="mob">
-      <summary aria-label="Menü öffnen"><span></span><span></span></summary>
-      <nav aria-label="Mobile Navigation">
-        <ul>
-          <li><a href="/">Start</a></li>
-          {nav.map((n) => (
-            <li>
-              <a href={n.href}>{n.label}</a>
-              {n.sub && <ul class="msub">{standorte.map((o) => <li><a href={`/${o.id}/`}>{o.name}</a></li>)}</ul>}
-            </li>
-          ))}
-          <li><a class="mobres" href="/#reservieren">Tisch reservieren</a></li>
-        </ul>
-      </nav>
-    </details>
+    <button type="button" class="burger" data-oc-auf aria-label="Menü öffnen" aria-haspopup="dialog" aria-expanded="false" aria-controls="offcanvas"><span></span><span></span></button>
   </div>
+
+  <!-- Mobiles Menü als Off Canvas über die ganze Seite. showModal legt es in die oberste Ebene, Fokus bleibt darin, Esc schließt. -->
+  <dialog id="offcanvas" class="oc" data-oc aria-label="Menü">
+    <div class="ochead">
+      <a class="ocbrand" href="/" aria-label="Yumini, zur Startseite"><Logo hoehe={56} /></a>
+      <button type="button" class="occlose" data-oc-zu aria-label="Menü schließen">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+    </div>
+    <nav class="ocnav" aria-label="Mobile Navigation">
+      <ul>
+        <li><a href="/">Startseite</a></li>
+        {nav.map((n) => (
+          <li>
+            {n.sub ? (
+              <details class="ocsub">
+                <summary>{n.label}<svg class="occhev" viewBox="0 0 12 12" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2.5 4.5 3.5 3.5 3.5-3.5" /></svg></summary>
+                <ul>
+                  {standorte.map((o) => <li><a href={`/${o.id}/`}><b>{o.name}</b><small>{o.strasse}</small></a></li>)}
+                  <li><a href={n.href}><b>Alle Standorte im Überblick</b></a></li>
+                </ul>
+              </details>
+            ) : (
+              <a href={n.href}>{n.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a class="occta" href="/#reservieren">Tisch reservieren</a>
+  </dialog>
 </header>
 
 <style>
@@ -148,8 +165,6 @@ const nav = [
   .desk .sub b { font-weight: 500; color: var(--text); }
   .desk .sub small { font-size: 0.78rem; }
   .desk .sub a:hover { background: rgb(255 255 255 / 0.09); }
-  .msub { padding-inline-start: 1rem; }
-  .mob .msub a { padding: 0.5rem 0.75rem; font-size: 1rem; color: var(--text-muted); }
   .desk a {
     display: block;
     padding: 0.5rem 0.85rem;
@@ -182,55 +197,133 @@ const nav = [
     border-color: var(--text);
     background: rgb(255 255 255 / 0.06);
   }
-  .mob {
+  .burger {
     display: none;
-  }
-  summary {
-    list-style: none;
-    display: grid;
     place-items: center;
+    align-content: center;
     gap: 5px;
     inline-size: 2.5rem;
     block-size: 2.5rem;
+    padding: 0;
     border-radius: 50%;
     border: 1px solid var(--border);
+    background: none;
     cursor: pointer;
-    align-content: center;
   }
-  summary::-webkit-details-marker {
-    display: none;
-  }
-  summary span {
+  .burger span {
     display: block;
     inline-size: 1.1rem;
     block-size: 2px;
     background: var(--text);
   }
-  .mob nav {
-    position: absolute;
-    inset-block-start: calc(100% + 0.5rem);
-    inset-inline-end: 0;
-    inline-size: min(20rem, calc(100vw - 2 * var(--gutter)));
-    max-block-size: calc(100svh - 6rem);
+
+  /* Off Canvas: deckt die ganze Seite ab, kommt von rechts */
+  .oc {
+    position: fixed;
+    inset: 0;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100dvh;
+    max-block-size: none;
+    margin: 0;
+    padding: clamp(0.6rem, 1.6svh, 1rem) var(--gutter) max(1.25rem, env(safe-area-inset-bottom));
+    border: 0;
+    background: var(--black);
+    color: var(--text);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 0.75rem;
+    pointer-events: auto; /* die Kopfzeile selbst lässt Klicks durch, das Menü nicht */
+  }
+  .oc[open] {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 4svh, 2.5rem);
+    animation: oc-ein 0.4s var(--ease);
+  }
+  .oc.zu { animation: oc-aus 0.25s var(--ease) forwards; }
+  .oc::backdrop { background: rgb(3 5 4 / 0.6); }
+  @keyframes oc-ein { from { translate: 100% 0; } }
+  @keyframes oc-aus { to { translate: 100% 0; } }
+  :global(html:has(.oc[open])) { overflow: hidden; }
+  .ochead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .ocbrand { display: inline-flex; }
+  .ocbrand :global(img) {
+    block-size: clamp(2.75rem, 3.2vw + 1.4rem, 4rem);
+    inline-size: auto;
+  }
+  .occlose {
+    display: grid;
+    place-items: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    padding: 0;
+    border-radius: 50%;
     border: 1px solid var(--border);
-    border-radius: var(--r4);
-    background: rgb(3 5 4 / 0.97);
+    background: none;
+    color: var(--text);
+    cursor: pointer;
   }
-  .mob li a {
-    display: block;
-    padding: 0.85rem 0.75rem;
+  .occlose:hover { border-color: var(--text); }
+  .ocnav > ul > li { border-block-end: 1px solid var(--border); }
+  .ocnav > ul > li > a,
+  .ocsub summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: clamp(0.8rem, 2.2svh, 1.1rem);
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    font-size: clamp(1.25rem, 5.5vw, 1.75rem);
+    line-height: 1.1;
     text-decoration: none;
-    font-size: 1.125rem;
+    color: var(--text);
+    cursor: pointer;
   }
-  .mob .mobres {
-    margin-block-start: 0.5rem;
+  .ocsub summary { list-style: none; }
+  .ocsub summary::-webkit-details-marker { display: none; }
+  .occhev { flex: none; transition: rotate 0.25s var(--ease); }
+  .ocsub[open] .occhev { rotate: 180deg; }
+  .ocsub ul {
+    display: grid;
+    gap: 0.1rem;
+    padding-block-end: 0.9rem;
+  }
+  .ocsub a {
+    display: grid;
+    gap: 0.05rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--r2);
+    text-decoration: none;
+  }
+  .ocsub a:hover { background: rgb(255 255 255 / 0.08); }
+  .ocsub b { font-weight: 500; font-size: 1.0625rem; }
+  .ocsub small { font-size: 0.85rem; color: var(--text-muted); }
+  .ocnav a:focus-visible,
+  .ocsub summary:focus-visible { outline: 3px solid var(--coral-soft); outline-offset: 2px; }
+  .occta {
+    display: grid;
+    place-items: center;
+    margin-block-start: auto;
+    min-block-size: 3.5rem;
     border-radius: var(--r2);
     background: var(--brand-red);
-    text-align: center;
+    color: #fff;
     font-weight: 500;
+    font-size: 1.125rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .occta:hover { background: var(--red-deep); }
+  @media (prefers-reduced-motion: reduce) {
+    .oc[open], .oc.zu { animation: none; }
   }
 
   @media (max-width: 68rem) {
@@ -242,8 +335,8 @@ const nav = [
     .res {
       display: none;
     }
-    .mob {
-      display: block;
+    .burger {
+      display: grid;
     }
     .pill {
       padding: 0.3rem;
@@ -257,7 +350,8 @@ const nav = [
   // Hide on Scroll: nach unten weg, nach oben (oder ganz oben) wieder da. Offenes Menü und Tastaturfokus halten sie sichtbar.
   const root = document.documentElement;
   const pille = document.querySelector<HTMLElement>('[data-kopf] .pill');
-  const menue = document.querySelector<HTMLDetailsElement>('[data-kopf] details.mob');
+  const menue = document.querySelector<HTMLDialogElement>('[data-oc]');
+  const oeffner = document.querySelector<HTMLButtonElement>('[data-oc-auf]');
   let letzte = window.scrollY;
   let wartet = false;
   const pruefen = () => {
@@ -272,4 +366,27 @@ const nav = [
   window.addEventListener('scroll', () => { if (!wartet) { wartet = true; requestAnimationFrame(pruefen); } }, { passive: true });
   // Sprungmarken (#reservieren) scrollen nach unten: Pille bleibt dann weg, bis man hochscrollt
   pille?.addEventListener('focusin', () => root.classList.remove('kopf-weg'));
+
+  // Off Canvas öffnen und schließen. Schließen läuft animiert, Links schließen sofort, damit Sprungmarken scrollen können.
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+  const zu = () => {
+    if (!menue?.open || menue.classList.contains('zu')) return;
+    if (ruhig.matches) return menue.close();
+    menue.classList.add('zu');
+    menue.addEventListener('animationend', () => { menue.classList.remove('zu'); menue.close(); }, { once: true });
+  };
+  oeffner?.addEventListener('click', () => {
+    menue?.showModal();
+    oeffner.setAttribute('aria-expanded', 'true');
+  });
+  menue?.addEventListener('close', () => {
+    oeffner?.setAttribute('aria-expanded', 'false');
+    oeffner?.focus();
+  });
+  menue?.addEventListener('cancel', (e) => { e.preventDefault(); zu(); });
+  menue?.querySelector('[data-oc-zu]')?.addEventListener('click', zu);
+  menue?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) menue.close();
+  });
+  matchMedia('(min-width: 68.0625rem)').addEventListener('change', (e) => { if (e.matches && menue?.open) menue.close(); });
 </script>

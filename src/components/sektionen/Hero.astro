@@ -1,11 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
-import Sterne from '../ui/Sterne.astro';
 import { fotos, kategorien } from '../../lib/bilder';
-import { bewertungen, komma } from '../../lib/bewertungen';
 
-// Werte und Quellen in src/lib/bewertungen.ts. Google ist vorläufig, Tripadvisor 4,0 fest, 274 Bewertungen.
 const orbit = [
   { bild: kategorien.sushi, name: 'Sushi' },
   { bild: kategorien.grill, name: 'Grill' },
@@ -27,22 +24,6 @@ const orbit = [
         <Button href="/speisekarte/" variant="outline" size="lg">Sushi Speisekarte ansehen</Button>
       </div>
 
-      <ul class="trust" aria-label="Bewertungen unserer Gäste">
-        {bewertungen.map((p) => (
-          <li>
-            <a href="#bewertungen" class="widget" aria-label={p.wert ? `${p.name}: ${komma(p.wert)} von 5 Sternen${p.anzahl ? `, ${p.anzahl.toLocaleString('de-DE')} Bewertungen` : ''}` : `${p.name}: Bewertung folgt`}>
-              <span class="logo" aria-hidden="true"><img src={p.logo} alt="" width="20" height="20" /></span>
-              <span class="meta">
-                <b>{p.name}</b>
-                <Sterne wert={p.wert} groesse="0.8rem" />
-              </span>
-              <span class="val">
-                {p.wert ? <><b>{komma(p.wert)}</b>{p.anzahl && <small>{p.anzahl.toLocaleString('de-DE')} Bewertungen</small>}</> : <span class="fehlt">[[FEHLT]]</span>}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
     </div>
 
     <div class="turn">
@@ -107,53 +88,6 @@ const orbit = [
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-  }
-
-  .trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-block-start: 0.5rem;
-  }
-  .widget {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.45rem 0.8rem 0.45rem 0.45rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.04);
-    text-decoration: none;
-    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
-  }
-  .widget:hover {
-    border-color: var(--coral-soft);
-    background: rgb(255 255 255 / 0.08);
-  }
-  .logo {
-    display: grid;
-    place-items: center;
-    flex: none;
-    inline-size: 2rem;
-    block-size: 2rem;
-    border-radius: 50%;
-    background: #fff;
-  }
-  .logo img { inline-size: 1.15rem; block-size: 1.15rem; }
-  .meta {
-    display: grid;
-    line-height: 1.1;
-  }
-  .meta b {
-    font-size: 0.8125rem;
-    font-weight: 500;
-  }
-  .val { display: grid; line-height: 1.1; }
-  .val b { font-size: 1rem; font-weight: 600; }
-  .val small { font-size: 0.6875rem; color: var(--text-muted); }
-  .val .fehlt {
-    font-size: 0.65rem;
-    padding: 0 0.35em;
   }
 
   /* Drehteller: das Brett dreht sich langsam, kleine Schalen kreisen darum, jede bleibt aufrecht */
@@ -231,31 +165,12 @@ const orbit = [
     .big { font-size: clamp(1.8rem, 11svh, 3rem); }
   }
   @media (max-width: 52rem) {
-    .trust {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.4rem;
-    }
-    .widget {
-      flex-direction: column;
-      gap: 0.2rem;
-      padding: 0.45rem 0.3rem;
-      border-radius: var(--r3);
-      text-align: center;
-    }
-    .logo { inline-size: 1.6rem; block-size: 1.6rem; }
-    .logo img { inline-size: 0.95rem; block-size: 0.95rem; }
-    .meta { justify-items: center; }
-    .val { justify-items: center; }
     .copy { gap: 1rem; }
-    .actions { flex-wrap: nowrap; }
+    /* Mobil untereinander: zuerst Tisch reservieren, darunter die Speisekarte */
+    .actions { flex-direction: column; gap: 0.6rem; }
     .actions :global(.btn) {
-      flex: 1 1 0;
-      min-inline-size: 0;
-      padding-inline: 0.5rem;
-      white-space: normal;
+      inline-size: 100%;
       text-align: center;
-      font-size: 0.9375rem;
       min-block-size: 3.25rem;
     }
   }

@@ -2,11 +2,10 @@
 import Button from '../ui/Button.astro';
 import Sterne from '../ui/Sterne.astro';
 import { standorte } from '../../lib/standorte';
-import { bewertungen, komma } from '../../lib/bewertungen';
 import daten from '../../data/google-bewertungen.json';
 import ta from '../../data/tripadvisor-bewertungen.json';
 
-// Bewertungen von Tripadvisor und Google in einem durchlaufenden Band, dazu beide Plattform Siegel.
+// Bewertungen von Tripadvisor und Google in einem durchlaufenden Band, ohne Plattform Siegel (Wunsch des Inhabers, 21.10.2026).
 // Nur echte Stimmen (data/tripadvisor-bewertungen.json, data/google-bewertungen.json), keine Platzhalter.
 const name = (id: string | null) => (id ? standorte.find((s) => s.id === id)?.name ?? id : '');
 // Nur ausführliche Stimmen, kurze Einzeiler wirken nicht glaubwürdig.
@@ -24,15 +23,6 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
       <div class="titel">
         <p class="eyebrow">Bewertungen</p>
         <h2 id="bew-title" class="h2">Stimmen unserer Gäste.</h2>
-      </div>
-      <div class="badges">
-        {bewertungen.map((p) => (
-          <a class="gesamt" href="#bewertungen" aria-label={`${p.name}: ${komma(p.wert!)} von 5 Sternen aus ${p.anzahl!.toLocaleString('de-DE')} Bewertungen`}>
-            <span class={`g ${p.id}`}><img src={p.logo} alt="" width="28" height="28" /></span>
-            <b>{komma(p.wert!)}</b>
-            <span class="mehr"><Sterne wert={p.wert} groesse="1.05rem" /><small>{p.anzahl!.toLocaleString('de-DE')} Bewertungen{p.vorlaeufig ? ', vorläufig' : ''}</small></span>
-          </a>
-        ))}
       </div>
     </div>
   </div>
@@ -88,32 +78,9 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
   .head {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem 3rem;
-    align-items: end;
-    justify-content: space-between;
     margin-block-end: clamp(1.75rem, 4vw, 3rem);
   }
   .titel { display: grid; gap: 0.75rem; }
-  .gesamt {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.6rem 1.25rem 0.6rem 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.04);
-    text-decoration: none;
-    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
-  }
-  .gesamt:hover { border-color: var(--coral-soft); background: rgb(255 255 255 / 0.08); }
-  .g { display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; border-radius: 50%; background: #fff; flex: none; }
-  .g.tripadvisor { background: #000; }
-  .badges { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
-  .g img { inline-size: 1.6rem; block-size: 1.6rem; }
-  .gesamt b { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem); line-height: 1; }
-  .mehr { display: grid; gap: 0.2rem; }
-  .mehr small { font-size: var(--fs-xs); color: var(--text-muted); }
-
   .marquee {
     position: relative;
     overflow: hidden;
@@ -181,12 +148,9 @@ const stimmen: Stimme[] = Array.from({ length: Math.max(tripadvisor.length, goog
   .fuss {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 2rem;
-    align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     margin-block-start: clamp(1.5rem, 3vw, 2.25rem);
   }
-  .klein { font-size: var(--fs-sm); max-inline-size: 44rem; }
 
   @media (prefers-reduced-motion: reduce) {
     .track { animation: none; }
