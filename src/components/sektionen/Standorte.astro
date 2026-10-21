@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { standorte, ab } from '../../lib/standorte';
-import { gerichte, type GerichtId } from '../../lib/bilder';
+import { gerichte, standortFotos, type GerichtId } from '../../lib/bilder';
 import Button from '../ui/Button.astro';
 
 // Grobe Kartenskizze von Nordrhein-Westfalen. Provisorisch gezeichnet, kein exakter Grenzverlauf.
@@ -36,16 +36,26 @@ pfad += 'Z';
       <p class="eyebrow">Fünf Standorte in NRW</p>
       <h2 id="standorte-title" class="h2">Ein Tisch in Ihrer Nähe.</h2>
       <p class="lead muted">Bochum, Dortmund, Gelsenkirchen, Lüdenscheid und Siegen. Wählen Sie Ihren Standort und reservieren Sie direkt.</p>
-      {/* [[FEHLT: Fotos der Restaurants]] */}
+      {/* [[FEHLT: Fotos der Restaurants Bochum und Siegen]] */}
     </div>
 
     <div class="stage">
       <ul class="cards">
         {standorte.map((s) => (
           <li class="card" data-id={s.id}>
-            <div class="photo">
-              <Image src={gerichte[s.gericht as GerichtId]} alt={`Sushi aus dem All you can eat bei Yumini ${s.name}`} title={`Yumini ${s.name}`} widths={[240, 480]} sizes="14rem" />
-            </div>
+            {(() => {
+              // Echtes Foto des Restaurants, sonst ein Gericht als Dekor
+              const foto = standortFotos[s.id]?.[0];
+              return foto ? (
+                <div class="photo echt">
+                  <Image src={foto.src} alt={foto.alt} title={`Yumini ${s.name}`} widths={[480, 800, 1200]} sizes="(max-width: 64rem) 100vw, 30rem" />
+                </div>
+              ) : (
+                <div class="photo">
+                  <Image src={gerichte[s.gericht as GerichtId]} alt={`Sushi aus dem All you can eat bei Yumini ${s.name}`} title={`Yumini ${s.name}`} widths={[240, 480]} sizes="14rem" />
+                </div>
+              );
+            })()}
             <div class="info">
               <h3>{s.name}</h3>
               <address>
@@ -111,6 +121,7 @@ pfad += 'Z';
   }
   .card {
     display: grid;
+    grid-template-rows: auto 1fr;
     border: 1px solid var(--border);
     border-radius: var(--r3);
     background: var(--surface);
@@ -137,6 +148,21 @@ pfad += 'Z';
   }
   .card:hover .photo :global(img) {
     transform: scale(1.08) rotate(-4deg);
+  }
+  /* Echtes Foto füllt die Kachel */
+  .photo.echt {
+    overflow: clip;
+  }
+  .photo.echt :global(img) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    filter: none;
+  }
+  .card:hover .photo.echt :global(img) {
+    transform: scale(1.05);
   }
   .price {
     color: var(--coral-soft);

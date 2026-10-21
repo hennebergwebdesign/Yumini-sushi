@@ -1,8 +1,9 @@
 ---
 import { Image } from 'astro:assets';
-import { raeume, type RaumId } from '../../lib/bilder';
+import { raeume, standortFotos, type RaumId } from '../../lib/bilder';
 import type { Standort } from '../../lib/standorte';
-// Symbolbilder japanischer Restaurants, KEINE Aufnahmen aus Yumini. Sie werden nach dem Shooting je Standort ersetzt.
+// Echte Fotos des Standorts zuerst (aus standortFotos in bilder.ts). Fehlende Plätze füllen Symbolbilder
+// japanischer Restaurants, KEINE Aufnahmen aus Yumini, im Bild als Symbolbild beschriftet.
 interface Props { s: Standort }
 const { s } = Astro.props;
 const reihen: Record<Standort['id'], RaumId[]> = {
@@ -12,7 +13,11 @@ const reihen: Record<Standort['id'], RaumId[]> = {
   luedenscheid: ['gasse', 'laternen', 'halle'],
   siegen: ['halle', 'gasse', 'theke'],
 };
-const [a, b, c] = reihen[s.id].map((id) => raeume[id]);
+type Bild = { src: ImageMetadata; alt: string; symbol: boolean };
+const echte: Bild[] = (standortFotos[s.id] ?? []).map((f) => ({ ...f, symbol: false }));
+const symbole: Bild[] = reihen[s.id].map((id) => ({ src: raeume[id].src, alt: raeume[id].alt, symbol: true }));
+const [a, b, c] = [...echte, ...symbole].slice(0, 3);
+const titel = (x: Bild) => (x.symbol ? 'Symbolbild Gastraum' : `Yumini ${s.name}`);
 ---
 <section class="lokal" aria-labelledby="lokal-title">
   <div class="wrap">
@@ -21,12 +26,12 @@ const [a, b, c] = reihen[s.id].map((id) => raeume[id]);
         <p class="eyebrow">Im Lokal</p>
         <h2 id="lokal-title" class="h2">Ein Abend bei Yumini {s.name}</h2>
       </div>
-      {/* [[FEHLT: Aufnahmen aus dem Lokal je Standort nach dem Fotoshooting]] */}
+      {/* [[FEHLT: weitere Aufnahmen aus dem Lokal je Standort]] */}
     </div>
     <ul class="bilder">
-      <li class="gross"><Image src={a.src} alt={a.alt} widths={[700, 1100, 1600]} sizes="(max-width: 52rem) 100vw, 60vw" /><span class="sym">Symbolbild</span></li>
-      <li><Image src={b.src} alt={b.alt} widths={[500, 900]} sizes="(max-width: 52rem) 50vw, 20vw" /><span class="sym">Symbolbild</span></li>
-      <li><Image src={c.src} alt={c.alt} widths={[500, 900]} sizes="(max-width: 52rem) 50vw, 20vw" /><span class="sym">Symbolbild</span></li>
+      <li class="gross"><Image src={a.src} alt={a.alt} title={titel(a)} widths={[700, 1100, 1600]} quality={72} sizes="(max-width: 52rem) 100vw, 60vw" />{a.symbol && <span class="sym">Symbolbild</span>}</li>
+      <li><Image src={b.src} alt={b.alt} title={titel(b)} widths={[500, 900]} sizes="(max-width: 52rem) 50vw, 20vw" />{b.symbol && <span class="sym">Symbolbild</span>}</li>
+      <li><Image src={c.src} alt={c.alt} title={titel(c)} widths={[500, 900]} sizes="(max-width: 52rem) 50vw, 20vw" />{c.symbol && <span class="sym">Symbolbild</span>}</li>
     </ul>
   </div>
 </section>
