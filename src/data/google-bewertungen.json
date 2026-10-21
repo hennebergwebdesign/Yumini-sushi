@@ -102,16 +102,28 @@
       "text": "Essen war wie immer brutal gut. War früher ständig hier und heute wiederzukommen war einfach die beste Entscheidung."
     },
     {
-      "standort": "dortmund",
-      "fehlt": true
+      "standort": null,
+      "name": "Riku",
+      "sterne": 5,
+      "text": "Wir waren jetzt 2x hier (saßen 1x draußen und 1x drin) und waren beide male begeistert! Die Speisen sind lecker und qualitativ hochwertig."
     },
     {
-      "standort": "luedenscheid",
-      "fehlt": true
+      "standort": "bochum",
+      "name": "Tatjana D.",
+      "sterne": 4,
+      "text": "Große Auswahl, viel zu entdecken und das Essen kam schnell, frisch zubereitet und war qualitativ wirklich top. Wir hatten viel Spaß dabei! Der Service war hervorragend und sehr aufmerksam."
     },
     {
-      "standort": "siegen",
-      "fehlt": true
+      "standort": null,
+      "name": "Bariline",
+      "sterne": 4,
+      "text": "Das Essen war super lecker und das Preis-Leistungs-Verhältnis stimmt absolut."
+    },
+    {
+      "standort": null,
+      "name": "Katrin",
+      "sterne": 5,
+      "text": "Das Yumini ist tatsächlich ein außergewöhnliches Sushi Restaurant. Bestellt wird mit einem ipad und das Essen wird dann nach kurzer Zeit, frisch zubereitet, an den Tisch gebracht. Was die veganen und vegetarischen Speisen angeht, bin ich hellauf begeistert. Selten gibt es so eine große Auswahl an veganen Sachen. Alles ist frisch und sieht toll aus"
     }
   ]
 }
