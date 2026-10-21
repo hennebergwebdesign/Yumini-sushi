@@ -109,6 +109,8 @@ Siegel „Vegetarisch" und „Vegan", die nicht geprüft sind. Die Rohdaten (CSV
 
 **Stand 10 (20.10.2026): Backend `/team/`.** Eigenbau auf D1: Anmeldung (Benutzername und Passwort, Rollen Admin, Standortleitung, Service, 2FA später), Tagesansicht, Tischplan mit Editor, Eintragen, Status, Sperren, Einstellungen, Suche, Protokoll, Benutzer. Das Tablet auf der Website bucht jetzt echt gegen dieselbe Datenbank (`/api/reservierung/`), ohne Tische an einem Standort ist nichts buchbar. Beispieltische sind erfundene Testdaten. Details in `docs/backend.md`. Geprüft: Build grün, API Durchlauf (Doppelbuchung, Rollen, Sperre, Fehlversuche), Chromium 1280 px Dashboard und Tablet Buchung. Nicht geprüft: Safari, echte Tablets, Mails (fehlen).
 
+**Stand 11 (21.10.2026): Bewertungs Widgets entfernt.** Auf Wunsch des Inhabers keine Plattform Widgets mehr (Google und Tripadvisor) im Held und im Abschnitt Bewertungen. Das durchlaufende Band mit den einzelnen Stimmen bleibt, der Button „Tisch reservieren" steht mittig darunter. `src/lib/bewertungen.ts` (Gesamtwerte und Logos) wird damit nirgends mehr genutzt und bleibt für eine spätere Rückkehr liegen. Geprüft: Build grün, Chromium 1440 und 390 px, keine Konsolenfehler, kein horizontales Scrollen.
+
 Noch nicht geprüft: Kontrastwerte für Weiß auf `brand-red`, Lighthouse, Tastaturdurchlauf, Browser außer Chromium.
 
 ## Kunde und Ziel
@@ -210,3 +212,4 @@ Rechtstexte, 404.
    Speisekarte in Claude Design. Geprüft: Build grün (6 Seiten), Chromium auf 1440 und 390 px, Tablet Durchlauf mit Eingaben,
    keine Konsolenfehler, kein horizontales Scrollen.
 6. **20.10.2026** Dritte Runde: Speisekarten Mockup, Karriereseite mit Funnel, Feiern Seite, Symbolbilder Gastraum, Bewertungen Google und Trustpilot. Geprüft: Build grün (14 Seiten), Chromium 1440 und 390 px, Funnel durchgespielt, keine Konsolenfehler, kein horizontales Scrollen.
+7. **21.10.2026** Bewertungs Widgets (Google, Tripadvisor) im Held und im Abschnitt Bewertungen entfernt, Button unter dem Bewertungsband mittig.
