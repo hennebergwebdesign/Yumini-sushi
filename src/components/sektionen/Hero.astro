@@ -30,12 +30,12 @@ const orbit = [
     <div class="turn">
       <div class="ring"></div>
       <div class="plate">
-        <Image src={fotos.schieferRund} alt="Nigiri und Sushi auf einer Schieferplatte, serviert bei Yumini" title="All you can eat Sushi bei Yumini" widths={[480, 720, 960]} sizes="(max-width: 52rem) 80vw, 42vw" loading="eager" fetchpriority="high" />
+        <Image src={fotos.schieferRund} alt="Nigiri und Sushi auf einer Schieferplatte, serviert bei Yumini" title="All you can eat Sushi bei Yumini" widths={[320, 480, 720, 960]} sizes="(max-width: 52rem) 58vw, 40vw" quality={72} loading="eager" fetchpriority="high" />
       </div>
       <ul class="orbit" aria-hidden="true">
         {orbit.map((o, i) => (
           <li style={`--i:${i}`}>
-            <span class="bowl"><Image src={o.bild} alt="" widths={[120, 240]} sizes="6rem" /></span>
+            <span class="bowl"><Image src={o.bild} alt="" widths={[120, 240]} sizes="5rem" /></span>
           </li>
         ))}
       </ul>
@@ -140,7 +140,7 @@ const orbit = [
     border: 3px solid var(--black);
     outline: 1.5px solid var(--border);
     animation: untwist 110s linear infinite;
-    rotate: calc(var(--i) * -72deg);
+    transform: rotate(calc(var(--i) * -72deg));
   }
   .bowl :global(img) {
     inline-size: 100%;
@@ -148,7 +148,7 @@ const orbit = [
     object-fit: cover;
   }
   @keyframes turn { to { rotate: 360deg; } }
-  @keyframes untwist { to { rotate: calc(var(--i) * -72deg + 360deg); } }
+  @keyframes untwist { to { rotate: 360deg; } }
 
   @media (min-width: 62rem), (orientation: landscape) and (max-height: 34rem) and (min-width: 36rem) {
     .grid {

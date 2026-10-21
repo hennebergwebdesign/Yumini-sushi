@@ -5,7 +5,7 @@ import { fotos } from '../../lib/bilder';
 
 const bg = await getImage({ src: fotos.nigiriSchiefer, width: 1600, format: 'webp' });
 ---
-<section id="reservieren" class="res fullh" aria-labelledby="res-title" style={`--bg:url(${bg.src})`}>
+<section id="reservieren" class="res fullh" aria-labelledby="res-title" data-bg={bg.src}>
   <div class="wrap">
     <div class="head">
       <p class="eyebrow">Online reservieren</p>

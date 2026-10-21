@@ -6,6 +6,8 @@ import Footer from '../components/Footer.astro';
 import MobilLeiste from '../components/MobilLeiste.astro';
 import { INDEXIEREN, SITE } from '../lib/config';
 import { KEYWORDS_BASIS } from '../lib/seo';
+import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import plex400 from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -28,6 +30,8 @@ const url = new URL(pfad, SITE).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>document.documentElement.classList.add('js')</script>
+    <link rel="preload" href={plex400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
@@ -61,6 +65,26 @@ const url = new URL(pfad, SITE).href;
     <main id="main"><slot /></main>
     <Footer />
     {mobilLeiste && <MobilLeiste />}
+    <script is:inline>
+      // Große Hintergrundfotos laden erst kurz vor dem Sichtbereich, damit sie das erste Bild nicht ausbremsen.
+      (function () {
+        var root = document.documentElement;
+        if (location.hash) root.classList.add('cv-aus');
+        document.addEventListener('click', function (e) {
+          if (e.target.closest && e.target.closest('a[href*="#"]')) root.classList.add('cv-aus');
+        }, true);
+        var els = document.querySelectorAll('[data-bg],[data-fill]');
+        function set(el) {
+          if (el.dataset.bg) el.style.setProperty('--bg', 'url(' + el.dataset.bg + ')');
+          if (el.dataset.fill) el.style.setProperty('--fill', 'url(' + el.dataset.fill + ')');
+        }
+        if (!('IntersectionObserver' in window)) { els.forEach(set); return; }
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { set(e.target); io.unobserve(e.target); } });
+        }, { rootMargin: '150px 0px' });
+        els.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
     {autoReveal && <script>
       // Einblenden beim Scrollen: markiert die Bausteine der Seiten und blendet sie ein, sobald sie ins Bild kommen.
       const auswahl = [
