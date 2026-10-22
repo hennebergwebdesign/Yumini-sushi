@@ -23,9 +23,11 @@ import yakiTori from '../assets/gerichte/yaki-tori.png';
 import tekkaMaki from '../assets/gerichte/tekka-maki.png';
 import gruenerTeeEis from '../assets/gerichte/gruener-tee-eis.png';
 import ebiTempura from '../assets/gerichte/ebi-tempura.png';
+import bochum1 from '../assets/standorte/bochum-1.jpg';
 import dortmund1 from '../assets/standorte/dortmund-1.jpg';
 import gelsenkirchen1 from '../assets/standorte/gelsenkirchen-1.jpg';
 import luedenscheid1 from '../assets/standorte/luedenscheid-1.jpg';
+import siegen1 from '../assets/standorte/siegen-1.jpg';
 
 export const fotos = { sushiPlatte, nigiriSchiefer, schieferRund, skizze };
 export const kategorien = { sushi, grill, salad, dinner, dessert };
@@ -44,12 +46,16 @@ export const raeume = {
 } as const;
 export type RaumId = keyof typeof raeume;
 
-// Echte Aufnahmen der Restaurants, vom Inhaber geliefert (21.10.2026). Je Standort eine Liste:
+// Echte Aufnahmen der Restaurants, vom Inhaber geliefert (21.10.2026, Bochum und Siegen 22.10.2026). Je Standort eine Liste:
 // das erste Bild ist das Titelbild (Standortkarte, Held, großes Bild im Abschnitt Im Lokal),
 // weitere Bilder einfach anhängen, sie füllen dann die Platzhalter im Abschnitt Im Lokal (bis zu drei).
-// [[FEHLT: Fotos Bochum und Siegen, weitere Fotos je Standort]]
+// Das Foto Bochum trägt das Wasserzeichen blog.erdbeerkirsch.de, Nutzungsrecht beim Inhaber zu klären.
+// [[FEHLT: weitere Fotos je Standort, Nutzungsrecht Foto Bochum (blog.erdbeerkirsch.de)]]
 export type LokalFoto = { src: ImageMetadata; alt: string };
 export const standortFotos: Partial<Record<Standort['id'], LokalFoto[]>> = {
+  bochum: [
+    { src: bochum1, alt: 'Gastraum von Yumini Bochum mit Bar, beleuchtetem Yumini Schriftzug, Kristallleuchtern und violetter Polsterwand' },
+  ],
   dortmund: [
     { src: dortmund1, alt: 'Gastraum von Yumini Dortmund mit beleuchteter Bar, roten Hängelampen und Holzlamellen an der Wand' },
   ],
@@ -58,5 +64,8 @@ export const standortFotos: Partial<Record<Standort['id'], LokalFoto[]>> = {
   ],
   luedenscheid: [
     { src: luedenscheid1, alt: 'Heller Gastraum von Yumini Lüdenscheid mit Baum, großen Fenstern und Blick auf die Terrasse' },
+  ],
+  siegen: [
+    { src: siegen1, alt: 'Gastraum von Yumini Siegen mit großem Koi Aquarium, Kugelleuchten und violett beleuchteter Decke' },
   ],
 };
